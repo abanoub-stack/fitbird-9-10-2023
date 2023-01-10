@@ -53,6 +53,14 @@
                 <li class="nav-item @if (request()->is('ios-notification')) active @endif">
                     <a class="nav-link" href="{{ url('/ios-notification', []) }}">IOS Notifications</a>
                 </li>
+
+                {{-- Questions update --}}
+                <li class="nav-item @if (request()->is('questions')) active @endif">
+                    <a class="nav-link" href="{{ url('/questions', []) }}">Questions</a>
+                </li>
+                {{-- Questions update --}}
+
+
                 @if (auth()->user()->role == 'SUPER_ADMIN')
                     <li class="nav-item @if (request()->is('admins') || request()->is('admins/add')) active @endif">
                         <a class="nav-link text-info" href="{{ url('/admins', []) }}">Admins List</a>
@@ -125,10 +133,42 @@
             </ul>
         </div>
     </nav>
+
+    @if ($errors->any())
+    <br>
+    <ul class=" alert alert-danger list-unstyled mb-2 col-8 m-auto" style="text-align: center">
+        @foreach ( $errors->all() as $error )
+            <li>{{$error}}</li>
+        @endforeach
+    </ul>
+    <br>
+    @endif
+
+
+
+    @if (Session::has('success'))
+    <div class="col-lg-12 m-auto mt-5">
+        <div class="alert alert-success" role="alert">
+            <strong>{{Session::get('success')}}</strong>
+        </div>
+    </div>
+    @endif
     @yield('main')
     @yield('js')
     <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableData tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
