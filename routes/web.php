@@ -168,18 +168,25 @@ Route::middleware('auth')->group(function () {
 
 
     //  Questions
-    Route::get('questions', [QuestionController::class, 'index'])->name('question.index');
+        //Index page
+            Route::get('questions', [QuestionController::class, 'index'])->name('question.index');
 
-    Route::get('questions/show/{questionId}', [QuestionController::class, 'show'])->name('question.show');
+        //show
+            Route::get('questions/show/{questionId}', [QuestionController::class, 'show'])->name('question.show');
 
-    Route::get('questions/create', [QuestionController::class, 'create'])->name('question.create');
-    Route::post('questions/store', [QuestionController::class, 'store'])->name('question.store');
+        //Create
+            Route::get('questions/create', [QuestionController::class, 'create'])->name('question.create');
+            Route::post('questions/store', [QuestionController::class, 'store'])->name('question.store');
 
-    Route::get('questions-body/{questionId}',[QuestionController::class, 'createBody'])->name('question.body');
-    Route::post('questions-update-body', [QuestionController::class, 'updateBody'])->name('question.update.body');
-    Route::post('questions/edit/{questionId}', [QuestionController::class, 'editQuestion'])->name('question.edit');
-    Route::post('questions/update', [QuestionController::class, 'store'])->name('question.update');
+        //Edit
+            Route::get('questions/edit/{questionId}', [QuestionController::class, 'edit'])->name('question.edit');
+            Route::post('questions/update', [QuestionController::class, 'update'])->name('question.update');
 
-    Route::get('questions/delete/{questionId}', [QuestionController::class, 'delete'])->name('question.delete');
+        //Body
+            Route::get('questions-body/{questionId}',[QuestionController::class, 'createBody'])->name('question.body');
+            Route::post('questions-update-body', [QuestionController::class, 'updateBody'])->name('question.update.body');
+
+        // Delete
+            Route::get('questions/delete/{questionId}', [QuestionController::class, 'delete'])->name('question.delete');
 
 });

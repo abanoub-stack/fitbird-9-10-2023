@@ -55,13 +55,13 @@
                                     <td>{{ $question->type }}</td>
                                     <td>
                                     <a href="{{ route('question.edit', $question->id) }}" class="btn-lg text-dark">
-                                        edit
+                                        <i class="fas fa-pen-square"></i>
                                     </a>
                                     <a href="{{ route('question.delete', $question->id) }}" class="btn-lg text-danger">
-                                        delete
+                                        <i class="fas fa-trash"></i>
                                     </a>
                                     <a href="{{ route('question.show', $question->id) }}" class="btn-lg text-primary">
-                                        show
+                                        <i class="fas fa-eye"></i>
                                     </a>
                                     </td>
                                 </tr>

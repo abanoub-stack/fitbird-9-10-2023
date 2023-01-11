@@ -43,10 +43,60 @@ class QuestionController extends Controller
             'choice_number' => $request->choice_number,
         ]);
 
+        if ($question->type == "field" || $question->type == "area") {
+            return redirect()->route('question.index')->with('success', 'Question Created Successfully');
+        } else {
+            return Redirect::route('question.body' , $question->id);
+        }
 
-        return Redirect::route('question.body' , $question->id)->with('success', 'Question Created Successfully');
 
     }
+
+
+
+    public function edit($id)
+    {
+        $question = Question::find($id);
+        return view('questions.edit' , compact('question'));
+    }
+
+    public function update(Request $request)
+    {
+
+        $validator = Validator::make($request->all() ,
+        [
+            'title' => "required|string|max:255",
+            'type' => "required|string|in:field,area,single,multiple",
+            'choice_number' => "nullable|required_if:type,single|required_if:type,multiple|numeric|min:0",
+            'id' => "required|exists:questions,id",
+
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors())->withInput();
+        }
+
+        $question = Question::find($request->id);
+        $question->title = $request->title;
+        $question->type = $request->type;
+        $question->choice_number = $request->choice_number;
+        $question->save();
+
+
+        if ($question->type == "field" || $question->type == "area") {
+            return redirect()->route('question.index')->with('success', 'Question Updated Successfully');
+        } else {
+            return Redirect::route('question.body' , $question->id);
+        }
+
+    }
+
+
+
+
+
+
+
 
 
     public function createBody($id)
@@ -74,13 +124,13 @@ class QuestionController extends Controller
             'body' => json_encode($request->body)
         ]);
 
-
-        return redirect()->route('question.index')->with('success', 'Question Created Successfully');;
+        return redirect()->route('question.index')->with('success', 'Question Body Update Successfully');
     }
 
     public function show($id)
     {
-        # code...
+        $question = Question::find($id);
+        return view('questions.show', compact('question'));
     }
 
 

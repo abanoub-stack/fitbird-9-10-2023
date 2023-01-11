@@ -12,7 +12,7 @@
                 {{-- Page Title --}}
                 <div class="row">
                     <div class="col-12">
-                        <h3>Add Question Body</h3>
+                        <h3>Add New Questions (2)</h3>
 
                     </div>
                 </div>
@@ -49,24 +49,14 @@
                         @if ($question->type == "field")
                             <input type="text" value="{{old('body')}}" name="body"  class="form-control" placeholder="Question Body">
                         @elseif ($question->type == "area")
-                            <textarea
-                                type="text" name="body"  class="form-control" placeholder="Question Body"
-                                >@if(old('body') != null){{old('body')}}
-                                @else{{$question->body}}@endif
-                            </textarea>
+                            <textarea type="text" name="body"  class="form-control" placeholder="Question Body">{{old('body')}}</textarea>
 
                         {{-- Will take array --}}
                         @elseif ($question->type == "single" || $question->type == "multiple")
 
                         @for($i = 1; $i <= $question->choice_number; $i++)
                             <div class="mb-3">
-                                <input type="text"
-                                @if(old('body') != null)
-                                    value="{{old('body')}}"
-                                @else
-                                    value="{{json_decode($question->body)[$i - 1]}}"
-                                @endif
-                                 name="body[]"  class="form-control" placeholder="Question Choice {{$i}} ">
+                                <input type="text" value="{{old('body')}}" name="body[]"  class="form-control" placeholder="Question Choice {{$i}} ">
                             </div>
                             @endfor
 
