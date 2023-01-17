@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\AnswerController;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\api\ExerciseController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\api\v1\RegisterController as V1RegisterController;
 use App\Http\Controllers\api\v1\StripePaymentController as V1StripePaymentController;
 use App\Http\Controllers\api\v1\TokanDataController as V1TokanDataController;
 use App\Http\Controllers\CancelRegistrationController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +33,22 @@ Route::middleware(['api-guest'])->group(function () {
 
 # AUTH #
 Route::middleware(['api-auth'])->group(function () {
+
+
+    //Questions Routes
+    Route::get('questions/getAll', [QuestionController::class, 'getAll']);
+
+    //Questions Routes
+
+    // Answers Routes Start
+
+    Route::post('answers/save', [AnswerController::class, 'save']);
+
+    // Answers Routes Ends
+
+
+
+
     // logout
     Route::get('logout', [AuthController::class, 'logout']);
     # INDEX

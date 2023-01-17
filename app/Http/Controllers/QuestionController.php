@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuestionResource;
+use App\Http\Resources\QuestionResourceCollection;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -91,14 +93,6 @@ class QuestionController extends Controller
 
     }
 
-
-
-
-
-
-
-
-
     public function createBody($id)
     {
         $question = Question::find($id);
@@ -139,6 +133,20 @@ class QuestionController extends Controller
         $question = Question::find($id);
         $question->delete();
         return back()->with('success', 'Question Deleted Successfully');
+    }
+
+
+
+    //API Functions
+
+    public function getAll()
+    {
+        $questions = Question::all();
+        $questions = new QuestionResourceCollection($questions);
+        return response()->json([
+            'success' => true ,
+            'data' => $questions
+        ] , 200);
     }
 
 }

@@ -47,4 +47,14 @@ class Customer extends Model
         return $this->belongsTo(Creditcard::class);
     }
 
+    /**
+     * Get all of the answers for the Customer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class , 'user_id');
+    }
+
 }
