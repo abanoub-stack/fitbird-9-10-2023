@@ -34,11 +34,11 @@ CREATE TABLE IF NOT EXISTS `answers` (
 -- Dumping data for table stack_fitbird.answers: ~2 rows (approximately)
 /*!40000 ALTER TABLE `answers` DISABLE KEYS */;
 INSERT IGNORE INTO `answers` (`id`, `question_id`, `user_id`, `body`, `created_at`, `updated_at`) VALUES
-	(1, 24, 149, '["home"]', '2023-01-11 11:50:05', '2023-01-17 08:42:49'),
-	(7, 26, 149, '["Male"]', '2023-01-15 10:29:09', '2023-01-17 08:45:48'),
-	(8, 25, 149, '["23"]', '2023-01-15 10:36:18', '2023-01-17 08:45:21'),
-	(9, 27, 149, '["home", "contact us"]', '2023-01-17 08:46:29', '2023-01-17 08:46:29'),
-	(10, 28, 149, '["By doing exercises every day"]', '2023-01-17 09:06:49', '2023-01-17 09:06:49');
+	(1, 24, 148, '["home"]', '2023-01-11 11:50:05', '2023-01-17 08:42:49'),
+	(7, 26, 148, '["Male"]', '2023-01-15 10:29:09', '2023-01-17 08:45:48'),
+	(8, 25, 148, '["23"]', '2023-01-15 10:36:18', '2023-01-17 08:45:21'),
+	(9, 27, 148, '["home", "contact us"]', '2023-01-17 08:46:29', '2023-01-17 08:46:29'),
+	(10, 28, 148, '["By doing exercises every day"]', '2023-01-17 09:06:49', '2023-01-17 09:06:49');
 /*!40000 ALTER TABLE `answers` ENABLE KEYS */;
 
 -- Dumping structure for table stack_fitbird.questions

@@ -71,7 +71,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">User</th>
                                         <th scope="col">Answer</th>
-                                        <th scope="col">Actions</th>
+                                        {{-- <th scope="col">Actions</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody id="tableData">
@@ -94,7 +94,7 @@
 
                                             </td>
 
-                                            <td>
+                                            {{-- <td>
                                             <a href="{{ route('question.edit', $answer->id) }}" class="btn-lg text-dark">
                                                 <i class="fas fa-pen-square"></i>
                                             </a>
@@ -104,7 +104,7 @@
                                             <a href="{{ route('question.show', $answer->id) }}" class="btn-lg text-primary">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                     {{-- End Fetch Data --}}
