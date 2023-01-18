@@ -1,4 +1,6 @@
-/public/dashboard
+/public/dashboard/img
+/public/dashboard/sccs
+/public/dashboard/vendor
 /node_modules
 /public/build
 /public/hot

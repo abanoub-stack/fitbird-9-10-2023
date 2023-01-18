@@ -16,6 +16,10 @@
                             </thead>
                             <tbody>
                                 <tr>
+                                    <th scope="row">Email</th>
+                                    <td>{{ $user->email }}</td>
+                                </tr>
+                                <tr>
                                     <th scope="row">Name</th>
                                     <td>{{ $user->name }}</td>
                                 </tr>
