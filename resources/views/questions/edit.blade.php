@@ -37,6 +37,19 @@
                                 @enderror
                             </div>
 
+
+                            <div class="mb-3">
+                                <label for="" class="form-label">Description</label>
+                                <input type="text" value="{{$question->description}}" name="description"  class="form-control" placeholder="Question description">
+                                <small class="text-muted">You Can Left it Empty</small>
+                                @error('description')
+                                    <span class="invalid-feedback text-danger" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+
                             <div class="mb-3">
                                 <label for="" class="form-label">Type</label>
                                 <select name="type" class="form-control">

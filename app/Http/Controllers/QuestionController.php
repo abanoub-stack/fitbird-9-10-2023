@@ -39,11 +39,13 @@ class QuestionController extends Controller
         }
 
 
-        $question = Question::create([
-            'title' => $request->title,
-            'type' => $request->type,
-            'choice_number' => $request->choice_number,
-        ]);
+        $question = new Question();
+        $question->title = $request->title;
+        $question->type = $request->type;
+        $question->description = $request->description;
+        $question->choice_number = $request->choice_number;
+        $question->save();
+
 
         if ($question->type == "field" || $question->type == "area") {
             return redirect()->route('question.index')->with('success', 'Question Created Successfully');
@@ -82,6 +84,7 @@ class QuestionController extends Controller
         $question->title = $request->title;
         $question->type = $request->type;
         $question->choice_number = $request->choice_number;
+        $question->description = $request->description;
         $question->save();
 
 

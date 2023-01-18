@@ -3,6 +3,7 @@
     Questions
 @endsection
 @section('main')
+
     <div class="container-fluid  py-5">
         <div class="row">
 
@@ -24,13 +25,22 @@
 
                         <form action="{{route('question.store')}}" method="post">
                         @csrf
-
-
                             <div class="mb-3">
                                 <label for="" class="form-label">Title</label>
-                                <input type="text" value="{{old('title')}}" name="title"  class="form-control" placeholder="Question Title">
-                                <small class="text-muted">Enter Question Title</small>
+                                <input type="text" required value="{{old('title')}}" name="title"  class="form-control" placeholder="Question Title">
+                                <small class="text-muted">Enter Question Title (Required)</small>
                                 @error('title')
+                                    <span class="invalid-feedback text-danger" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="" class="form-label">Description</label>
+                                <input type="text" value="{{old('description')}}" name="description"  class="form-control" placeholder="Question Description">
+                                <small class="text-muted">You Can Left it Empty</small>
+                                @error('description')
                                     <span class="invalid-feedback text-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
