@@ -1,63 +1,107 @@
-@extends('layouts.main')
+@extends('layouts.layout')
 @section('title')
     Main
 @endsection
-@section('main')
-    <div class="container-fluid py-5">
-        <h3 class="text-center"><span class="text-primary">D</span>ash<span class="text-danger">B</span>oar<span
-                class="text-warning">d</span></h3>
-        <br>
-        <br>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-info mb-3">
-                    <div class="card-header">Total Exercise Category</div>
-                    <div class="card-body">
-                        <div class="card-text d-flex justify-content-between align-items-center">
-                            <h5>{{ DB::table('categories')->count() }}</h5>
-                            <a href="{{ url('/categories', []) }}" class="btn btn-light">Show</a>
+@section('content')
+
+@section('head-title')
+    Dashboard
+@endsection
+<style>
+    .index-links , .index-links div , .index-links:hover
+    {
+        text-decoration: none;
+    }
+</style>
+<!-- Content Row -->
+<div class="row">
+
+            <!-- Categoires Card  -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <a class="index-links" href="{{ url('/categories', []) }}">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Exercise Category
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ DB::table('categories')->count() }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
 
-            <div class="col-md-4">
-                <div class="card text-white mb-3" style="background-color: tomato">
-                    <div class="card-header">Total Exercise Item</div>
-                    <div class="card-body">
-                        <div class="card-text d-flex justify-content-between align-items-center">
-                            <h5>{{ DB::table('exercises')->count() }}</h5>
-                            <a href="{{ url('exercises', []) }}" class="btn btn-light">Show</a>
+            <!-- Total Exercise Item Card  -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <a class="index-links" href="{{ url('/exercises', []) }}">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Total Exercise Item
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ DB::table('exercises')->count() }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
 
-            <div class="col-md-4">
-                <div class="card text-white bg-warning mb-3">
-                    <div class="card-header">Total Push Sent</div>
-                    <div class="card-body">
-                        <div class="card-text d-flex justify-content-between align-items-center">
-                            <h5>{{ DB::table('notifications')->count() }}</h5>
-                            <a href="{{ url('send-notifications', []) }}" class="btn btn-light">Show</a>
+
+            <!-- Total Push Sent Card  -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <a class="index-links" href="{{ url('/send-notifications', []) }}">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Total Push Sent
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ DB::table('notifications')->count() }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
 
-            <div class="col-md-4">
-                <div class="card text-white bg-success mb-3">
-                    <div class="card-header">Total App Users</div>
-                    <div class="card-body">
-                        <div class="card-text d-flex justify-content-between align-items-center">
-                            <h5>{{ DB::table('customers')->count() }}</h5>
-                            <a href="{{ url('users', []) }}" class="btn btn-light">Show</a>
+            <!-- Total App Users Card  -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <a class="index-links" href="{{ url('/users', []) }}">
+                    <div class="card border-left-secondary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                        Total App Users
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ DB::table('customers')->count() }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
 
+</div>
 
-        </div>
-    </div>
+
 @endsection

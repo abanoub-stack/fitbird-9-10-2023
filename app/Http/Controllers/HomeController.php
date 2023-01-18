@@ -15,6 +15,12 @@ class HomeController extends Controller
         return view('index');
     }
 
+
+    public function layout()
+    {
+        return view('index2');
+    }
+
     public function profile()
     {
         $admin = Auth::user();

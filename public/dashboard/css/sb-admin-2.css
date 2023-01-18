@@ -10862,9 +10862,10 @@ a:focus {
 
 
 .bg-login-image {
-  background: url("https://images.everydayhealth.com/images/how-to-train-if-you-have-an-ectomorph-body-type-722x406.jpg") !important;
+  background: url("../images/login.jpg") ;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
+  background-repeat:no-repeat;
 }
 
 .bg-register-image {

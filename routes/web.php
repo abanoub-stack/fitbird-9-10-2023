@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
 
     // index
     Route::get('/', [HomeController::class, 'index']);
+    Route::get('/layout', [HomeController::class, 'layout']);
     // profile
     Route::get('profile', [HomeController::class, 'profile']);
     Route::post('profile', [HomeController::class, 'profilePost']);

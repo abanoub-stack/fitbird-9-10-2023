@@ -35,7 +35,7 @@ class AuthController extends Controller
             'email' => 'required|email|max:50',
             'password' => 'required|string',
         ]);
-        $isCorrect = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+        $isCorrect = Auth::attempt(['email' => $request->email, 'password' => $request->password] , $request->remember);
         if (!$isCorrect) {
             return back();
         } else {
