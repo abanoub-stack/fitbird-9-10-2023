@@ -22,6 +22,9 @@
     <link href="{{asset('dashboard/css/sb-admin-2.min.css')}}" rel="stylesheet">
     <link href="{{asset('dashboard/css/sb-admin-2.css')}}" rel="stylesheet">
 
+
+    @yield('css')
+
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free-5.0.1/css/fontawesome-all.css') }}">
 
 

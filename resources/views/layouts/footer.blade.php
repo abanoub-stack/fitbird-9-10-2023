@@ -1,12 +1,4 @@
 
-
-
-
-
-
-
-
-
     </div>
     <!-- End of Page Wrapper -->
 
@@ -48,11 +40,11 @@
     <script src="{{asset('dashboard/js/sb-admin-2.min.js')}}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{asset('dashboard/vendor/chart.js/Chart.min.js')}}"></script>
+    {{-- <script src="{{asset('dashboard/vendor/chart.js/Chart.min.js')}}"></script> --}}
 
     <!-- Page level custom scripts -->
-    <script src="{{asset('dashboard/js/demo/chart-area-demo.js')}}"></script>
-    <script src="{{asset('dashboard/js/demo/chart-pie-demo.js')}}"></script>
+    {{-- <script src="{{asset('dashboard/js/demo/chart-area-demo.js')}}"></script>
+    <script src="{{asset('dashboard/js/demo/chart-pie-demo.js')}}"></script> --}}
 
 </body>
 
