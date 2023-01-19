@@ -21,6 +21,7 @@
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> --}}
                     </div>
 
+                    @include('layouts.errors')
 
                     @yield('content')
                 </div>

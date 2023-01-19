@@ -1,24 +1,41 @@
-@extends('layouts.main')
+@extends('layouts.layout')
 @section('title')
-    Exercise {{ $exercise->name }} Steps
+Exercise {{ $exercise->name }} Steps
 @endsection
-@section('main')
-    <div class="container text-center py-5">
-        <div class="row">
+@section('css')
+<!-- Custom styles for this page -->
+<link href="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+@endsection
 
-            <div class="col-md-10 offset-md-1">
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3>Exercise {{ $exercise->name }} Steps</h3>
-                    <a href="{{ url('add-exercise-step', $exercise->id) }}" class="btn btn-success">
-                        Add Step
-                    </a>
-                </div>
+@section('content')
 
-                <table class="table table-hover">
+@section('head-title')
+Exercises Steps
+@endsection
+
+
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Exercise <span class="font-weight-bolder">{{ $exercise->name }}</span> Steps</h6>
+        <div class="float-right">
+            <a href="{{ url('add-exercise-step', $exercise->id) }}" class="btn btn-success">
+                Add Step
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+
+
+
+        {{-- Table --}}
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th scope="col"></th>
+                            <th scope="col">#</th>
                             <th scope="col">Steps</th>
                             <th scope="col">Actions</th>
                         </tr>
@@ -40,11 +57,21 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-end mt-5">
-                    <a href="{{ url('exercises', []) }}" class="btn btn-dark">Back</a>
-                </div>
             </div>
+        {{-- Table --}}
 
-        </div>
     </div>
+</div>
+
+
+
 @endsection
+
+<!-- Page level plugins -->
+<script src="{{asset('dashboard/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{{asset('dashboard/js/demo/datatables-demo.js')}}"></script>
+
+

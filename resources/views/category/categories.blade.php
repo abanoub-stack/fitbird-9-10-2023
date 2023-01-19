@@ -53,7 +53,7 @@ All Categories
                 @endif
             </div>
         {{-- Alerts --}}
-        
+
 
 
 
@@ -80,18 +80,35 @@ All Categories
                             <tr>
                                 <th scope="row">{{ $i + 1 }}</th>
                                 <td>{{ $cat->name }}</td>
-                                <td>{{ $cat->description }}</td>
+                                <td style="width: 30%">{{ $cat->description }}</td>
                                 <td>{{ $cat->level }}</td>
-                                <td><a href="{{ asset('uploads/' . $cat->icon) }}" target="_blank"><img
-                                            src="{{ asset('uploads/' . $cat->icon) }}" width="150px" height="90px"
+                                <td><a class="m-auto" href="{{ asset('uploads/' . $cat->icon) }}" target="_blank"><img class="m-auto"
+                                            src="{{ asset('uploads/' . $cat->icon) }}" style="height: 90px ; object-fit: contain"
                                             alt=""></a></td>
-                                <td>
+                                {{-- <td>
                                     <a class="btn btn-sm btn-info" href="{{ url('edit-category', $cat->id) }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a class="btn btn-sm btn-danger" href="{{ url('delete-category', $cat->id) }}">
                                         <i class="fas fa-trash"></i>
                                     </a>
+                                </td> --}}
+
+                                <td>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <a href="{{ url('edit-category', $cat->id) }}" class="btn text-primary">
+                                                <i class="fa fa-pen"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a href="{{ url('delete-category', $cat->id) }}" class="btn text-danger">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+
                                 </td>
                             </tr>
                         @endforeach
@@ -106,7 +123,7 @@ All Categories
 
 
 @endsection
-    
+
 <!-- Page level plugins -->
 <script src="{{asset('dashboard/vendor/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
