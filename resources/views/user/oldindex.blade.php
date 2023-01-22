@@ -1,33 +1,21 @@
-@extends('layouts.layout')
+@extends('layouts.main')
 @section('title')
-Users
+    Users
 @endsection
-@section('css')
-<!-- Custom styles for this page -->
-@endsection
+@section('main')
+    <div class="container-fluid text-center py-5">
+        <div class="row">
 
+            <div class="col-md-10 offset-md-1">
 
-@section('content')
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>All Users</h3>
+                </div>
 
-@section('head-title')
-All Users
-@endsection
-
-
-
-<!-- DataTales Example -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
-    </div>
-    <div class="card-body">
-
-        {{-- Table --}}
-            <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col"></th>
                             <th scope="col">Email</th>
                             <th scope="col">Name</th>
                             <th scope="col">Phone</th>
@@ -65,28 +53,12 @@ All Users
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="11"><div class="d-flex justify-content-center">{{ $users->links() }}</div></th>
-                        </tr>
-                    </tfoot>
-
                 </table>
             </div>
-        {{-- Table --}}
 
+        </div>
     </div>
-</div>
-
-
-
+    <div class="d-flex justify-content-center">
+        {{ $users->links() }}
+    </div>
 @endsection
-
-<!-- Page level plugins -->
-<script src="{{asset('dashboard/vendor/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
-
-<!-- Page level custom scripts -->
-<script src="{{asset('dashboard/js/demo/datatables-demo.js')}}"></script>
-
-

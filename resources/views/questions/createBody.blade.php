@@ -1,24 +1,13 @@
-@extends('layouts.main')
+@extends('layouts.layout')
 @section('title')
     Questions
 @endsection
-@section('main')
-    <div class="container-fluid  py-5">
+@section('content')
+@section('head-title')
+Add Question Body
+@endsection
         <div class="row">
-
             <div class="col-md-10 offset-md-1">
-
-
-                {{-- Page Title --}}
-                <div class="row">
-                    <div class="col-12">
-                        <h3>Add Question Body</h3>
-
-                    </div>
-                </div>
-                {{-- Page Title --}}
-
-
                 <div class="row">
                     <div class="col-lg-6 m-auto">
 
@@ -46,42 +35,40 @@
 
                         <div class="mb-3">
                         <label for="" class="form-label">Body</label>
-                        @if ($question->type == "field")
-                            <input type="text" value="{{old('body')}}" name="body"  class="form-control" placeholder="Question Body">
-                        @elseif ($question->type == "area")
-                            <textarea
-                                type="text" name="body"  class="form-control" placeholder="Question Body"
-                                >@if(old('body') != null){{old('body')}}
-                                @else{{$question->body}}@endif
-                            </textarea>
 
-                        {{-- Will take array --}}
-                        @elseif ($question->type == "single" || $question->type == "multiple")
+                                @if($question->type == "field" || $question->type == "area")
+                                    <div>
+                                        No Body For This Type Of Questions
+                                    </div>
 
-                        @for($i = 1; $i <= $question->choice_number; $i++)
-                            <div class="mb-3">
-                                <input type="text"
-                                @if(old('body') != null)
-                                    value="{{old('body')}}"
-                                @else
-                                    value="{{json_decode($question->body)[$i - 1]}}"
+                                {{-- Will take array --}}
+                                @elseif ($question->type == "single" || $question->type == "multiple")
+                                        @for($i = 1; $i <= $question->choice_number; $i++)
+                                            <div class="mb-3">
+                                                <input type="text"
+                                                    @if(isset(json_decode($question->body)[$i - 1]))
+                                                        value="{{json_decode($question->body)[$i - 1]}}"
+                                                    @else
+                                                        value = ""
+                                                    @endif
+                                                    name="body[]" required class="form-control" placeholder="Question Choice {{$i}} ">
+                                            </div>
+                                        @endfor
                                 @endif
-                                 name="body[]"  class="form-control" placeholder="Question Choice {{$i}} ">
-                            </div>
-                            @endfor
 
 
-                        @endif
 
-                        <small class="text-muted">Enter Question body</small>
-                        @error('body')
-                            <span class="invalid-feedback text-danger" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+
+
+                            <small class="text-muted">Enter Question body</small>
+                            @error('body')
+                                <span class="invalid-feedback text-danger" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Update Body</button>
+                        <button type="submit" class="btn btn-primary float-lg-right">Update Body</button>
 
                         </form>
 
@@ -92,5 +79,4 @@
             </div>
 
         </div>
-    </div>
 @endsection

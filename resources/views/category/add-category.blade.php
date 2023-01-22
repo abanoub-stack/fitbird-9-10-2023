@@ -5,7 +5,7 @@ Add Category
 @section('content')
 
 @section('head-title')
-Categories
+Category
 @endsection
 
 <!-- Outer Row -->

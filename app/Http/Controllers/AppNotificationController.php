@@ -8,7 +8,7 @@ class AppNotificationController extends Controller
 {
     public function allNotifications()
     {
-        $notifications = CustomerNotification::orderBy('id', 'desc')->paginate(20);
+        $notifications = CustomerNotification::orderBy('id', 'desc')->paginate(10);
         return view('appNotification.notifications', [
             'notifications' => $notifications,
         ]);

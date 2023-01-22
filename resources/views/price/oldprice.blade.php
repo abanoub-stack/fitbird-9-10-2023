@@ -1,14 +1,12 @@
-@extends('layouts.layout')
+@extends('layouts.main')
 @section('title')
- Subscription Price
+    Subscription Price
 @endsection
-@section('content')
-
-@section('head-title')
- Subscription Price
-@endsection
+@section('main')
+    <div class="container-fluid py-5">
         <div class="row">
             <div class="col-md-6 offset-md-3">
+                <h3 class="mb-3">Subscription Price</h3>
                 <div class="card">
                     <div class="card-body p-5">
                         @include('layouts.errors')
@@ -43,4 +41,5 @@
                 </div>
             </div>
         </div>
+    </div>
 @endsection

@@ -1,17 +1,9 @@
-@extends('layouts.layout')
+@extends('layouts.main')
 @section('title')
-Send Notifications
+    Send Notification
 @endsection
-@section('css')
-<!-- Custom styles for this page -->
-@endsection
-
-
-@section('content')
-
-@section('head-title')
-All Notifications
-@endsection
+@section('main')
+    <div class="container-fluid text-center py-5">
         <div class="row">
 
             <div class="col-md-10 offset-md-1">
@@ -24,7 +16,7 @@ All Notifications
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col"></th>
                             <th scope="col">Message</th>
                         </tr>
                     </thead>
@@ -36,12 +28,11 @@ All Notifications
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="2"><div class="d-flex justify-content-center">{{ $notifications->links() }}</div></th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        {{ $notifications->links() }}
+    </div>
 @endsection

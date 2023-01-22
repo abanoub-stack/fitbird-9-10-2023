@@ -1,34 +1,26 @@
-@extends('layouts.layout')
+@extends('layouts.main')
 @section('title')
-Premium Users
+    Premium Users
 @endsection
-@section('css')
-<!-- Custom styles for this page -->
-<link href="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-@endsection
+@section('main')
+    <div class="container-fluid text-center py-5">
+        <div class="row">
 
+            <div class="col-md-10 offset-md-1">
 
-@section('content')
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>Premium Users <span
+                            class="bg-secondaty">({{ DB::table('customers')->where('is_subscribed', '=', '1')->count() }})</span>
+                    </h3>
+                    <a href="{{ url('/users/premium/assign', []) }}" class="text-light">
+                        <button class="btn btn-success">Assign Subscription</button>
+                    </a>
+                </div>
 
-@section('head-title')
-Premium Users
-@endsection
-
-
-
-<!-- DataTales Example -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">All Premium Users</h6>
-    </div>
-    <div class="card-body">
-
-        {{-- Table --}}
-            <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover text-center">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col"></th>
                             <th scope="col">Name</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Gender</th>
@@ -41,7 +33,7 @@ Premium Users
                             <th>Expires At</th>
                             <th>Days Remaining</th>
                             <th>Months Remaining</th>
-                            <th scope="col" style="min-width: 200px !important">Actions</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,32 +66,23 @@ Premium Users
                                 <td>{{ $remaining / 86400 }}</td>
 
                                 <td>{{ floor($remaining / 2.628e6) }}</td>
-                                <td >
-                                    <a class="btn btn-sm btn-circle  btn-primary" href="{{ url('user', $user->id) }}">
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="{{ url('user', $user->id) }}">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-sm btn-circle btn-warning" href="{{ url('users/premium/user', $user->id) }}">
+                                    <a class="btn btn-sm btn-warning" href="{{ url('users/premium/user', $user->id) }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="14"><div class="d-flex justify-content-center">{{ $users->links() }}</div></th>
-                        </tr>
-                    </tfoot>
-
                 </table>
             </div>
-        {{-- Table --}}
 
+        </div>
     </div>
-</div>
-
-
-
+    <div class="d-flex justify-content-center">
+        {{ $users->links() }}
+    </div>
 @endsection
-
-

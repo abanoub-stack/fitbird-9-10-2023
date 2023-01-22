@@ -1,12 +1,19 @@
-@extends('layouts.main')
+@extends('layouts.layout')
 @section('title')
-    IOS Key
+IOS Key
 @endsection
-@section('main')
-    <div class="container-fluid py-5">
+@section('css')
+<!-- Custom styles for this page -->
+@endsection
+
+
+@section('content')
+
+@section('head-title')
+IOS Key
+@endsection
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <h3 class="mb-3">IOS Key</h3>
                 <div class="card">
                     <div class="card-body p-5">
                         @include('layouts.errors')
@@ -25,5 +32,4 @@
                 </div>
             </div>
         </div>
-    </div>
 @endsection

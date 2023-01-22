@@ -1,21 +1,13 @@
-@extends('layouts.layout')
+@extends('layouts.main')
 @section('title')
-Premium Users
+    Show Premium User
 @endsection
-@section('css')
-<!-- Custom styles for this page -->
-@endsection
-
-
-@section('content')
-
-@section('head-title')
-Show Premium User Subscription : {{ $user->name }}
-@endsection
-
+@section('main')
+    <div class="container-fluid text-capitalize py-5">
         <div class="row">
+
             <div class="col-md-6 offset-md-3">
-                <h3 class="mb-3"></h3>
+                <h3 class="mb-3">Show Premium User Subscription : {{ $user->name }}</h3>
                 <div class="card">
                     <div class="card-body p-5">
                         <table class="table table-bordered">
@@ -101,14 +93,15 @@ Show Premium User Subscription : {{ $user->name }}
                                     value="{{ $user->subscription_finished_at }}" id="inp3">
                             </div>
                             <div class="d-flex justify-content-center">
-                                <button class="btn btn-info mx-2">Update</button>
-                                <a class="btn btn-dark" href="{{ url('users/premium', []) }}">Back</a>
+                                <button class="btn btn-info my-4">Update</button>
                             </div>
                         </form>
 
+                        <a class="btn btn-dark" href="{{ url('users/premium', []) }}">Back</a>
                     </div>
                 </div>
             </div>
 
         </div>
+    </div>
 @endsection
