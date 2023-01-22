@@ -33,9 +33,9 @@ All Users
                             <th scope="col">Phone</th>
                             <th scope="col">Gender</th>
                             <th scope="col">Workout Intensity</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Height</th>
-                            <th scope="col">Exercise Days</th>
+                            {{-- <th scope="col">Age</th> --}}
+                            {{-- <th scope="col">Height</th> --}}
+                            {{-- <th scope="col">Exercise Days</th> --}}
                             <th scope="col">Payment Status</th>
                             <th scope="col">Actions</th>
                         </tr>
@@ -49,17 +49,25 @@ All Users
                                 <td>{{ $user->phone }}</td>
                                 <td>{{ $user->gender }}</td>
                                 <td>{{ $user->workout_intensity }}</td>
-                                <td>{{ $user->age }}</td>
-                                <td>{{ $user->height }}</td>
-                                <td>{{ $user->exercise_days }}</td>
+                                {{-- <td>{{ $user->age }}</td> --}}
+                                {{-- <td>{{ $user->height }}</td> --}}
+                                {{-- <td>{{ $user->exercise_days }}</td> --}}
                                 @if ($user->is_subscribed == '1')
                                     <td class="text-success"><strong>{{ 'User Subscribed' }}</strong></td>
                                 @else
                                     <td class="text-danger"><strong>{{ 'User Not Subscribed' }}</strong></td>
                                 @endif
                                 <td>
-                                    <a class="btn btn-sm btn-primary" href="{{ url('user', $user->id) }}">
-                                        <i class="fas fa-eye"></i>
+                                    <a class="text-primary mx-1" href="{{ url('user', $user->id) }}">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+
+                                    <a class="text-dark mx-1" href="{{ url('edit-user', $user->id) }}">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+
+                                    <a class="text-danger mx-1" href="{{ url('delete-user', $user->id) }}">
+                                        <i class="fa fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>

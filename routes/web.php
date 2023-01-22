@@ -128,6 +128,14 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [UserController::class, 'index']);
     // show User
     Route::get('user/{uId}', [UserController::class, 'user']);
+    // delete user
+    Route::get('delete-user/{uId}', [UserController::class, 'delete']);
+    // edit user
+    Route::get('edit-user/{uId}', [UserController::class, 'edit']);
+    Route::post('update-user', [UserController::class, 'update']);
+
+
+
 
     # Notification
     // All Notifications

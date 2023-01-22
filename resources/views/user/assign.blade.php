@@ -1,9 +1,18 @@
-@extends('layouts.main')
+@extends('layouts.layout')
 @section('title')
-    Assign Subscription To User
+Assign Subscription To User
 @endsection
-@section('main')
-    <div class="container-fluid py-5">
+@section('css')
+<!-- Custom styles for this page -->
+<link href="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+@endsection
+
+
+@section('content')
+
+@section('head-title')
+Assign Subscription To User
+@endsection
         <div class="row">
 
             <div class="col-md-6 offset-md-3">
@@ -42,5 +51,4 @@
                 </div>
             </div>
         </div>
-    </div>
 @endsection

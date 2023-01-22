@@ -20,6 +20,12 @@ Premium Users
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">All Premium Users</h6>
+
+        <div class="float-right">
+            <a href="{{ url('/users/premium/assign', []) }}"  class="btn btn-success">
+                Assign Subscription
+            </a>
+        </div>
     </div>
     <div class="card-body">
 

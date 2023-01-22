@@ -6,6 +6,8 @@ use App\Models\Customer;
 use App\Models\HistoryPayment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -107,6 +109,62 @@ class UserController extends Controller
             'subscription_finished_at' => $finishedAt,
         ]);
         return redirect(url('/users/premium'));
+    }
+
+
+
+    public function delete($uId)
+    {
+        $user = Customer::findOrFail($uId);
+        $user->delete();
+        return back()->with('success', "User deleted Successfully");
+    }
+
+
+
+    public function edit($uId)
+    {
+        $user = Customer::findOrFail($uId);
+        return view('user.edit', [
+            'user' => $user,
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+
+        $user = Customer::findOrFail($request->customer_id);
+
+        $validator = Validator::make($request->all(), [
+            'customer_id' => 'exists:customers,id|required',
+            'email' => 'email|required',
+            'name' => 'required|string',
+            'phone' => 'required|min:11',
+            'gender' => 'required|in:Male,Female,male,female',
+            'workout_intensity' => 'required',
+            'age' => 'required|min:0|integer',
+            'height' => 'required|min:0|numeric',
+            'exercise_days' => 'required|string',
+            'password' => 'nullable|min:6',
+            'password_confirmation' => 'nullable|min:6|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors())->withInput();
+        }
+
+        $data = $request->except(['password', 'password_confirmation' , '_token']);
+        $user->update($data);
+
+        if (isset($request->password)) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return back()->with('success' , 'User Informations Updated Successfully With The New Password');
+        }
+
+
+
+        return back()->with('success' , 'User Informations Updated Successfully With Same Password');
     }
 
 }
