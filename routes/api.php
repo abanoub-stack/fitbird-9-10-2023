@@ -15,6 +15,7 @@ use App\Http\Controllers\api\v1\RegisterController as V1RegisterController;
 use App\Http\Controllers\api\v1\StripePaymentController as V1StripePaymentController;
 use App\Http\Controllers\api\v1\TokanDataController as V1TokanDataController;
 use App\Http\Controllers\CancelRegistrationController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
@@ -35,16 +36,19 @@ Route::middleware(['api-guest'])->group(function () {
 Route::middleware(['api-auth'])->group(function () {
 
 
-    //Questions Routes
+    //Questions Routes Start
     Route::get('questions/getAll', [QuestionController::class, 'getAll']);
-
-    //Questions Routes
+    //Questions Routes End
 
     // Answers Routes Start
-
     Route::post('answers/save', [AnswerController::class, 'save']);
-
     // Answers Routes Ends
+
+
+    // Progress Routes Start
+    Route::post('progress/get', [ProgressController::class, 'getByDate']);
+    Route::post('progress/save', [ProgressController::class, 'save']);
+    // Progress Routes Ends
 
 
 

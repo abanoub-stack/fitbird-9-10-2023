@@ -57,4 +57,15 @@ class Customer extends Model
         return $this->hasMany(Answer::class , 'user_id');
     }
 
+
+    /**
+     * Get all of the progresses for the Customer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function progresses()
+    {
+        return $this->hasMany(Progress::class , 'customer_id');
+    }
+
 }

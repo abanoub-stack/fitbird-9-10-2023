@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('progress', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('customer_id')->constrained('customers','id')->onDelete('cascade');
+            $table->timestamp('progress_date');
+            $table->decimal('calories', 8, 4);
+            $table->integer('workouts');
+            $table->integer('seconds');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('progress');
+    }
+};
