@@ -120,12 +120,14 @@
             </div>
 
 
+            @if (auth()->user()->role == 'SUPER_ADMIN')
             <!-- Nav Item - Admins -->
             <li class="nav-item">
                 <a class="nav-link"  href="{{ url('/admins', []) }}">
                 <i class="fas fa-fw fa-lock"></i>
                 <span>Admins</span></a>
             </li>
+            @endif
 
 
             <!-- Nav Item - Notifications -->
@@ -150,6 +152,7 @@
                             <i class="fab fa-apple my-1"></i>
                                     IOS Notifications
                         </a>
+                    @if (auth()->user()->role == 'SUPER_ADMIN')
                         <a class="collapse-item" href="{{ url('/notifications', []) }}">
                             <i class="fa my-1 fa-lock"></i>
                                     Admins Notifications
@@ -158,6 +161,7 @@
                             <i class="fa my-1 fa-mobile"></i>
                                     Mobile App Notifications
                         </a>
+                    @endif
                     </div>
                 </div>
             </li>

@@ -10,7 +10,9 @@
                 {{-- @include('layouts.search') --}}
 
                 <!-- Topbar Navbar -->
+                <h6 class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"> Need Support ?  <a href="https://support.stackdeans.com" target="_blank" rel="noopener noreferrer"> Click</a></h6>
                 <ul class="navbar-nav ml-auto">
+
 
                     <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                     {{-- @include('layouts.search-xs') --}}

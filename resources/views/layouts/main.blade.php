@@ -152,6 +152,7 @@
             <strong>{{Session::get('success')}}</strong>
         </div>
     </div>
+    
     @endif
     @yield('main')
     @yield('js')

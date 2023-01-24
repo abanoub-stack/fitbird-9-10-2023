@@ -35,7 +35,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; FitBird 2023</span>
+                        <span>Copyright &copy; FitBird 2023 By  <a href="https://stackdeans.com/" target="_blank">StackDeans</a>  </span>
                     </div>
                 </div>
             </footer>

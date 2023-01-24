@@ -37,7 +37,7 @@ class AuthController extends Controller
         ]);
         $isCorrect = Auth::attempt(['email' => $request->email, 'password' => $request->password] , $request->remember);
         if (!$isCorrect) {
-            return back();
+            return back()->withErrors(['email' => trans('auth.failed')]);
         } else {
             AdminNotification::create([
                 'admin' => auth()->user()->name,

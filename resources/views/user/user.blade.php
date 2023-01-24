@@ -71,20 +71,20 @@ Show <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
 {{-- Chart  --}}
     <div class="row my-5">
         <div class="col-md-10 col-xs-12 m-auto">
-            <span class="text-capitalize font-weight-bolder" style="font-size: 20px"> {{$user->name}}'s </span> statistics
+            <span class="text-capitalize font-weight-bolder" style="font-size: 20px"> {{$user->name}}'s </span> Statistics
         </div>
         <div class="col-xl-10 col-lg-7 m-auto">
             <!-- Area Chart -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Description</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">{{$user->name}}'s Activity This Week.</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
                         <canvas id="myAreaChart"></canvas>
                     </div>
                     <hr>
-                    Description
+                    {{$user->name}}'s Activity This Week.
                     {{-- <code>/js/demo/chart-area-demo.js</code> file. --}}
                 </div>
             </div>

@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `progress` (
   CONSTRAINT `progress_customer_id_foreign` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table stack_fitbird.progress: ~20 rows (approximately)
+-- Dumping data for table stack_fitbird.progress: ~23 rows (approximately)
 /*!40000 ALTER TABLE `progress` DISABLE KEYS */;
 INSERT IGNORE INTO `progress` (`id`, `customer_id`, `progress_date`, `calories`, `workouts`, `seconds`, `created_at`, `updated_at`) VALUES
 	(1, 149, '2023-01-22 08:39:00', 500.5000, 10, 3600, '2023-01-23 08:39:00', '2023-01-23 08:39:00'),
