@@ -12,6 +12,7 @@ use App\Http\Controllers\NotifictaionController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PaymentHistoryController;
 use App\Http\Controllers\PriceController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UserController;
@@ -135,6 +136,9 @@ Route::middleware('auth')->group(function () {
     Route::post('update-user', [UserController::class, 'update']);
 
 
+    # Progress Reports
+    Route::any('progress-reports', [ProgressController::class, 'index'])->name('progress.index');
+    Route::get('progress-reports/{id}', [ProgressController::class, 'show'])->name('progress.show');
 
 
     # Notification

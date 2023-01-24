@@ -24,8 +24,14 @@ class Progress extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
-    public function setDateAttribute($value)
+    // public function setDateAttribute($value)
+    // {
+    //     $this->attributes['datetime'] = Carbon::createFromFormat('Y-m-d\TH:i:s', $value);
+    // }
+
+    public function getMinutes()
     {
-        $this->attributes['datetime'] = Carbon::createFromFormat('Y-m-d\TH:i:s', $value);
+        return $this->seconds/60;
     }
+
 }

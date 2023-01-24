@@ -72,6 +72,15 @@
 
 
 
+            <!-- Nav Item - Progress Reports -->
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ url('/progress-reports', []) }}">
+                    <i class="fas fa-chart-bar    "></i>
+                    <span>Progress Reports</span></a>
+            </li>
+
+
+
 
             <!-- Nav Item - MemberShip -->
             <li class="nav-item">

@@ -6,11 +6,260 @@ use App\Http\Resources\ProgressResource;
 use App\Models\Customer;
 use App\Models\Progress;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProgressController extends Controller
 {
+    //Web Functions
+    public function index(Request $request)
+    {
+        // dd($request->all());
+        if ($request->get('has_filter') == 1) {
+
+            if ($request->get('cal') != null)
+            {
+                $calories = $request->cal;
+
+                //Default
+                $reports = Progress::orderBy('progress_date' , 'asc')->get();
+                $now = Carbon::now()->setTimezone("GMT+2");
+                $current_day =  $now->day;
+                $current_week = $now->week;
+                $current_month = $now->month;
+                $current_year = $now->year;
+
+                //Request Info
+                $day = $request->day;
+                $week = $request->week;
+                $month = $request->month;
+
+                //Without Time Filter
+                    $reports = Progress::orderBy('progress_date' , 'asc')->get();
+                    $users_array = [];
+                    $users = Progress::orderBy('calories' , 'desc')->get();
+
+                    foreach($users as $user)
+                    {
+                        $user_report = Progress::where('customer_id', $user->customer_id)->sum('calories');
+
+                        if($user_report >= $calories)
+                        {
+                            $users_array[$user->user->name] = $user_report;
+                        }
+                    }
+
+
+                    $keys = array_keys($users_array);
+                    $values = array_values($users_array);
+
+                    $description = "Who lose more than <span class=\"font-weight-bolder text-info\">"
+                    .$calories ." </span> Calories.";
+
+
+
+
+                //Month
+                if ($request->month != null) {
+                    $reports = Progress::whereMonth('progress_date' , $request->month)->orderBy('progress_date' , 'asc')->get();
+
+                    $users_array = [];
+                    $users = Progress::orderBy('calories' , 'desc')->
+                    whereMonth('progress_date' , $request->month)->get();
+                    // dd($users);
+
+                    // dd($users);
+                    foreach($users as $user)
+                    {
+                        $user_report = Progress::where('customer_id', $user->customer_id)
+                        ->whereMonth('progress_date' , $request->month)
+                        ->sum('calories');
+
+                        if($user_report >= $calories)
+                        {
+                            $users_array[$user->user->name] = $user_report;
+                        }
+                    }
+
+
+                    $keys = array_keys($users_array);
+                    $values = array_values($users_array);
+
+                    $monthNum  = $request->month;
+                    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+                    $monthName = $dateObj->format('F'); // Full Name
+
+                    $description = "Who lose more than <span class=\"font-weight-bolder text-info\">"
+                    .$calories
+                    ." </span> Calories in <span class=\"font-weight-bolder text-info\">"
+                    .$monthName
+                    ."</span>";
+                }
+
+
+                //Day
+                if ($request->day != null) {
+
+                    $filter_string = "$request->day/$current_month/$current_year";
+                    $filter_date = Carbon::createFromFormat('d/m/Y', $filter_string)->format('Y-m-d');
+                    $reports = Progress::whereDate('progress_date' , $filter_date)->get();
+
+
+                    $users_array = [];
+                    $users = Progress::orderBy('calories' , 'desc')->
+                    whereDate('progress_date' , $filter_date)->get();
+
+                    // dd($users);
+                    foreach($users as $user)
+                    {
+                        $user_report = Progress::where('customer_id', $user->customer_id)
+                        ->whereDate('progress_date' , $filter_date)
+                        ->sum('calories');
+
+                        if($user_report >= $calories)
+                        {
+                            $users_array[$user->user->name] = $user_report;
+                        }
+                    }
+
+
+                    $keys = array_keys($users_array);
+                    $values = array_values($users_array);
+
+                    $description = "Who lose more than <span class=\"font-weight-bolder text-info\">"
+                                    .$calories
+                                    ." </span> Calories in <span class=\"font-weight-bolder text-info\">"
+                                    .$filter_string
+                                    ."</span>";
+
+
+
+                }
+            }
+
+            else
+            {
+                //Default
+                $reports = Progress::orderBy('progress_date' , 'asc')->get();
+                $now = Carbon::now()->setTimezone("GMT+2");
+                $current_day =  $now->day;
+                $current_week = $now->week;
+                $current_month = $now->month;
+                $current_year = $now->year;
+
+                //Request Info
+                $day = $request->day;
+                $week = $request->week;
+                $month = $request->month;
+
+                //Month
+                if ($request->month != null) {
+                    $reports = Progress::whereMonth('progress_date' , $request->month)->orderBy('progress_date' , 'asc')->get();
+
+                    $users_array = [];
+                    $users = Progress::orderBy('calories' , 'desc')->
+                    whereMonth('progress_date' , $request->month)->get();
+                    // dd($users);
+
+                    // dd($users);
+                    foreach($users as $user)
+                    {
+                        $user_report = Progress::where('customer_id', $user->customer_id)
+                        ->whereMonth('progress_date' , $request->month)
+                        ->sum('calories');
+
+                        // if($user_report > 2000)
+                        // {
+                            $users_array[$user->user->name] = $user_report;
+                        // }
+                    }
+
+
+                    $keys = array_keys($users_array);
+                    $values = array_values($users_array);
+
+                    $monthNum  = $request->month;
+                    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+                    $monthName = $dateObj->format('F'); // Full Name
+                    $description = "Who lose Calories in <span class=\"font-weight-bolder text-info\">" . $monthName ."</span>";
+                }
+
+
+                //Day
+                if ($request->day != null) {
+
+                    $filter_string = "$request->day/$current_month/$current_year";
+                    $filter_date = Carbon::createFromFormat('d/m/Y', $filter_string)->format('Y-m-d');
+                    $reports = Progress::whereDate('progress_date' , $filter_date)->get();
+
+
+                    $users_array = [];
+                    $users = Progress::orderBy('calories' , 'desc')->
+                    whereDate('progress_date' , $filter_date)->get();
+
+                    // dd($users);
+                    foreach($users as $user)
+                    {
+                        $user_report = Progress::where('customer_id', $user->customer_id)
+                        ->whereDate('progress_date' , $filter_date)
+                        ->sum('calories');
+
+                        // if($user_report > 2000)
+                        // {
+                            $users_array[$user->user->name] = $user_report;
+                        // }
+                    }
+
+
+                    $keys = array_keys($users_array);
+                    $values = array_values($users_array);
+
+                    $description = "Who lose Calories in <span class=\"font-weight-bolder text-info\">" . $filter_string  ."</span>";
+
+
+
+                }
+            }
+
+            if($request->cal == null) $calories = 0;
+            if($request->cal == null && $request->day == null && $request->month == null)
+                return back();
+
+            return view('progress.index', compact('reports','day','month' , 'keys' , 'values'  , 'description' , 'calories'))->with(['success' => 'Filter Applied']);
+
+        }
+
+
+        //Current Week
+        $now = Carbon::now()->setTimezone('GMT+2');
+        $users_array = [];
+        $users = Progress::orderBy('calories' , 'desc')
+                ->whereBetween('progress_date',
+                [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]
+                )->get();
+
+        foreach($users as $user)
+        {
+            $user_report = Progress::where('customer_id', $user->customer_id)->sum('calories');
+            if($user_report > 2000)
+            {
+                $users_array[$user->user->name] = $user_report;
+            }
+        }
+        $keys = array_keys($users_array);
+        $values = array_values($users_array);
+        $description = "Who lose more than 2000 Calories in Current Week " ;
+
+
+
+        $reports = Progress::orderBy('progress_date' , 'asc')->get();
+        return view('progress.index', compact('reports' , 'keys' , 'values' , 'description'));
+    }
+
+
+
+
 
     //API Functions
     public function save(Request $request)

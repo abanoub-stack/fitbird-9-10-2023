@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\HistoryPayment;
+use App\Models\Progress;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -22,8 +24,40 @@ class UserController extends Controller
     public function user($uId)
     {
         $user = Customer::findOrFail($uId);
+
+
+        // Report Section
+
+           //Current Week
+           $dates = Progress::orderBy('progress_date' , 'desc')->where('customer_id', $user->id)
+                   ->whereBetween('progress_date',
+                   [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]
+                   )->pluck('progress_date');
+
+            $cals = Progress::orderBy('progress_date' , 'desc')->where('customer_id', $user->id)
+            ->whereBetween('progress_date',
+            [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]
+            )->pluck('calories')->all();
+
+
+            $formattedDates = $dates->map(function ($date) {
+                return $date->format('d-m-Y');
+            });
+
+
+
+        $keys = $formattedDates;
+        $values = $cals;
+
+        $description =$user->name . "'s Losted Calories in This Current Week " ;
+        //    End Report Section
+
+
         return view('user.user', [
             'user' => $user,
+            'keys' => $keys,
+            'values' => $values,
+            'description' => $description,
         ]);
     }
 
