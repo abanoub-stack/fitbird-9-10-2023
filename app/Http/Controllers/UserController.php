@@ -61,14 +61,9 @@ class UserController extends Controller
         ]);
     }
 
-
-
     public function premiumUsers()
     {
         $premiumUsers = Customer::where('is_subscribed', '=', '1')->paginate(10);
-
-        // dd(strtotime(date(now())));
-
         return view('user.premium', [
             'users' => $premiumUsers,
         ]);
@@ -216,6 +211,9 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
+
+
+
 
 
 }

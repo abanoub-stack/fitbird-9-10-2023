@@ -17,6 +17,7 @@ use App\Http\Controllers\api\v1\TokanDataController as V1TokanDataController;
 use App\Http\Controllers\CancelRegistrationController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\UserController;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,15 @@ Route::middleware(['api-auth'])->group(function () {
     Route::post('progress/save', [ProgressController::class, 'save']);
     // Progress Routes Ends
 
+
+    // Profile Routes 
+
+    Route::post('edit-user-profile',
+        [AuthController::class, 'editProfileApi']
+    );
+
+
+    // Profile Routes 
 
 
 

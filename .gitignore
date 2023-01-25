@@ -1,7 +1,9 @@
+/public/dashboard
 /public/dashboard/img
 /public/uploads
 /public/dashboard/sccs
 /public/dashboard/vendor
+/public/app_images
 /node_modules
 /public/build
 /public/hot

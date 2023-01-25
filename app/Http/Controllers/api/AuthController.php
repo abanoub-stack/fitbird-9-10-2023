@@ -22,6 +22,7 @@ class AuthController extends Controller
         #// Validation
         $validator = Validator::make($request->all(), [
             'email' => 'nullable|email|max:50|unique:customers,email',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif',
             'name' => 'required|string|min:4|max:50',
             'phone' => 'required|string',
             'gender' => 'required|string|max:6',
@@ -64,9 +65,19 @@ class AuthController extends Controller
             'height' => $request->height,
             'exercise_days' => $request->exercise_days,
             'password' => bcrypt($request->password),
-
             'access_token' => $access_token,
         ]);
+
+        //Image 
+
+        if($request->hasFile('image'))
+        {
+            $newImgName = $request->file('image')->hashName();
+            $request->image->move(public_path('app_images/customers'), $newImgName);
+            $customer->image = "app_images/customers/".$newImgName;
+            $customer->save();
+        }
+
 
         // Address
         $address = Address::create([
@@ -171,6 +182,52 @@ class AuthController extends Controller
                 ]))->everyTwoMinutes();
             }
         }
+    }
+
+
+    public function editProfileApi(Request $request)
+    {
+        $user = Customer::findOrFail($request->customer_id);
+
+        $validator = Validator::make($request->all(), [
+            'customer_id' => 'exists:customers,id|required',
+            'email' => 'email|required',
+            'name' => 'required|string',
+            'phone' => 'required|min:11',
+            'gender' => 'required|in:Male,Female,male,female',
+            'workout_intensity' => 'required',
+            'age' => 'required|min:0|integer',
+            'height' => 'required|min:0|numeric',
+            'exercise_days' => 'required|string',
+            'password' => 'nullable|min:6',
+            'password_confirmation' => 'nullable|min:6|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ])->withErrors($validator->errors())->withInput();
+        }
+
+        $data = $request->except(['password', 'password_confirmation', '_token']);
+        $user->update($data);
+
+        if (isset($request->password)) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'User Informations Updated Successfully With The New Password',
+            ]);
+        }
+
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User Informations Updated Successfully With Same  Password',
+        ]);
     }
 
 }

@@ -16,7 +16,7 @@ Assign Subscription To User
         <div class="row">
 
             <div class="col-md-6 offset-md-3">
-                <h3 class="mb-3">Add Product</h3>
+                <h5 class="mb-3">Select User and his Plan</h5>
                 <div class="card">
                     <div class="card-body p-5">
                         @include('layouts.errors')
