@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->enum('type', ['field', 'area' , 'single' , 'multiple']);
-            $table->json('body')->nullable();
+        // Schema::create('questions', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('title');
+        //     $table->enum('type', ['field', 'area' , 'single' , 'multiple']);
+        //     $table->json('body')->nullable();
 
-            $table->timestamps();
-        });
+        //     $table->timestamps();
+        // });
     }
 
     /**

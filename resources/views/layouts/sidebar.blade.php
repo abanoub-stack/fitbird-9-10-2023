@@ -110,6 +110,14 @@
             </li>
 
 
+            <!-- Nav Item - Questions -->
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ route('banner.index') }}">
+                    <i class="fas fa-fw fa-image"></i>
+                    <span>Banner</span></a>
+            </li>
+
+
 
             <!-- Divider -->
             <hr class="sidebar-divider">

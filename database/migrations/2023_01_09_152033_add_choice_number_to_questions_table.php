@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->unsignedBigInteger('choice_number')->nullable();
-        });
+        // Schema::table('questions', function (Blueprint $table) {
+        //     $table->unsignedBigInteger('choice_number')->nullable();
+        // });
     }
 
     /**

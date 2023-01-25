@@ -3,6 +3,7 @@
 use App\Http\Controllers\AndroidNotifiactionController;
 use App\Http\Controllers\AppNotificationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerImageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ExerciseSetsController;
@@ -204,5 +205,22 @@ Route::middleware('auth')->group(function () {
 
         // Delete
             Route::get('questions/delete/{questionId}', [QuestionController::class, 'delete'])->name('question.delete');
+
+
+
+    //Banner Images
+    //Index page
+    Route::get('banner', [BannerImageController::class, 'index'])->name('banner.index');
+
+
+    //Create
+    Route::get('banner/create', [BannerImageController::class, 'create'])->name('banner.create');
+    Route::post('banner/store', [BannerImageController::class, 'store'])->name('banner.store');
+
+
+    // Delete
+    Route::get('banner/delete/{bannerId}', [BannerImageController::class, 'delete'])->name('banner.delete');
+
+
 
 });
