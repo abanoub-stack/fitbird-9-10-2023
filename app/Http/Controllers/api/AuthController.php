@@ -187,11 +187,10 @@ class AuthController extends Controller
 
     public function editProfileApi(Request $request)
     {
-        $user = Customer::findOrFail($request->customer_id);
-
+        $user = Customer::where( 'access_token' , $request->header('access-token'))->first();
         $validator = Validator::make($request->all(), [
-            'customer_id' => 'exists:customers,id|required',
             'email' => 'email|required',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif',
             'name' => 'required|string',
             'phone' => 'required|min:11',
             'gender' => 'required|in:Male,Female,male,female',
@@ -207,18 +206,33 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
-            ])->withErrors($validator->errors())->withInput();
+            ]);
         }
 
-        $data = $request->except(['password', 'password_confirmation', '_token']);
+        $data = $request->except(['password', 'password_confirmation', 'image' , '_token']);
         $user->update($data);
 
+
+
+
+        if ($request->hasFile('image')) {
+            $newImgName = $request->file('image')->hashName();
+            $request->image->move(public_path('app_images/customers'), $newImgName);
+            $user->image = "app_images/customers/" . $newImgName;
+            $user->save();
+        }
+
+
+        
         if (isset($request->password)) {
             $user->password = Hash::make($request->password);
             $user->save();
+
+
             return response()->json([
                 'success' => true,
                 'message' => 'User Informations Updated Successfully With The New Password',
+                'data' => new CustomerResource($user),
             ]);
         }
 
@@ -227,6 +241,8 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'User Informations Updated Successfully With Same  Password',
+            'data' => new CustomerResource($user),
+
         ]);
     }
 
