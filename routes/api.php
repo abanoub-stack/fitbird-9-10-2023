@@ -14,6 +14,7 @@ use App\Http\Controllers\api\v1\ExerciseStepController as V1ExerciseStepControll
 use App\Http\Controllers\api\v1\RegisterController as V1RegisterController;
 use App\Http\Controllers\api\v1\StripePaymentController as V1StripePaymentController;
 use App\Http\Controllers\api\v1\TokanDataController as V1TokanDataController;
+use App\Http\Controllers\BannerImageController;
 use App\Http\Controllers\CancelRegistrationController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuestionController;
@@ -31,6 +32,8 @@ Route::middleware(['api-guest'])->group(function () {
     // Register
     Route::post('register', [AuthController::class, 'register']);
     # Guest #
+
+    Route::get('get-banner', [BannerImageController::class, 'getAll']);
 });
 
 # AUTH #

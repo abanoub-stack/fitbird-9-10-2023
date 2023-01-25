@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BannerImageResourceCollection;
 use App\Models\BannerImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -51,5 +52,21 @@ class BannerImageController extends Controller
         {
             return back()->withErrors('Banner Image Not Found');   
         }
+    }
+
+    //Api Functions
+    public function getAll()
+    {
+        $images = BannerImage::pluck('url');
+        // dd($images);
+        // $images = new BannerImageResourceCollection($images);
+        return response()->json(
+            [
+                'success' => true, 
+                'message' => 'Banner Images Sent Successfully',
+                'data' => $images
+            ] 
+            , 200
+        );
     }
 }
