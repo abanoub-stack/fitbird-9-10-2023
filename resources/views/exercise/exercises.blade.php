@@ -86,7 +86,7 @@ All Exercises
                             <th scope="row">{{ $i + 1 }}</th>
                             <td>{{ $exercise->name }}</td>
                             <td>{{ $exercise->Category->name }}</td>
-                            <td>{{ $exercise->time }}</td>
+                            <td>{{ $exercise->timee }}</td>
                             <td>{{ $exercise->calories }}</td>
                             <td><a href="{{ asset('/uploads/' . $exercise->image) }}" target="_blank"><img
                                         src="{{ asset('/uploads/' . $exercise->image) }}" style="height: 90px ; object-fit: contain">

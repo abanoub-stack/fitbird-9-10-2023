@@ -40,7 +40,8 @@ class QuestionController extends Controller
 
 
         $question = new Question();
-        $question->title = $request->title;
+
+        $question->title = "$request->title";
         $question->type = $request->type;
         $question->description = $request->description;
         $question->choice_number = $request->choice_number;

@@ -8,6 +8,7 @@ use App\Models\Exercise;
 use App\Models\ExerciseStep;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ExerciseController extends Controller
 {
@@ -27,15 +28,30 @@ class ExerciseController extends Controller
     public function addExercisePost(Request $request)
     {
         $category = Category::findOrFail($request->exercise_category);
-        $request->validate([
-            'exercise_name' => 'required|string|max:50',
-            'exercise_category' => 'required|numeric|exists:categories,id',
-            'exercise_time' => 'required|numeric',
-            'exercise_calories' => 'required|numeric',
-            'exercise_repeat_count' => 'required|numeric|max:1000',
-            'exercise_url' => 'nullable|string|max:255',
-            'exercise_image' => 'required|image|mimes:jpg,jpeg,png,gif',
+
+        $validator = Validator::make($request->all(),
+        [
+                'exercise_name' => 'required|string|max:50',
+                'exercise_category' => 'required|numeric|exists:categories,id',
+                'exercise_time' => 'required|numeric',
+                'exercise_calories' => 'required|numeric',
+                'exercise_repeat_count' => 'required|numeric|max:1000',
+                'exercise_url' => 'nullable|string|max:255',
+                'exercise_image' => 'required|image|mimes:jpg,jpeg,png,gif'
         ]);
+
+        if($validator->fails())
+        return back()->withErrors($validator->errors())->withInput();
+
+        // $request->validate([
+        //     'exercise_name' => 'required|string|max:50',
+        //     'exercise_category' => 'required|numeric|exists:categories,id',
+        //     'exercise_time' => 'required|numeric',
+        //     'exercise_calories' => 'required|numeric',
+        //     'exercise_repeat_count' => 'required|numeric|max:1000',
+        //     'exercise_url' => 'nullable|string|max:255',
+        //     'exercise_image' => 'required|image|mimes:jpg,jpeg,png,gif',
+        // ]);
 
         // image
         $exerciseImagePath = Storage::putFile('exercises', $request->exercise_image);
@@ -84,7 +100,8 @@ class ExerciseController extends Controller
     public function editExercisePost(Request $request, $exId)
     {
         $exercise = Exercise::findOrFail($exId);
-        $request->validate([
+        $validator = Validator::make($request->all(),
+        [
             'exercise_name' => 'required|string|max:50',
             'exercise_category' => 'required|numeric|exists:categories,id',
             'exercise_repeat_count' => 'required|numeric|max:100',
@@ -93,6 +110,18 @@ class ExerciseController extends Controller
             'exercise_url' => 'required|string|max:255',
             'exercise_image' => 'nullable|image|mimes:jpg,jpeg,png,gif',
         ]);
+
+        if($validator->fails())
+        return back()->withErrors($validator->errors())->withInput();
+        // $request->validate([
+        //     'exercise_name' => 'required|string|max:50',
+        //     'exercise_category' => 'required|numeric|exists:categories,id',
+        //     'exercise_repeat_count' => 'required|numeric|max:100',
+        //     'exercise_time' => 'required|numeric|max:1000',
+        //     'exercise_calories' => 'required|numeric',
+        //     'exercise_url' => 'required|string|max:255',
+        //     'exercise_image' => 'nullable|image|mimes:jpg,jpeg,png,gif',
+        // ]);
 
         // image
         if ($request->hasFile('exercise_image')) {
@@ -106,7 +135,7 @@ class ExerciseController extends Controller
             'name' => $request->exercise_name,
             'category_id' => $request->exercise_category,
             'repeat_count' => $request->exercise_repeat_count,
-            'time' => $request->exercise_time,
+            'timee' => $request->exercise_time,
             'calories' => $request->exercise_calories,
             'url' => $request->exercise_url,
             'image' => $exerciseImagePath,

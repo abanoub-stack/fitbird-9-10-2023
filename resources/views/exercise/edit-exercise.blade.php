@@ -53,8 +53,8 @@ Exercises
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Time <span>(minutes)</span></label>
-                                        <input type="number" value="{{ $exercise->time }}" name="exercise_time"
+                                        <label>Time <span>(seconds)</span></label>
+                                        <input type="number" value="{{ $exercise->timee }}" name="exercise_time"
                                             class="form-control">
                                     </div>
 
