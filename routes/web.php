@@ -134,6 +134,9 @@ Route::middleware('auth')->group(function () {
     // edit user
     Route::get('edit-user/{uId}', [UserController::class, 'edit']);
     Route::post('update-user', [UserController::class, 'update']);
+    // Search User
+    Route::get('users/{keyword}', [UserController::class, 'searchUsers']);
+
 
 
     # Progress Reports

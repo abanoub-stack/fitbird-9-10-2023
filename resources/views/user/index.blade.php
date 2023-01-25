@@ -19,6 +19,13 @@ All Users
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <form method="GET" action="{{ url('users/search') }}">
+                <input class="form-control" type="text" name="keyword" placeholder="Search..."
+                    @if (request()->has('keyword')) value="{{ request()->get('keyword') }}" @endif>
+                <br>
+            </form>
+        </div>
     </div>
     <div class="card-body">
 

@@ -61,6 +61,8 @@ class UserController extends Controller
         ]);
     }
 
+
+
     public function premiumUsers()
     {
         $premiumUsers = Customer::where('is_subscribed', '=', '1')->paginate(10);
@@ -200,5 +202,20 @@ class UserController extends Controller
 
         return back()->with('success' , 'User Informations Updated Successfully With Same Password');
     }
+
+
+    public function searchUsers(Request $request)
+    {
+        $key = $request->keyword;
+        $users = Customer::where('name', 'LIKE', "%$key%")
+            ->orWhere('email', 'LIKE', "%$key%")
+            ->orWhere('phone', 'LIKE', "%$key%")
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        return view('user.index', [
+            'users' => $users,
+        ]);
+    }
+
 
 }

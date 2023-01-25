@@ -51,6 +51,7 @@ class ProgressController extends Controller
                     }
 
 
+                    arsort($users_array);
                     $keys = array_keys($users_array);
                     $values = array_values($users_array);
 
@@ -83,6 +84,7 @@ class ProgressController extends Controller
                     }
 
 
+                    arsort($users_array);
                     $keys = array_keys($users_array);
                     $values = array_values($users_array);
 
@@ -124,6 +126,7 @@ class ProgressController extends Controller
                     }
 
 
+                    arsort($users_array);
                     $keys = array_keys($users_array);
                     $values = array_values($users_array);
 
@@ -176,6 +179,7 @@ class ProgressController extends Controller
                     }
 
 
+                    arsort($users_array);
                     $keys = array_keys($users_array);
                     $values = array_values($users_array);
 
@@ -212,6 +216,7 @@ class ProgressController extends Controller
                     }
 
 
+                    arsort($users_array);
                     $keys = array_keys($users_array);
                     $values = array_values($users_array);
 
@@ -238,7 +243,6 @@ class ProgressController extends Controller
                 ->whereBetween('progress_date',
                 [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]
                 )->get();
-
         foreach($users as $user)
         {
             $user_report = Progress::where('customer_id', $user->customer_id)->sum('calories');
@@ -247,6 +251,8 @@ class ProgressController extends Controller
                 $users_array[$user->user->name] = $user_report;
             }
         }
+        //Sort Array
+        arsort($users_array);
         $keys = array_keys($users_array);
         $values = array_values($users_array);
         $description = "Who lose more than 2000 Calories in Current Week " ;
