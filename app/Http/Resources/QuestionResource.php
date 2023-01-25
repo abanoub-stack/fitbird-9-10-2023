@@ -26,6 +26,7 @@ class QuestionResource extends JsonResource
                                     [
                                         'id' => $this->id,
                                         'title' => $this->title,
+                                        'description' => $this->description,
                                         'type' => 2,
                                         'body' => json_decode($this->body),
                                         'choice_number' => $this->choice_number,
@@ -38,6 +39,7 @@ class QuestionResource extends JsonResource
                                     [
                                         'id' => $this->id,
                                         'title' => $this->title,
+                                        'description' => $this->description,
                                         'type' => 3,
                                         'body' => json_decode($this->body),
                                         'choice_number' => $this->choice_number,
@@ -54,6 +56,7 @@ class QuestionResource extends JsonResource
                     [
                         'id' => $this->id,
                         'title' => $this->title,
+                        'description' => $this->description,
                         'type' => 0,
                         'body' => "NA" ,
                         'choice_number' => "NA",
@@ -66,6 +69,7 @@ class QuestionResource extends JsonResource
                     [
                         'id' => $this->id,
                         'title' => $this->title,
+                        'description' => $this->description,
                         'type' => 1,
                         'body' => "NA",
                         'choice_number' => "NA",

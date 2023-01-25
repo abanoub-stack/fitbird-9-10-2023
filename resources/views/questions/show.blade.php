@@ -19,24 +19,24 @@ Show Question  "{{$question->title}}"
                         <p class="card-text font-weight-bolder">Type : <span class="text-muted font-weight-light"> {{$question->type}}</span> </p>
 
                         <div class="row ">
+
+                            @if ($question->type == 'field' || $question->type == 'area')
+                            {{-- No Body --}}
+
+                            @elseif ($question->type == 'single')
                             <div class="col-md-12">
                                 <div class="card-text font-weight-bold">Body :</div>
                             </div>
-
-                            @if ($question->type == 'field' || $question->type == 'area')
-                                {{-- No Body --}}
-
-                            @elseif ($question->type == 'single')
-                                @foreach (json_decode($question->body) as $body )
-                                    <div class="col-md-4">
-                                        <div class=" border-left-dark my-1 ">
-                                            <input class="text-center mx-2"   type="radio" name="choice">
-                                            <label class="text-center" for="">
-                                                {{$body}}
-                                            </label>
-                                        </div>
+                            @foreach (json_decode($question->body) as $body )
+                                <div class="col-md-4">
+                                    <div class=" border-left-dark my-1 ">
+                                        <input class="text-center mx-2"   type="radio" name="choice">
+                                        <label class="text-center" for="">
+                                            {{$body}}
+                                        </label>
                                     </div>
-                                @endforeach
+                                </div>
+                            @endforeach
 
                             @else
                                 @foreach (json_decode($question->body) as $body)

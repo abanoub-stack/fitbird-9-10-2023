@@ -99,9 +99,9 @@ All Exercises
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <a title="Steps" class="btn btn-sm btn-warning text-light"
-                                        href="{{ url('exercise-steps', $exercise->id) }}">
-                                        <i class="fa fa-forward"></i>
-                                    </a>
+                                            href="{{ url('exercise-steps', $exercise->id) }}">
+                                            <i class="fa fa-forward"></i>
+                                        </a>
                                     </div>
 
                                     <div class="col-lg-4">
