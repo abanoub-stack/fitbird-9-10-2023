@@ -262,4 +262,26 @@ class AuthController extends Controller
         ]);
     }
 
+
+    public function getSubData(Request $request)
+    {
+        $user = Customer::where('access_token' , $request->header('access-token'))->first();
+        $data =
+        [
+            'id' => $user->id ,
+            'name' => $user->name ,
+            'is_subscribed' => $user->is_subscribed == "0" ? 0 : 1,
+            'subscription_type' => $user->subscription_type,
+            'subscription_started_at' => $user->subscription_started_at,
+            'subscription_finished_at' => $user->subscription_finished_at,
+        ];
+
+        return response()->json(
+            [
+                'success' => true,
+                'data' => $data
+            ] , 200
+        );
+    }
+
 }

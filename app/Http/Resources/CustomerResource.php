@@ -31,6 +31,9 @@ class CustomerResource extends JsonResource
             'exercise_days' => $this->exercise_days,
             // 'stripe_id' => $this->stripe_id,
             'is_subscribed' => $this->is_subscribed,
+            'subscription_type' => $this->subscription_type,
+            'subscription_started_at' => $this->subscription_started_at,
+            'subscription_finished_at' => $this->subscription_finished_at,
         ];
     }
 }

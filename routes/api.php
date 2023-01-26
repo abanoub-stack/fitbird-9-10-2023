@@ -55,14 +55,15 @@ Route::middleware(['api-auth'])->group(function () {
     // Progress Routes Ends
 
 
-    // Profile Routes 
+    // Profile Routes
 
     Route::post('edit-user-profile',
         [AuthController::class, 'editProfileApi']
     );
 
+    Route::get('get-sub-data', [AuthController::class, 'getSubData']);
 
-    // Profile Routes 
+    // Profile Routes
 
 
 
