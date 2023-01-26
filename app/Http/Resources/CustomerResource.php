@@ -23,6 +23,11 @@ class CustomerResource extends JsonResource
             'workout_intensity' => $this->workout_intensity,
             'age' => $this->age,
             'height' => $this->height,
+
+            'weight' => $this->weight,
+            'goals' => $this->goals,
+            'activity' => $this->activity,
+
             'exercise_days' => $this->exercise_days,
             // 'stripe_id' => $this->stripe_id,
             'is_subscribed' => $this->is_subscribed,

@@ -25,6 +25,10 @@ class Customer extends Model
         'trial_ends_at',
         'access_token',
         'password',
+        'image',
+        'goals',
+        'weight',
+        'activity',
     ];
 
     public function Packages()

@@ -32,6 +32,10 @@ class AuthController extends Controller
             'exercise_days' => 'required|string',
             'workout_intensity' => 'required|string|max:255',
 
+            'goals' => 'required|string|max:255',
+            'activity' => 'required|string|max:255',
+            'weight' => 'required|string|max:300',
+
             //
             # Address
             // 'customer_id',
@@ -61,6 +65,12 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'gender' => $request->gender,
             'workout_intensity' => $request->workout_intensity,
+
+            'goals' => $request->goals,
+            'activity' => $request->activity,
+            'weight' => $request->weight,
+
+
             'age' => $request->age,
             'height' => $request->height,
             'exercise_days' => $request->exercise_days,
@@ -68,7 +78,7 @@ class AuthController extends Controller
             'access_token' => $access_token,
         ]);
 
-        //Image 
+        //Image
 
         if($request->hasFile('image'))
         {
@@ -195,6 +205,12 @@ class AuthController extends Controller
             'phone' => 'required|min:11',
             'gender' => 'required|in:Male,Female,male,female',
             'workout_intensity' => 'required',
+
+            'goals' => 'required|string|max:255',
+            'activity' => 'required|string|max:255',
+            'weight' => 'required|string|max:300',
+
+
             'age' => 'required|min:0|integer',
             'height' => 'required|min:0|numeric',
             'exercise_days' => 'required|string',
@@ -223,7 +239,7 @@ class AuthController extends Controller
         }
 
 
-        
+
         if (isset($request->password)) {
             $user->password = Hash::make($request->password);
             $user->save();
