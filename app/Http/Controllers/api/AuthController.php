@@ -28,8 +28,8 @@ class AuthController extends Controller
             'gender' => 'required|string|max:6',
             'password' => 'required|string|min:4|max:64',
             'age' => 'required|string|max:90',
-            'height' => 'required|string|max:300',
-            'exercise_days' => 'required|string',
+            'height' => 'nullable|string|max:300',
+            'exercise_days' => 'nullable|string',
             'workout_intensity' => 'required|string|max:255',
 
             'goals' => 'required|string|max:255',
@@ -212,8 +212,8 @@ class AuthController extends Controller
 
 
             'age' => 'required|min:0|integer',
-            'height' => 'required|min:0|numeric',
-            'exercise_days' => 'required|string',
+            'height' => 'nullable|min:0|numeric',
+            'exercise_days' => 'nullable|string',
             'password' => 'nullable|min:6',
             'password_confirmation' => 'nullable|min:6|same:password',
         ]);

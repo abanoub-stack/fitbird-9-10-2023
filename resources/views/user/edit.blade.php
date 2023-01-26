@@ -96,6 +96,33 @@ Edit <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
 
                             </td>
                         </tr>
+
+
+                        <tr>
+                            <th scope="row">Weight</th>
+                            <td>
+                                <input type="text" name="height" value="{{ $user->weight }}" class="form-control">
+
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <th scope="row">Goals</th>
+                            <td>
+                                <input type="text" name="height" value="{{ $user->goals }}" class="form-control">
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <th scope="row">Activity</th>
+                            <td>
+                                <input type="text" name="height" value="{{ $user->activity }}" class="form-control">
+                            </td>
+                        </tr>
+
+
                         <tr>
                             <th scope="row">Exercise Days</th>
                             <td>

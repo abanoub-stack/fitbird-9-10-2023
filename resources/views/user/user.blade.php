@@ -54,6 +54,32 @@ Show <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                                 <th scope="row">Height</th>
                                 <td>{{ $user->height }}</td>
                             </tr>
+
+                            <tr>
+                                <th scope="row">Weight</th>
+                                <td>
+                                     {{ $user->weight }}
+
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <th scope="row">Goals</th>
+                                <td>
+                                     {{ $user->goals }}
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <th scope="row">Activity</th>
+                                <td>
+                                     {{ $user->activity }}
+                                </td>
+                            </tr>
+
+
                             <tr>
                                 <th scope="row">Exercise Days</th>
                                 <td>{{ $user->exercise_days }}</td>
