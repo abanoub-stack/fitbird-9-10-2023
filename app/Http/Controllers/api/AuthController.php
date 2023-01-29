@@ -21,20 +21,20 @@ class AuthController extends Controller
         # Customer
         #// Validation
         $validator = Validator::make($request->all(), [
-            'email' => 'nullable|email|max:50|unique:customers,email',
+            'email' => 'required|email|max:50|unique:customers,email',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif',
             'name' => 'required|string|min:4|max:50',
-            'phone' => 'required|string',
-            'gender' => 'required|string|max:6',
-            'password' => 'required|string|min:4|max:64',
-            'age' => 'required|string|max:90',
+            'phone' => 'nullable|string',
+            'gender' => 'nullable|string|max:6',
+            'password' => 'required|string|min:5|max:64',
+            'age' => 'nullable|string|max:90',
             'height' => 'nullable|string|max:300',
             'exercise_days' => 'nullable|string',
-            'workout_intensity' => 'required|string|max:255',
+            'workout_intensity' => 'nullable|string|max:255',
 
-            'goals' => 'required|string|max:255',
-            'activity' => 'required|string|max:255',
-            'weight' => 'required|string|max:300',
+            'goals' => 'nullable|string|max:255',
+            'activity' => 'nullable|string|max:255',
+            'weight' => 'nullable|string|max:300',
 
             //
             # Address
@@ -214,8 +214,8 @@ class AuthController extends Controller
             'age' => 'required|min:0|integer',
             'height' => 'nullable|min:0|numeric',
             'exercise_days' => 'nullable|string',
-            'password' => 'nullable|min:6',
-            'password_confirmation' => 'nullable|min:6|same:password',
+            'password' => 'nullable|min:5',
+            'password_confirmation' => 'nullable|min:5|same:password',
         ]);
 
         if ($validator->fails()) {
