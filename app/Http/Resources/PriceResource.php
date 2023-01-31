@@ -20,15 +20,15 @@ class PriceResource extends JsonResource
                 'price' => $this->price,
             ],
             [
-                'type' => 'three_months',
+                'type' => 'Three Months',
                 'price' => $this->price_three_months,
             ],
             [
-                'type' => 'six_months',
+                'type' => 'Six Months',
                 'price' => $this->price_six_months,
             ],
             [
-                'type' => 'year',
+                'type' => 'Year',
                 'price' => $this->price_year,
             ],
         ];
