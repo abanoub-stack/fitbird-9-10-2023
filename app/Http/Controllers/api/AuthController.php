@@ -99,6 +99,7 @@ class AuthController extends Controller
             'postal_code' => $request->postal_code,
             'state' => $request->state,
         ]);
+
         CustomerNotification::create([
             'user' => "$customer->email",
             'message' => __('added address in registration'),
@@ -287,9 +288,23 @@ class AuthController extends Controller
     public function getUserInfo($id)
     {
 
-
-        
-
+        $user = Customer::find($id);
+        if($user != null)
+        {
+            $user = new CustomerResource($user);
+            return response()->json([
+                 'success' => true,
+                 'message' => 'Data Sent Successfully',
+                 'data' => $user,
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                 'success' => false,
+                 'message' => 'User Not Found',
+            ] , 404 );
+        }
     }
 
 }

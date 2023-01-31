@@ -56,13 +56,10 @@ Route::middleware(['api-auth'])->group(function () {
 
 
     // Profile Routes
-    Route::get('user-getInfo', [AuthController::class, 'getUserInfo']);
+    Route::get('user-getInfo/{id}', [AuthController::class, 'getUserInfo']);
 
-    Route::post('edit-user-profile',
-        [AuthController::class, 'editProfileApi']
-    );
-
-    Route::get(' ', [AuthController::class, 'getSubData']);
+    Route::post('edit-user-profile',[AuthController::class, 'editProfileApi']);
+    Route::get('getSubData', [AuthController::class, 'getSubData']);
 
     // Profile Routes
 
