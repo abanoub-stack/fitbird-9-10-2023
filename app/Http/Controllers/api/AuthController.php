@@ -287,7 +287,6 @@ class AuthController extends Controller
 
     public function getUserInfo($id)
     {
-
         $user = Customer::find($id);
         if($user != null)
         {
@@ -304,6 +303,34 @@ class AuthController extends Controller
                  'success' => false,
                  'message' => 'User Not Found',
             ] , 404 );
+        }
+    }
+
+    public function CheckEmail(Request $request)
+    {
+        $validator = Validator::make($request->all()
+        ,
+        [
+            'email'  => 'email|required|unique:customers,email'
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ] , 400
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Email Not Exist In Our Recoreds , User Can SignUp With It.",
+                ]
+            );
         }
     }
 

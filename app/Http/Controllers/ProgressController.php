@@ -370,4 +370,50 @@ class ProgressController extends Controller
 
 
 
+    public function getByFullDate(Request $request)
+    {
+
+        $user = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        $validator = Validator::make($request->all(),
+        [
+            'day' => 'required|numeric|min:1|max:31',
+            'month' => 'required|numeric|min:1|max:12',
+            'year' => 'required|numeric|min:1900|max:2100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()],400);
+        }
+
+        $now = Carbon::now();
+        $required_day = $request->day;
+        $required_month = $request->month;
+        $required_year = $request->year;
+        $progress_string = "$required_day/$required_month/$required_year";
+        $progress_date = Carbon::createFromFormat('d/m/Y', $progress_string)->format('Y-m-d');
+
+        //Get Old Recoreds
+        $old_progress = Progress::whereDate('progress_date' , $progress_date)->where('customer_id' , $user->id)->first();
+
+        $response = new  ProgressResource($old_progress);
+
+        // dd($old_progress);
+
+
+        if ($old_progress) {
+            //Update progress
+            return response()->json(['success' => true, 'data' =>$response  , 'message' => "Progress Sent"  ],200);
+        }
+
+
+
+        return response()->json(['success' => true , 'message' => "No Progress Found"  ],404);
+
+
+
+    }
+
+
+
 }

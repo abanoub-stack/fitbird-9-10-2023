@@ -27,6 +27,10 @@ use Illuminate\Support\Facades\Route;
 
 # Guest #
 Route::middleware(['api-guest'])->group(function () {
+    //Check Email Exits
+    Route::post('check-email-exist',[AuthController::class, 'CheckEmail']);
+
+
     // Login
     Route::post('login', [AuthController::class, 'login']);
     // Register
@@ -34,6 +38,8 @@ Route::middleware(['api-guest'])->group(function () {
     # Guest #
 
     Route::get('get-banner', [BannerImageController::class, 'getAll']);
+
+
 });
 
 # AUTH #
@@ -51,6 +57,7 @@ Route::middleware(['api-auth'])->group(function () {
 
     // Progress Routes Start
     Route::post('progress/get', [ProgressController::class, 'getByDate']);
+    Route::post('progress/get-with-date', [ProgressController::class, 'getByFullDate']);
     Route::post('progress/save', [ProgressController::class, 'save']);
     // Progress Routes Ends
 
