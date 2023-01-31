@@ -16,7 +16,7 @@ class PriceResource extends JsonResource
     {
         return [
             [
-                'type' => 'month',
+                'type' => 'Month',
                 'price' => $this->price,
             ],
             [

@@ -3,10 +3,12 @@
 
             <!-- Sidebar - Brand -->
             <a  href="{{ url('/', []) }}" class="sidebar-brand d-flex align-items-center justify-content-center">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                {{-- <div class="sidebar-brand-icon rotate-n-15"> --}}
+                <div class="sidebar-brand-icon ">
+                    {{-- <i class="fas fa-laugh-wink"></i> --}}
+                    <img src="{{ asset('dashboard/logo.png') }}" style="width: 100px ; object-fit: contain" alt="Fitbird Logo">
                 </div>
-                <div  class="sidebar-brand-text mx-3">FitBird</div>
+                {{-- <div  class="sidebar-brand-text mx-3">FitBird</div> --}}
             </a>
 
             <!-- Divider -->
