@@ -284,4 +284,12 @@ class AuthController extends Controller
         );
     }
 
+    public function getUserInfo($id)
+    {
+
+
+        
+
+    }
+
 }

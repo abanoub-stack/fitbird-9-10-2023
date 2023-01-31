@@ -34,8 +34,6 @@ All Exercises
         </div>
     </div>
     <div class="card-body">
-
-
         {{-- Alerts --}}
             <div class="text-center">
                 @if (request()->session()->has('exercise_created_successfully'))
@@ -85,7 +83,11 @@ All Exercises
                         <tr>
                             <th scope="row">{{ $i + 1 }}</th>
                             <td>{{ $exercise->name }}</td>
-                            <td>{{ $exercise->Category->name }}</td>
+                            @if ($exercise->Category != null)
+                            <td>{{$exercise->Category->name}}</td>
+                            @else
+                            <td> "NA"</td>
+                            @endif
                             <td>{{ $exercise->timee }}</td>
                             <td>{{ $exercise->calories }}</td>
                             <td><a href="{{ asset('/uploads/' . $exercise->image) }}" target="_blank"><img
