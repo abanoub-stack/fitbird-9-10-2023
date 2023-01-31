@@ -264,8 +264,8 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Customer</th>
-                                <th scope="col">Calories</th>
-                                <th scope="col">WorkOut</th>
+                                {{-- <th scope="col">Calories</th> --}}
+                                <th scope="col">Workouts</th>
                                 <th scope="col">Minutes</th>
                                 {{-- <th scope="col">Actions</th> --}}
                             </tr>
@@ -280,7 +280,7 @@
                                             {{ $report->user->name }}
                                         </a>
                                     </td>
-                                    <td>{{ $report->calories }}</td>
+                                    {{-- <td>{{ $report->calories }}</td> --}}
                                     <td>{{ $report->workouts }}</td>
                                     <td>{{ $report->getMinutes() }}</td>
                                     {{-- <td>
@@ -362,7 +362,7 @@
         data: {
             labels: lables,
             datasets: [{
-                label: "Burn Calories",
+                label: "Workout Activity",
                 backgroundColor: "#4e73df",
                 hoverBackgroundColor: "#2e59d9",
                 borderColor: "#4e73df",
@@ -382,7 +382,7 @@
             scales: {
                 xAxes: [{
                     time: {
-                        unit: 'calory'
+                        unit: 'workout'
                     },
                     gridLines: {
                         display: true,
@@ -396,12 +396,12 @@
                 yAxes: [{
                     ticks: {
                         min: 0,
-                        max: 10000,
-                        maxTicksLimit: 5,
+                        max: 100,
+                        maxTicksLimit: 10,
                         padding: 10,
                         // Include a dollar sign in the ticks
                         callback: function(value, index, values) {
-                            return number_format(value) + ' calories';
+                            return number_format(value) + ' workouts';
                         }
                     },
                     gridLines: {
@@ -431,7 +431,7 @@
                 callbacks: {
                     label: function(tooltipItem, chart) {
                         var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel) + " cal";
+                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel) + " workouts";
                     }
                 }
             },
