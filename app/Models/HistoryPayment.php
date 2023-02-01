@@ -14,9 +14,9 @@ class HistoryPayment extends Model
         'amount',
     ];
 
-    public function User()
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class , 'user_id');
     }
 
 }

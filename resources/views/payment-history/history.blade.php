@@ -46,7 +46,8 @@ Payment History
                                 <th scope="row">{{ $i + 1 }}</th>
                                 <td>
                                     <a href="{{ url('user', [$history->user_id]) }}">
-                                        {{ DB::table('customers')->where('id', '=', $history->user_id)->get()[0]->name }}
+                                        {{$history->user->name}}
+                                        {{-- {{ DB::table('customers')->where('id', '=', $history->user_id)->get()[0]->name }} --}}
                                     </a>
                                 </td>
                                 <td>{{ $history->date_time }}</td>
