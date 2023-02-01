@@ -7,6 +7,7 @@ use App\Http\Controllers\BannerImageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ExerciseSetsController;
+use App\Http\Controllers\FreeExerciseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IosNotifiactionController;
 use App\Http\Controllers\NotifictaionController;
@@ -113,6 +114,8 @@ Route::middleware('auth')->group(function () {
     // Search
     Route::get('exercises/{keyword}', [ExerciseController::class, 'searchExercise']);
 
+
+
     #Exercise Sets
     // All Sets
     Route::get('sets', [ExerciseSetsController::class, 'index']);
@@ -205,6 +208,47 @@ Route::middleware('auth')->group(function () {
 
         // Delete
             Route::get('questions/delete/{questionId}', [QuestionController::class, 'delete'])->name('question.delete');
+
+
+
+    /*Free Exe Routes Start */
+    #Exercise
+    // All Exercises
+    Route::get('free_exercises', [FreeExerciseController::class, 'index']);
+    // Add Exercise
+    Route::get('free_add-exercise', [FreeExerciseController::class, 'addExercise']);
+    Route::post('free_add-exercise', [FreeExerciseController::class, 'addExercisePost']);
+    // Delete Exerciese
+    Route::get('free_delete-exercise/{exId}', [FreeExerciseController::class, 'deleteExercise']);
+    // Edit Exercise
+    Route::get('free_edit-exercise/{exId}', [FreeExerciseController::class, 'editExercise']);
+    Route::Post('free_edit-exercise/{exId}', [FreeExerciseController::class, 'editExercisePost']);
+    // Exercise Steps
+    Route::get('free_exercise-steps/{exId}', [FreeExerciseController::class, 'ExerciseSteps']);
+    // Add Exercise Step
+    Route::get('free_add-exercise-step/{exId}', [FreeExerciseController::class, 'addExerciseStep']);
+    Route::post('free_add-exercise-step/{exId}', [FreeExerciseController::class, 'addExerciseStepPost']);
+    // Delete Step
+    Route::get('free_delete-exercise-step/{stepId}', [FreeExerciseController::class, 'deleteExerciseStep']);
+    // Update Step
+    Route::get('free_update-exercise-step/{stepId}', [FreeExerciseController::class, 'updateExerciseStep']);
+    Route::post('free_update-exercise-step/{stepId}', [FreeExerciseController::class, 'updateExerciseStepPost']);
+    // Search
+    Route::get('free_exercises/{keyword}', [FreeExerciseController::class, 'searchExercise']);
+
+    #Exercise Sets
+    // All Sets
+    Route::get('free_sets', [ExerciseSetsController::class, 'index']);
+    // Add Set
+    Route::get('free_add-set', [ExerciseSetsController::class, 'addSet']);
+    Route::post('free_add-set', [ExerciseSetsController::class, 'addSetPost']);
+    // Delete Set
+    Route::get('free_delete-set/{setId}', [ExerciseSetsController::class, 'deleteSet']);
+    // Edit Set
+    Route::get('free_edit-set/{setId}', [ExerciseSetsController::class, 'editSet']);
+    Route::post('free_edit-set/{setId}', [ExerciseSetsController::class, 'editSetPost']);
+
+    /*Free Exe Routes END */
 
 
 
