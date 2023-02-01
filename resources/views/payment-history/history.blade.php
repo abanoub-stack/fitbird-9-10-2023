@@ -46,7 +46,11 @@ Payment History
                                 <th scope="row">{{ $i + 1 }}</th>
                                 <td>
                                     <a href="{{ url('user', [$history->user_id]) }}">
-                                        {{$history->user->name}}
+                                        @if ($history->user != null)
+                                            {{$history->user->name}}
+                                        @else
+                                            "This User Deleted"
+                                        @endif
                                         {{-- {{ DB::table('customers')->where('id', '=', $history->user_id)->get()[0]->name }} --}}
                                     </a>
                                 </td>
