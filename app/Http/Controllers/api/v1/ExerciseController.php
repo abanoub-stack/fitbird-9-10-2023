@@ -9,7 +9,7 @@ use App\Models\Category;
 use App\Models\Exercise;
 use Illuminate\Http\Request;
 use App\Http\Resources\GetExerciseByCategoryResource;
-
+use App\Models\FreeExercise;
 
 class ExerciseController extends Controller
 {
@@ -66,5 +66,46 @@ class ExerciseController extends Controller
             ]);
         }
     }
+
+
+
+    public function getFreeexercisebycategory(Request $request)
+    {
+        if ($request->has('cat_id')) {
+            $category = Category::find($request->cat_id);
+            if ($category) {
+                $exercises = FreeExercise::where('category_id', '=', $request->cat_id)->get();
+                return response()->json([
+                    'data' => [
+                        'success' => '1',
+                        'exercise' => [
+                            'create' => GetExerciseByCategoryResource::collection($exercises),
+                            'update' => [],
+                            'delete' => [],
+                        ],
+                    ],
+                ]);
+            } else {
+                return response()->json([
+                    'data' => [
+                        'success' => '1',
+                        'exercise' => [
+                            'create' => [],
+                            'update' => [],
+                            'delete' => [],
+                        ],
+                    ],
+                ]);
+            }
+        } else {
+            return response()->json([
+                'data' => [
+                    'success' => '0',
+                    'exercise' => __('enter your data perfectly'),
+                ],
+            ]);
+        }
+    }
+
 
 }
