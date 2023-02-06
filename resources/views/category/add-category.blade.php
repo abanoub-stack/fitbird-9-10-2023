@@ -27,14 +27,30 @@ Category
                                 <form class="user" action="{{ url('add-category', []) }}" enctype="multipart/form-data" method="POST">
                                     @csrf
 
+
+                                    <div class="form-group">
+                                        <label>Has Parent ?</label>
+                                        <select name="parent_id" class="form-control">
+                                            <option value="">No Parent</option>
+                                            @foreach ($cats as $cat)
+                                            <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     <div class="form-group">
                                         <label>Category Name</label>
                                         <input type="text" name="category_name" class="form-control form-control-user">
                                     </div>
+
+
+
                                     <div class="form-group">
                                         <label>Description</label>
                                         <input type="text" name="category_description" class="form-control form-control-user">
                                     </div>
+
+
                                     <div class="form-group">
                                         <label>Level</label>
                                         <input type="text" name="category_level" class="form-control form-control-user">

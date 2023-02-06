@@ -37,6 +37,15 @@
             </li>
 
 
+            <!-- Nav Item - Sub weeks -->
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ url('/weeks', []) }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Subscribe Weeks Panel</span>
+                </a>
+            </li>
+
+
             <!-- Nav Item - Exercises -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ExercisesCollapse"

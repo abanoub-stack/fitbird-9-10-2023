@@ -20,12 +20,14 @@ class CategoryController extends Controller
 
     public function addCategory()
     {
-        return view('category.add-category');
+        $cats = Category::orderBy('name')->get();
+        return view('category.add-category' , compact('cats'));
     }
 
     public function addCategoryPost(Request $request)
     {
         $request->validate([
+            'parent_id' => 'nullable|exists:categories,id',
             'category_name' => 'required|string|max:50',
             'category_description' => 'required|string',
             'category_level' => 'required|string|max:50',
@@ -37,6 +39,7 @@ class CategoryController extends Controller
 
         $category = Category::create([
             'name' => $request->category_name,
+            'parent_id' => $request->parent_id,
             'description' => $request->category_description,
             'level' => $request->category_level,
             'icon' => $iconPath,
@@ -46,7 +49,7 @@ class CategoryController extends Controller
             'message' => __('Added A New Category'),
         ]);
         $request->session()->flash('category_added_successfully', "Category $category->name created successfully");
-        return redirect(url('/categories'));
+        return redirect(url('/categories'))->with('success' , "Category $category->name created successfully");
     }
 
     public function deleteCategory($catId, Request $request)
@@ -72,8 +75,11 @@ class CategoryController extends Controller
     public function editCategory($catId)
     {
         $category = Category::findOrFail($catId);
+        $cats = Category::orderBy('name')->get();
+
         return view('category.edit-category', [
             'cat' => $category,
+            'cats' => $cats,
         ]);
     }
 
@@ -96,6 +102,7 @@ class CategoryController extends Controller
 
         $category->update([
             'name' => $request->category_name,
+            'parent_id' => $request->parent_id,
             'description' => $request->category_description,
             'level' => $request->category_level,
             'icon' => $iconPath,
@@ -105,7 +112,7 @@ class CategoryController extends Controller
             'message' => __("Edited Category $category->name"),
         ]);
         $request->session()->flash('category_updated_successfully', "Category $category->name updated successfully");
-        return redirect(url('/categories'));
+        return redirect(url('/categories'))->with('success' , "Category $category->name updated successfully");
     }
 
     public function searchCategory(Request $request)
@@ -118,6 +125,32 @@ class CategoryController extends Controller
         return view('category.categories', [
             'categories' => $categories,
         ]);
+    }
+
+    public function getSubCategories($id , Request $request)
+    {
+        if($request->ajax())
+        {
+            $subcats = Category::select('id' , 'name')->where('parent_id', $id)->get();
+
+            if($subcats->count() > 0)
+            {
+                return
+                [
+                    'success' =>true,
+                    'data' =>$subcats
+                ];
+            }
+            else
+            {
+                return
+                [
+                    'success' =>false,
+                    'data' =>null
+                ];
+            }
+
+        }
     }
 
 }

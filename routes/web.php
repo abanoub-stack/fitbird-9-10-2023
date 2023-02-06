@@ -16,7 +16,9 @@ use App\Http\Controllers\PaymentHistoryController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SubscribeWeeksController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\TestTimeSlotController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -264,6 +266,19 @@ Route::middleware('auth')->group(function () {
 
     // Delete
     Route::get('banner/delete/{bannerId}', [BannerImageController::class, 'delete'])->name('banner.delete');
+
+
+
+    //Test Time Slot
+    Route::get('test/timeslot', [TestTimeSlotController::class, 'test'])->name('timeslot.test');
+    Route::get('test/timeslot2', [TestTimeSlotController::class, 'test2'])->name('timeslot.test2');
+
+    //Subscribed weeks
+    Route::get('weeks/', [SubscribeWeeksController::class, 'index'])->name('weeks.index');
+    Route::get('categories/getSubCats/{id}', [CategoryController::class, 'getSubCategories'])->name('category.getSubs');
+    Route::get('weeks/getExeByCategory/{id}', [SubscribeWeeksController::class, 'getExeByCategory']);
+    Route::get('weeks/getCustomerInfo/{id}', [SubscribeWeeksController::class, 'getCustomerInfo']);
+
 
 
 

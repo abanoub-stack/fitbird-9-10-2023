@@ -66,7 +66,7 @@ All Exercises
                             <th scope="col">Time</th>
                             <th scope="col">Calories</th>
                             <th scope="col">Image</th>
-                            <th scope="col">Repeat Count</th>
+                            <th scope="col">Rips</th>
                             <th scope="col">Url</th>
                             <th scope="col">Steps</th>
                             <th scope="col">Created At</th>

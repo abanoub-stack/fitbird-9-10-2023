@@ -30,6 +30,9 @@ Route::middleware(['api-guest'])->group(function () {
     //Check Email Exits
     Route::post('check-email-exist',[AuthController::class, 'CheckEmail']);
 
+    //Get Profile Info
+    Route::post('profile-getInfo',[AuthController::class, 'getProfileInfo']);
+
 
     // Login
     Route::post('login', [AuthController::class, 'login']);

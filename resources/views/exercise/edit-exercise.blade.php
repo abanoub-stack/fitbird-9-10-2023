@@ -47,7 +47,7 @@ Exercises
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Repeat Count</label>
+                                        <label>Rips</label>
                                         <input type="number" value="{{ $exercise->repeat_count }}" name="exercise_repeat_count"
                                             class="form-control">
                                     </div>

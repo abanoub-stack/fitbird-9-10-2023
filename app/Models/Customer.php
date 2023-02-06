@@ -72,4 +72,9 @@ class Customer extends Model
         return $this->hasMany(Progress::class , 'customer_id');
     }
 
+    public function subscribeWeeks()
+    {
+        return $this->hasOne(SubscribeWeeks::class , 'customer_id');
+    }
+
 }

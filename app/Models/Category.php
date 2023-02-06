@@ -13,6 +13,7 @@ class Category extends Model
         'description',
         'level',
         'icon',
+        'parent_id'
     ];
 
     public function Exercises()
@@ -28,6 +29,16 @@ class Category extends Model
     public function Packages()
     {
         return $this->hasMany(Package::class);
+    }
+
+    /**
+     * Get the subCategory associated with the Category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function subCategory()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 
 }

@@ -64,6 +64,7 @@ All Categories
                         <tr>
                             <th>#</th>
                             <th>Name</th>
+                            <th>Parent</th>
                             <th>Description</th>
                             <th>Level</th>
                             <th>Icons</th>
@@ -80,6 +81,16 @@ All Categories
                             <tr>
                                 <th scope="row">{{ $i + 1 }}</th>
                                 <td>{{ $cat->name }}</td>
+                                @if ($cat->subCategory != null)
+                                    <td>
+                                        <a href="{{ url('edit-category', $cat->parent_id) }}">
+                                            {{ $cat->subCategory->name }}
+                                        </a>
+                                    </td>
+                                @else
+                                    <td>No Parent</td>
+                                @endif
+
                                 <td style="width: 30%">{{ $cat->description }}</td>
                                 <td>{{ $cat->level }}</td>
                                 <td><a class="m-auto" href="{{ asset('uploads/' . $cat->icon) }}" target="_blank"><img class="m-auto"

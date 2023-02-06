@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\HistoryPayment;
 use App\Models\Progress;
+use App\Models\SubscribeWeeks;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -139,7 +140,58 @@ class UserController extends Controller
             'subscription_started_at' => $startedAt,
             'subscription_finished_at' => $finishedAt,
         ]);
-        return redirect(url('/users/premium'));
+
+        //Create Weeks of subscribe
+
+        $weeks_number = 0;
+        if ($customer->subscription_type =="month") {
+            $weeks_number = 4;
+        }
+
+
+        elseif ($customer->subscription_type == "three_months") {
+            $weeks_number = 12;
+        }
+
+
+        elseif ($customer->subscription_type == "six_months") {
+            $weeks_number = 24;
+        }
+
+        elseif ($customer->subscription_type == "year") {
+            $weeks_number = 48;
+        }
+        $weeks_array = [];
+        for($i =1 ; $i<= $weeks_number; $i++)
+        {
+            for($j =1 ; $j<= 7; $j++)
+            {
+                $weeks_array [$i][$j] =
+                    [
+                        //exe array associative array with exe_id => completed or not
+                        'exe_array' =>
+                            [
+
+                                // 12 => true,
+                                // 14 => false,
+
+                            ],
+
+                            'is_completed' => false,
+
+                    ];
+            }
+        }
+
+
+        $weeks_subscribe = SubscribeWeeks::create(
+            [
+                'customer_id' => $customer->id,
+                'data' => json_encode($weeks_array),
+            ]
+        );
+
+        return redirect(url('/users/premium'))->with('success', $customer->name . ' Subscribed Successfully!');
     }
 
 
