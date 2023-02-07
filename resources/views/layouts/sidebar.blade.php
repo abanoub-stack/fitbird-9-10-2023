@@ -56,7 +56,7 @@
                 <div id="ExercisesCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Exercises Actions:</h6>
-                        <a class="collapse-item" href="{{ url('/exercises', []) }}">List All Exercises</a>
+                        <a class="collapse-item" href="{{ url('/exercises', []) }}">List Premium Exercises</a>
                         <a class="collapse-item" href="{{ url('/free_exercises', []) }}">List Free Exercises</a>
                         <a class="collapse-item" href="{{ url('/sets', []) }}">Exercises Sets</a>
 

@@ -5,21 +5,29 @@ Exercises
 @section('css')
 <!-- Custom styles for this page -->
 <link href="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+<style>
+    body , .card
+    {
+        background-color: rgba(224, 209, 0, 0.103) !important;
+    }
+</style>
 @endsection
 
 
 @section('content')
 
 @section('head-title')
-All Exercises
+<span class="text-warning font-weight-bolder"> Premium </span> Exercises
+
 @endsection
 
 
 
 <!-- DataTales Example -->
-<div class="card shadow mb-4">
+<div class="card shadow mb-4 ">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">All Exercises</h6>
+        <h6 class="m-0 font-weight-bold text-primary"><span class="text-warning font-weight-bolder"> Premium </span> Exercises
+        </h6>
         <div class="float-right">
             <a href="{{ url('add-exercise') }}" class="btn btn-success">
                 Add Exercise

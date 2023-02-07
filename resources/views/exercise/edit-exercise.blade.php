@@ -5,7 +5,7 @@ Edit Exercise
 @section('content')
 
 @section('head-title')
-Exercises
+<span class="text-warning font-weight-bolder"> Premium </span> Exercises
 @endsection
 
 <!-- Outer Row -->

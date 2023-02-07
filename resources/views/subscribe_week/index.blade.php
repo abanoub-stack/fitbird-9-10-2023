@@ -232,9 +232,10 @@
         .btn-primary:not(:disabled):not(.disabled):active,
         .show > .btn-primary.dropdown-toggle {
         border-radius: 6px;
-        background: linear-gradient(30deg, #b0dfff, #ffffff62);
+        /* background: linear-gradient(30deg, #b0dfff, #ffffff62); */
+        /* background: linear-gradient(30deg, #b0dfff, #ffffff62); */
         box-shadow: 5px 5px 10px #c9c9c9, -5px -5px 10px #ffffff;
-        color: black;
+        color: white;
         }
 
         .btn-primary:hover {
@@ -255,69 +256,69 @@
     Subscribed Weeks Control Panel
 @endsection
 
-    <section class="filters my-3">
+<section class="filters my-3">
 
-        <div class="row">
+    <div class="row">
 
-            <div class="col-lg-4 col-md-12" id="cat">
-                <div class="form-group">
-                    <label>Category </label>
-                    <br>
-                    <select name="parent_id" id="cat_select" class="form-control">
-                        <option value="">Please Select Category</option>
-                        @foreach ($cats as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+        <div class="col-lg-4 col-md-12" id="cat">
+            <div class="form-group">
+                <label>Category </label>
+                <br>
+                <select name="parent_id" id="cat_select" class="form-control">
+                    <option value="">Please Select Category</option>
+                    @foreach ($cats as $cat)
+                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                    @endforeach
+                </select>
             </div>
-
-            <div class="col-lg-4 col-md-12" style="display: none;" id="subcat">
-                <div class="form-group ">
-                    <label class="form-label">Sub Category</label>
-                    <br>
-                    <select name="category" id="subcats_select" class="form-control">
-
-                    </select>
-
-                </div>
-            </div>
-
-
-            <div class="col-lg-4 col-md-12" id="customers">
-                <div class="form-group">
-                    <label>Premium Customers </label>
-                    <select name="customer_id" id="customer_select" class="form-control">
-                        <option value="">Please Select Customer</option>
-                        @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->name }}
-                                |
-                                @if ($customer->subscription_type == 'year')
-                                    Year (<span class="font-weight-bold" style="font-weight: bolder !important">48</span>
-                                    weeks)
-                                @elseif($customer->subscription_type == 'six_months')
-                                    Six Months (<span class="font-weight-bold"
-                                        style="font-weight: bolder !important">24</span> weeks)
-                                @elseif($customer->subscription_type == 'three_months')
-                                    Three Months (<span class="font-weight-bold"
-                                        style="font-weight: bolder !important">12</span> weeks)
-                                @elseif($customer->subscription_type == 'month')
-                                    Month (<span class="font-weight-bold" style="font-weight: bolder !important">4</span>
-                                    weeks)
-                                @endif
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
         </div>
 
-    </section>
+        <div class="col-lg-4 col-md-12" style="display: none;" id="subcat">
+            <div class="form-group ">
+                <label class="form-label">Sub Category</label>
+                <br>
+                <select name="category" id="subcats_select" class="form-control">
+
+                </select>
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-4 col-md-12" id="customers">
+            <div class="form-group">
+                <label>Premium Customers </label>
+                <select name="customer_id" id="customer_select" class="form-control">
+                    <option value="">Please Select Customer</option>
+                    @foreach ($customers as $customer)
+                        <option value="{{ $customer->id }}">{{ $customer->name }}
+                            |
+                            @if ($customer->subscription_type == 'year')
+                                Year (<span class="font-weight-bold" style="font-weight: bolder !important">48</span>
+                                weeks)
+                            @elseif($customer->subscription_type == 'six_months')
+                                Six Months (<span class="font-weight-bold"
+                                    style="font-weight: bolder !important">24</span> weeks)
+                            @elseif($customer->subscription_type == 'three_months')
+                                Three Months (<span class="font-weight-bold"
+                                    style="font-weight: bolder !important">12</span> weeks)
+                            @elseif($customer->subscription_type == 'month')
+                                Month (<span class="font-weight-bold" style="font-weight: bolder !important">4</span>
+                                weeks)
+                            @endif
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+</section>
 
 
 <section class="data">
     <div class="row">
-        <form action="{{route('weeks.save')}}" method="post" >
+        <form  id="panel_form" >
             @csrf
             <input type="hidden" name="customer_id" id="customer_input">
             <div class="col-lg-12">
@@ -346,13 +347,13 @@
                                 <div class="btn-group-container d-inline-flex p-3" >
                                     <div class="m-auto row" data-toggle="buttons" id="weeks_div">
 
-                                        <div class="col-lg-3 col-xs-6">
+                                        {{-- <div class="col-lg-3 col-xs-6">
                                             <label class="btn btn-primary form-check-label active">
                                                 <input class="form-check-input" type="radio" name="week" id="week"
                                                     autocomplete="off" checked>
                                                 Week 1
                                             </label>
-                                        </div>
+                                        </div> --}}
 
 
 
@@ -364,36 +365,50 @@
 
                             <div class="container mt-2 pt-5">
                                 <div class="btn-group-container d-inline-flex p-3">
-                                    <div class="m-auto" data-toggle="buttons">
-                                        <label class="btn btn-primary form-check-label active">
-                                            <input class="form-check-input" type="radio" name="day" value="1" id="day-1"
-                                                autocomplete="off" checked>
-                                            Day 1
-                                        </label>
-                                        <label class="btn btn-primary form-check-label">
-                                            <input class="form-check-input" type="radio" name="day" value="2" id="day-2"
-                                                autocomplete="off"> Day 2
-                                        </label>
-                                        <label class="btn btn-primary form-check-label">
-                                            <input class="form-check-input" type="radio" name="day" value="3" id="day-3"
-                                                autocomplete="off"> Day 3
-                                        </label>
-                                        <label class="btn btn-primary form-check-label">
-                                            <input class="form-check-input" type="radio" name="day" value="4" id="day-4"
-                                                autocomplete="off"> Day 4
-                                        </label>
-                                        <label class="btn btn-primary form-check-label">
-                                            <input class="form-check-input" type="radio" name="day" value="5" id="day-5"
-                                                autocomplete="off"> Day 5
-                                        </label>
-                                        <label class="btn btn-primary form-check-label">
-                                            <input class="form-check-input" type="radio" name="day" value="6" id="day-6"
-                                                autocomplete="off"> Day 6
-                                        </label>
-                                        <label class="btn btn-primary form-check-label">
-                                            <input class="form-check-input" type="radio" name="day" value="7" id="day-7"
-                                                autocomplete="off"> Day 7
-                                        </label>
+                                    <div class="m-auto row" data-toggle="buttons">
+                                        <div class="col-lg-3 col-xs-6">
+                                            <label class="btn btn-primary form-check-label active">
+                                                <input class="form-check-input" type="radio" name="day" value="1" id="day-1"
+                                                    autocomplete="off" checked>
+                                                Day 1
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-6">
+                                            <label class="btn btn-primary form-check-label">
+                                                <input class="form-check-input" type="radio" name="day" value="2" id="day-2"
+                                                    autocomplete="off"> Day 2
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-6">
+                                            <label class="btn btn-primary form-check-label">
+                                                <input class="form-check-input" type="radio" name="day" value="3" id="day-3"
+                                                    autocomplete="off"> Day 3
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-6">
+                                            <label class="btn btn-primary form-check-label">
+                                                <input class="form-check-input" type="radio" name="day" value="4" id="day-4"
+                                                    autocomplete="off"> Day 4
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-6">
+                                            <label class="btn btn-primary form-check-label">
+                                                <input class="form-check-input" type="radio" name="day" value="5" id="day-5"
+                                                    autocomplete="off"> Day 5
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-6">
+                                            <label class="btn btn-primary form-check-label">
+                                                <input class="form-check-input" type="radio" name="day" value="6" id="day-6"
+                                                    autocomplete="off"> Day 6
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-6">
+                                            <label class="btn btn-primary form-check-label">
+                                                <input class="form-check-input" type="radio" name="day" value="7" id="day-7"
+                                                    autocomplete="off"> Day 7
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -411,12 +426,12 @@
                             <div class="form-group text-left">
                                 <label>Exercises</label>
 
+                                {{-- Serach --}}
                                 <div class="row">
-                                    <div class="col-6">
-                                    </div>
-                                    <div class="col-6">
+
+                                    <div class="col-12">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-lg-10 col-md-10">
                                                 <div class="input-group mb-5">
                                                     <input type="text" class="input form-control" placeholder="Search" id="search">
                                                     <div class="input-group-append">
@@ -426,25 +441,24 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
-                                                <input type="submit" class="btn btn-dark" value="Submit">
+                                            <div class="col-lg-2 col-md-2 d-flex justify-content-start" style="height: 100%;">
+                                                <input type="submit" id="sub-form" class="btn btn-dark" value="Submit">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-
-
-
+                                {{-- Checkboxs List --}}
                                 <div class="row" id="checkboxes2">
                                     @foreach ($exes as $ex)
-                                        <div class="search-col col-md-6 col-xs-12 mb-1">
-                                            <input type="checkbox" id="{{ $ex->name }}" value="{{$ex->id}}" name="exercises[]">
+                                        <div class="search-col col-md-6 col-xs-12 mb-1" cat_id={{$ex->category_id}}>
+                                            <input type="checkbox"  id="{{ $ex->name }}" value="{{$ex->id}}" name="exercises[]">
                                             {{ $ex->name }}
                                             <hr>
                                         </div>
                                     @endforeach
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -578,11 +592,12 @@
 {{-- Cat Filters --}}
 <script>
     $(document).ready(function() {
+        old_boxs = $("#checkboxes2").html();
 
         //On Change of Category Select
         $('#cat_select').on('change', function() {
 
-            if (this.value != null) {
+            if (this.value != '') {
                 //1- Get Sub Cats IF Exist
                 $.ajax({
                     method: 'GET',
@@ -662,6 +677,24 @@
 
                     },
                 });
+
+                // var cate_id = document.getElementById("cat_select");
+                // const labels = document.querySelectorAll("#checkboxes2 > div.search-col");
+
+
+
+
+
+            }
+            else
+            {
+                console.log(old_boxs);
+                if ($('#subcat').css('display') != 'none')
+                    {
+                                $('#subcat').hide('fast');
+                                $("select#subcats_select").empty();
+                    }
+                $("#checkboxes2").html(old_boxs);
             }
 
 
@@ -762,8 +795,18 @@
 
                             $("#weeks_div").empty(); //Clear Old Data Before Add New EXES
                             for (var i = 1; i <= number_of_weeks ; i++) {
-                            str1 = '<div class="col-lg-3 col-xs-6"><label class=\"btn btn-primary form-check-label\">            ';
-                            str2=  '<input class="form-check-input" type="radio" name="week" value=\" ' + i +'\"  > Week ' + i + '</label></div>';
+                                if(i == 1)
+                                {
+                                    str1 = '<div class="col-lg-4 col-xs-6"><label class=\"btn btn-primary form-check-label active\">            ';
+                                    str2=  '<input class="form-check-input" checked type="radio" name="week" value=\"' + i +'\"  > Week ' + i + '</label></div>';
+
+                                }
+                                else
+                                {
+                                    str1 = '<div class="col-lg-4 col-xs-6"><label class=\"btn btn-primary form-check-label\">            ';
+                                    str2=  '<input class="form-check-input" type="radio" name="week" value=\"' + i +'\"  > Week ' + i + '</label></div>';
+                                }
+
                                 $("#weeks_div").
                                 append(str1+str2);
                             }
@@ -785,8 +828,34 @@
             {
                 $('#exe_col').removeClass('col-lg-5');
                 $('#weeks_col').hide('slow');
+                $('#customer_input').val('');
+
+
             }
         });
+
+
+        // On click Submit Buttons
+        $("#panel_form").submit(function(e){
+            //1- Get The Input Data (Week , Day , Customer_id , exe[])
+            e.preventDefault();
+
+            $.ajax({
+                type : 'POST',
+                url : 'weeks-save/',
+                data : $('#panel_form').serialize(),
+                success: function(result) {
+                    if (result.success == true)
+                    {
+                        alert(result.message);
+                        location.reload();
+                    }
+                    else
+                    alert(result.message);
+                }
+                });
+        });
+
 
     });
 </script>
@@ -796,8 +865,9 @@
 {{-- Exe Check Boxs Search --}}
 <script>
     const search = document.getElementById("search");
+    // console.log(search);
     const labels = document.querySelectorAll("#checkboxes2 > div.search-col");
-    // console.log(labels);
+    // console.log(labels[0].getAttribute('cat_id'));
     search.addEventListener("input", () => Array.from(labels).forEach((element) => element.style.display = element
         .childNodes[1].id.toLowerCase().includes(search.value.toLowerCase()) ? "inline" : "none"))
 </script>
