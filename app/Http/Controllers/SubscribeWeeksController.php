@@ -78,4 +78,19 @@ class SubscribeWeeksController extends Controller
 
 
 
+    //API functions
+    public function getByToken(Request $request)
+    {
+        $user = Customer::where('access_token', '=', $request->header('access_token'))->first();
+        $data = $user->subscribeWeeks()->first();
+        $weeks = json_decode($data->data);
+        return response()->json(
+            [
+                'success' => true,
+                'data' => $weeks,
+            ]);
+
+    }
+
+
 }

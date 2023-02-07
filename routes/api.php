@@ -18,6 +18,7 @@ use App\Http\Controllers\BannerImageController;
 use App\Http\Controllers\CancelRegistrationController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SubscribeWeeksController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
@@ -63,6 +64,11 @@ Route::middleware(['api-auth'])->group(function () {
     Route::post('progress/get-with-date', [ProgressController::class, 'getByFullDate']);
     Route::post('progress/save', [ProgressController::class, 'save']);
     // Progress Routes Ends
+
+
+    //  Sub Week Routes Start
+    Route::get('sub-weeks-of-user', [SubscribeWeeksController::class, 'getByToken']);
+    //  Sub Week Routes End
 
 
     // Profile Routes

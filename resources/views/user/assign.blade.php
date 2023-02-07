@@ -26,7 +26,7 @@ Assign Subscription To User
                             <div class="form-group">
                                 <label>User :</label>
                                 <select name="customer_id" class="form-control text-dark text-center" id="">
-                                    @foreach (DB::table('customers')->where('is_subscribed', '=', '0')->get() as $user)
+                                    @foreach (DB::table('customers')->orderBy('name' , 'asc')->get() as $user)
                                         <option value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
                                 </select>

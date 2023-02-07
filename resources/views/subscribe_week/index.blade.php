@@ -693,8 +693,8 @@
         });
 
 
-           //On Change of Sub Category Select
-           $('#customer_select').on('change', function() {
+        //On Change of Sub Category Select
+        $('#customer_select').on('change', function() {
 
             if (this.value != "") {
                 //1- Get Customer Info
@@ -716,13 +716,15 @@
                             var weeks_data = JSON.parse(result.data['subscribe_weeks']['data']);
                             var number_of_weeks = objectLength = Object.keys(weeks_data).length;
 
-                            console.log(customer_name);
 
                             //Change user info
                             $('h4#c_name').text(customer_name);
                             $('span#c_exe_days').text(exercise_days);
                             $('span#c_sub_weeks').text(number_of_weeks);
+                            //Change user info
 
+
+                            
 
 
 
@@ -742,7 +744,7 @@
                 $('#exe_col').removeClass('col-lg-5');
                 $('#weeks_col').hide('slow');
             }
-            });
+        });
 
     });
 </script>
