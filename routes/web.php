@@ -275,6 +275,7 @@ Route::middleware('auth')->group(function () {
 
     //Subscribed weeks
     Route::get('weeks/', [SubscribeWeeksController::class, 'index'])->name('weeks.index');
+    Route::post('weeks-save/', [SubscribeWeeksController::class, 'save'])->name('weeks.save');
     Route::get('categories/getSubCats/{id}', [CategoryController::class, 'getSubCategories'])->name('category.getSubs');
     Route::get('weeks/getExeByCategory/{id}', [SubscribeWeeksController::class, 'getExeByCategory']);
     Route::get('weeks/getCustomerInfo/{id}', [SubscribeWeeksController::class, 'getCustomerInfo']);

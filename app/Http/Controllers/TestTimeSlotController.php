@@ -59,8 +59,8 @@ class TestTimeSlotController extends Controller
                         'exe_array' =>
                             [
 
-                                12 => true,
-                                14 => false,
+                                // 12 => true,
+                                // 14 => false,
 
                             ],
                             'is_completed' => false,
@@ -69,6 +69,6 @@ class TestTimeSlotController extends Controller
             }
         }
 
-        return $weeks_array;
+        return json_encode($weeks_array);
     }
 }

@@ -68,6 +68,8 @@ Route::middleware(['api-auth'])->group(function () {
 
     //  Sub Week Routes Start
     Route::get('sub-weeks-of-user', [SubscribeWeeksController::class, 'getByToken']);
+    Route::get('number-of-sub-weeks', [SubscribeWeeksController::class, 'getNumberOfSubWeeks']);
+    Route::post('sub-weeks-by-week-day', [SubscribeWeeksController::class, 'getByWeekDay']);
     //  Sub Week Routes End
 
 
@@ -120,6 +122,7 @@ Route::get('get_category.php', [V1CategoryController::class, 'get_category']);
 Route::get('get_exercise_step_list.php', [V1ExerciseStepController::class, 'get_exercise_step_list']);
 Route::get('get_exercise.php', [V1ExerciseSetController::class, 'get_exercise']);
 Route::get('get_set_by_category.php', [V1ExerciseSetController::class, 'get_set_by_category']);
+Route::get('get_free_set_by_category.php', [V1ExerciseSetController::class, 'get_free_set_by_category']);
 Route::get('getexercisebycategory.php', [V1ExerciseController::class, 'getexercisebycategory']);
 Route::get('get-free-exercisebycategory.php', [V1ExerciseController::class, 'getFreeexercisebycategory']);
 

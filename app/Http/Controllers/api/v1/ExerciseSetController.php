@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ExerciseResourse;
+use App\Http\Resources\FreeSetsCategoryResource;
 use App\Http\Resources\SetsCategoryResource;
 use App\Models\Category;
 use App\Models\Exercise;
@@ -56,6 +57,17 @@ class ExerciseSetController extends Controller
         // calories
         // level
         // description
+    }
+
+
+    public function get_free_set_by_category(Request $request)
+    {
+
+        $cats = Category::all();
+        return response()->json([
+            'success' => '1',
+            'exercise' => FreeSetsCategoryResource::collection($cats),
+        ]);
     }
 
 }
