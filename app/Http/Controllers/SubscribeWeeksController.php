@@ -250,7 +250,10 @@ class SubscribeWeeksController extends Controller
             {
                     $section = TrainingSection::find($key);
                     $exersices = Exercise::whereIn('id' , array_keys($value) )->get();
-                    $array[$section->name] = $exersices;
+                    $array []=   [
+                            'section_name' => $section->name,
+                            'exe_list' => $exersices,
+                            ] ;
             }
 
             // $exes = Exercise::whereIn('id' , array_keys($requested_day['exe_array']))->get();
@@ -259,7 +262,7 @@ class SubscribeWeeksController extends Controller
             return response()->json(
                 [
                     'success' => true,
-                    'category'=> $category,
+                    // 'category'=> $category,
                     'exersices' =>$array,
                     'is_completed' => $requested_day['is_completed'],
                 ]);
@@ -275,6 +278,68 @@ class SubscribeWeeksController extends Controller
 
 
     }
+
+
+    public function getWeekData(Request $request)
+    {
+        $validator = Validator::make($request->all() ,
+        [
+            'week' => 'required|numeric|min:1|max:48',
+
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
+
+        $week = $request->week;
+
+        $user = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        $data = $user->subscribeWeeks()->first();
+
+        if($data != null)
+        {
+            $weeks = json_decode($data->data , true);
+            $requested_week = $weeks[$week];
+
+            $cat_array = [];
+            foreach($requested_week as $key => $value)
+            {
+                if($value['category_id'] != null)
+                    {
+                        $cat_array [] = $value['category_id'];
+                    }
+            }
+
+
+
+            $categories = Category::select('id' , 'name')->whereIn('id' , $cat_array)->get();
+
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'categories'=> $categories,
+                ]);
+            }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => true,
+                    'data' => "No Data for this user",
+                ]);
+        }
+
+
+    }
+
 
     public function getNumberOfSubWeeks(Request $request)
     {

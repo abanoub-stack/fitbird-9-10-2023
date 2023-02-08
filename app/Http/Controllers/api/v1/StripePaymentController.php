@@ -100,6 +100,7 @@ class StripePaymentController extends Controller
                 {
                     $weeks_array [$i][$j] =
                         [
+                            'category_id' => null ,
                             //exe array associative array with exe_id => completed or not
                             'exe_array' =>
                                 [
@@ -229,6 +230,7 @@ class StripePaymentController extends Controller
                             {
                                 $weeks_array [$i][$j] =
                                     [
+                                        'category_id' => null ,
                                         //exe array associative array with exe_id => completed or not
                                         'exe_array' =>
                                             [
@@ -353,6 +355,7 @@ class StripePaymentController extends Controller
                 {
                     $weeks_array [$i][$j] =
                         [
+                            'category_id' => null ,
                             //exe array associative array with exe_id => completed or not
                             'exe_array' =>
                                 [
@@ -473,6 +476,7 @@ class StripePaymentController extends Controller
                 {
                     $weeks_array [$i][$j] =
                         [
+                            'category_id' => null ,
                             //exe array associative array with exe_id => completed or not
                             'exe_array' =>
                                 [
