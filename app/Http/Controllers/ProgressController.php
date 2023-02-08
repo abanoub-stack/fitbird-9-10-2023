@@ -144,7 +144,7 @@ class ProgressController extends Controller
             // else
             // {
 
-                
+
                 //Default
                 $reports = Progress::orderBy('progress_date' , 'asc')->get();
                 $now = Carbon::now()->setTimezone("GMT+2");
@@ -392,7 +392,6 @@ class ProgressController extends Controller
 
         $response = new  ProgressResource($old_progress);
 
-        // dd($old_progress);
 
 
         if ($old_progress) {

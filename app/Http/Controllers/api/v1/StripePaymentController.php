@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\HistoryPayment;
 use App\Models\Price;
+use App\Models\SubscribeWeeks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -71,6 +72,64 @@ class StripePaymentController extends Controller
                 'date_time' => "From $startedAt To $finishedAt",
                 'amount' => Price::first()->price,
             ]);
+
+
+            //Create Weeks of subscribe
+            $weeks_number = 0;
+            if ($user->subscription_type =="month") {
+                $weeks_number = 4;
+            }
+
+
+            elseif ($user->subscription_type == "three_months") {
+                $weeks_number = 12;
+            }
+
+
+            elseif ($user->subscription_type == "six_months") {
+                $weeks_number = 24;
+            }
+
+            elseif ($user->subscription_type == "year") {
+                $weeks_number = 48;
+            }
+            $weeks_array = [];
+            for($i =1 ; $i<= $weeks_number; $i++)
+            {
+                for($j =1 ; $j<= 7; $j++)
+                {
+                    $weeks_array [$i][$j] =
+                        [
+                            //exe array associative array with exe_id => completed or not
+                            'exe_array' =>
+                                [
+
+                                    // 12 => true,
+                                    // 14 => false,
+
+                                ],
+
+                                'is_completed' => false,
+
+                        ];
+                }
+            }
+
+
+            $weeks_subscribe = SubscribeWeeks::create(
+                [
+                    'customer_id' => $user->id,
+                    'data' => json_encode($weeks_array),
+                ]
+            );
+
+            //Create Weeks of subscribe END
+
+
+
+
+
+
 
             return response()->json([
                 'response_status' => $response->status,
@@ -142,6 +201,59 @@ class StripePaymentController extends Controller
                 'date_time' => "From $startedAt To $finishedAt",
                 'amount' => Price::first()->price_three_months,
             ]);
+
+
+                        //Create Weeks of subscribe
+                        $weeks_number = 0;
+                        if ($user->subscription_type =="month") {
+                            $weeks_number = 4;
+                        }
+
+
+                        elseif ($user->subscription_type == "three_months") {
+                            $weeks_number = 12;
+                        }
+
+
+                        elseif ($user->subscription_type == "six_months") {
+                            $weeks_number = 24;
+                        }
+
+                        elseif ($user->subscription_type == "year") {
+                            $weeks_number = 48;
+                        }
+                        $weeks_array = [];
+                        for($i =1 ; $i<= $weeks_number; $i++)
+                        {
+                            for($j =1 ; $j<= 7; $j++)
+                            {
+                                $weeks_array [$i][$j] =
+                                    [
+                                        //exe array associative array with exe_id => completed or not
+                                        'exe_array' =>
+                                            [
+
+                                                // 12 => true,
+                                                // 14 => false,
+
+                                            ],
+
+                                            'is_completed' => false,
+
+                                    ];
+                            }
+                        }
+
+
+                        $weeks_subscribe = SubscribeWeeks::create(
+                            [
+                                'customer_id' => $user->id,
+                                'data' => json_encode($weeks_array),
+                            ]
+                        );
+
+                        //Create Weeks of subscribe END
+
 
             return response()->json([
                 'response_status' => $response->status,
@@ -215,6 +327,53 @@ class StripePaymentController extends Controller
                 'amount' => Price::first()->price_six_months,
             ]);
 
+            //Create Weeks of subscribe
+            $weeks_number = 0;
+            if ($user->subscription_type =="month") {
+                $weeks_number = 4;
+            }
+
+
+            elseif ($user->subscription_type == "three_months") {
+                $weeks_number = 12;
+            }
+
+
+            elseif ($user->subscription_type == "six_months") {
+                $weeks_number = 24;
+            }
+
+            elseif ($user->subscription_type == "year") {
+                $weeks_number = 48;
+            }
+            $weeks_array = [];
+            for($i =1 ; $i<= $weeks_number; $i++)
+            {
+                for($j =1 ; $j<= 7; $j++)
+                {
+                    $weeks_array [$i][$j] =
+                        [
+                            //exe array associative array with exe_id => completed or not
+                            'exe_array' =>
+                                [
+
+                                    // 12 => true,
+                                    // 14 => false,
+
+                                ],
+                                'is_completed' => false,
+                        ];
+                }
+            }
+
+            $weeks_subscribe = SubscribeWeeks::create(
+                [
+                    'customer_id' => $user->id,
+                    'data' => json_encode($weeks_array),
+                ]
+            );
+            //Create Weeks of subscribe END
+
             return response()->json([
                 'response_status' => $response->status,
                 'response' => 200,
@@ -286,6 +445,54 @@ class StripePaymentController extends Controller
                 'date_time' => "From $startedAt To $finishedAt",
                 'amount' => Price::first()->price_year,
             ]);
+
+
+            //Create Weeks of subscribe
+            $weeks_number = 0;
+            if ($user->subscription_type =="month") {
+                $weeks_number = 4;
+            }
+
+
+            elseif ($user->subscription_type == "three_months") {
+                $weeks_number = 12;
+            }
+
+
+            elseif ($user->subscription_type == "six_months") {
+                $weeks_number = 24;
+            }
+
+            elseif ($user->subscription_type == "year") {
+                $weeks_number = 48;
+            }
+            $weeks_array = [];
+            for($i =1 ; $i<= $weeks_number; $i++)
+            {
+                for($j =1 ; $j<= 7; $j++)
+                {
+                    $weeks_array [$i][$j] =
+                        [
+                            //exe array associative array with exe_id => completed or not
+                            'exe_array' =>
+                                [
+
+                                    // 12 => true,
+                                    // 14 => false,
+
+                                ],
+                                'is_completed' => false,
+                        ];
+                }
+            }
+
+            $weeks_subscribe = SubscribeWeeks::create(
+                [
+                    'customer_id' => $user->id,
+                    'data' => json_encode($weeks_array),
+                ]
+            );
+            //Create Weeks of subscribe END
 
             return response()->json([
                 'response_status' => $response->status,

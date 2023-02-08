@@ -191,6 +191,9 @@ class UserController extends Controller
             ]
         );
 
+        //Create Weeks of subscribe END
+
+
         return redirect(url('/users/premium'))->with('success', $customer->name . ' Subscribed Successfully!');
     }
 

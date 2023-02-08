@@ -6,6 +6,8 @@ use App\Http\Resources\ExerciseResourse;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Exercise;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -119,6 +121,21 @@ class SubscribeWeeksController extends Controller
                         ->with('subscribeWeeks')
                         ->first();
 
+
+            //Handle Dates
+            $s_date = explode( '-' ,$customer->subscription_started_at);
+            $s_date[2] = explode( " " ,$s_date[2])[0];
+
+            $f_date = explode( '-' ,$customer->subscription_finished_at);
+            $f_date[2] = explode( " " ,$s_date[2])[0];
+
+            $subscription_started_at = Carbon::createFromFormat('Y/m/d', $s_date[0]."/".$s_date[1]."/".$s_date[2])->format('Y M:d');
+            $subscription_finished_at = Carbon::createFromFormat('Y/m/d', $f_date[0]."/".$f_date[1]."/".$f_date[2])->format('Y M:d');
+            $customer->subscription_started_at = $subscription_started_at;
+            $customer->subscription_finished_at = $subscription_finished_at;
+            //Handle Dates
+
+            //Add Customer Workouts (number of weeks * exedays)
 
             if($customer != null)
             {

@@ -333,8 +333,25 @@
                                     <div class="card-body">
                                         <h4 class="card-title d-inline" id="c_name">Ahmed Hassan</h4>
                                         <p class="card-text">
-                                            <h6> Exercise Days : <span class="font-weight-bold text-primary" id="c_exe_days">5</span> times in week</h6>
-                                            <h6> subscription  : <span class="font-weight-bold text-primary" id="c_sub_weeks">4</span> weeks</h6>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <h6> Exercise Days : <span class="font-weight-bold text-primary" id="c_exe_days">5</span> times in week</h6>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <h6> Started At  : <span class="font-weight-bold text-success" id="c_sub_weeks_start">4</span> </h6>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <h6> Subscription  : <span class="font-weight-bold text-primary" id="c_sub_weeks">4</span> weeks</h6>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <h6> End At  : <span class="font-weight-bold text-danger" id="c_sub_weeks_end">4</span> </h6>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <h6> Total Days of Workouts  : <span class="font-weight-bold text-info" id="c_sub_weeks_workouts">4</span> days</h6>
+                                                </div>
+                                            </div>
                                         </p>
                                     </div>
                                     </div>
@@ -629,6 +646,33 @@ $(document).ready(function() {
                 }
                 });
         });
+
+
+        $('input[type=radio][name=day]').change(function() {
+        if (this.value == 1) {
+            alert('1')
+        }
+        else if (this.value == 2) {
+            alert('2')
+        }
+
+        else if (this.value == 3) {
+            alert('3')
+        }
+        else if (this.value == 4) {
+            alert('4')
+        }
+
+        else if (this.value == 5) {
+            alert('5')
+        }
+        else if (this.value == 6) {
+            alert('6')
+        }
+        else if (this.value == 7) {
+            alert('7')
+        }
+});
 
 
 
