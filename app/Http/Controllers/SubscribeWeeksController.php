@@ -62,7 +62,6 @@ class SubscribeWeeksController extends Controller
 
                 $old_exe = array_keys($weeks[$week][$day]['exe_array']);
                 $exercises = array_merge($exercises , $old_exe);
-                // dd($exercises);
 
 
                 $new_array = [];
@@ -73,7 +72,6 @@ class SubscribeWeeksController extends Controller
                 $weeks[$week][$day]['exe_array'] = $new_array;
                 $customer->subscribeWeeks()->update(['data' => json_encode($weeks)]);
 
-                // dd(json_decode($customer->subscribeWeeks()->first()->data) , true);
 
                 return response()->json(
                     [
@@ -244,6 +242,54 @@ class SubscribeWeeksController extends Controller
 
     }
 
+
+
+    public function CompleteDay(Request $request)
+    {
+        $validator = Validator::make($request->all() ,
+        [
+            'week' => 'required|numeric|min:1|max:48',
+            'day' => 'required|numeric|min:1|max:7'
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
+        $week = $request->week;
+        $day = $request->day;
+        $user = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        $data = $user->subscribeWeeks()->first();
+
+        if($data != null)
+        {
+            $weeks = json_decode($data->data , true);
+            $weeks[$week][$day]['is_completed'] = true;
+            $user->subscribeWeeks()->update(['data' => json_encode($weeks)]);
+            // dd(json_decode($user->subscribeWeeks()->first()->data));
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Day Updated Successfully",
+                    'data' => $weeks[$week][$day],
+                ]);
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => true,
+                    'data' => "No Data for this user",
+                ]);
+        }
+
+
+    }
 
 
 

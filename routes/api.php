@@ -70,6 +70,7 @@ Route::middleware(['api-auth'])->group(function () {
     Route::get('sub-weeks-of-user', [SubscribeWeeksController::class, 'getByToken']);
     Route::get('number-of-sub-weeks', [SubscribeWeeksController::class, 'getNumberOfSubWeeks']);
     Route::post('sub-weeks-by-week-day', [SubscribeWeeksController::class, 'getByWeekDay']);
+    Route::post('complete-day', [SubscribeWeeksController::class, 'CompleteDay']);
     //  Sub Week Routes End
 
 

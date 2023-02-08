@@ -318,7 +318,7 @@
 
 <section class="data">
     <div class="row">
-        <form  id="panel_form" >
+        <form  id="panel_form"  method="POST">
             @csrf
             <input type="hidden" name="customer_id" id="customer_input">
             <div class="col-lg-12">
@@ -589,260 +589,34 @@
     });
 </script>
 
-{{-- Cat Filters --}}
+
+
+
+{{-- Exe Check Boxs Search --}}
 <script>
-    $(document).ready(function() {
-        old_boxs = $("#checkboxes2").html();
-
-        //On Change of Category Select
-        $('#cat_select').on('change', function() {
-
-            if (this.value != '') {
-                //1- Get Sub Cats IF Exist
-                $.ajax({
-                    method: 'GET',
-                    url: "categories/getSubCats/" + this.value,
-                    success: function(result) {
+    const search = document.getElementById("search");
+    // console.log(search);
+    const labels = document.querySelectorAll("#checkboxes2 > div.search-col");
+    // console.log(labels[0].getAttribute('cat_id'));
+    search.addEventListener("input", () => Array.from(labels).forEach((element) => element.style.display = element
+        .childNodes[1].id.toLowerCase().includes(search.value.toLowerCase()) ? "inline" : "none"))
+</script>
 
 
-                        if (result.success == true) //Has Sub Cats
-                        {
-                            for (var i = 0; i < result["data"].length; i++) {
-                                $("select#subcats_select").append('<option value="' +
-                                    result['data'][i]['id'] + '">' + result['data'][i][
-                                        'name'
-                                    ] + '</option>');
-                            }
+<script>
 
-                            if ($('#subcat').css('display') == 'none') {
-                                $('#subcat').show('slow');
-                            }
-
-                        } else //Has Not Sub Cats
-                        {
-
-                            if ($('#subcat').css('display') != 'none') {
-                                $('#subcat').hide('fast');
-                                $("select#subcats_select").empty();
-                            }
-                            console.log('no sub cats');
-                        }
-
-                    },
-                });
-
-                //2- Get Exe Of This Category
-                $.ajax({
-                    method: 'GET',
-                    url: "weeks/getExeByCategory/" + this.value,
-                    success: function(result) {
+$(document).ready(function() {
 
 
-                        if (result.success == true) //Has exe
-                        {
-                            $("#checkboxes2").empty(); //Clear Old Data Before Add New EXES
-                            for (var i = 0; i < result["data"].length; i++) {
-                                s1 =
-                                '<div class="search-col col-md-6 col-xs-12 mb-1"> <input type="checkbox" id="';
-                                s2 = '" value="  '+result['data'][i]['id']+' " name="exercises[]';
-                                $("#checkboxes2").
-                                append(s1 + result['data'][i]['name'] + s2 + result['data'][
-                                        i
-                                    ]['id'] + '"> ' + result['data'][i]['name'] +
-                                    '<hr> </div>');
-                            }
-
-                            if ($('#checkboxes2').css('display') == 'none') {
-                                $('#checkboxes2').show('slow');
-                            }
-
-                            //ADD NEW LIST OF EXES
-                            var search = document.getElementById("search");
-                            var labels = document.querySelectorAll(
-                                "#checkboxes2 > div.search-col");
-                            search.addEventListener("input", () => Array.from(labels)
-                                .forEach((element) => element.style.display = element
-                                    .childNodes[1].id.toLowerCase().includes(search
-                                        .value.toLowerCase()) ? "inline" : "none"))
-
-                        } else //Has Not Any Exe
-                        {
-
-                            if ($('#checkboxes2').css('display') != 'none') {
-                                $("#checkboxes2").empty();
-                                // $('#checkboxes2').hide('fast');
-                            }
-                            console.log('no exe for this cat');
-                        }
-
-                    },
-                });
-
-                // var cate_id = document.getElementById("cat_select");
-                // const labels = document.querySelectorAll("#checkboxes2 > div.search-col");
-
-
-
-
-
-            }
-            else
-            {
-                console.log(old_boxs);
-                if ($('#subcat').css('display') != 'none')
-                    {
-                                $('#subcat').hide('fast');
-                                $("select#subcats_select").empty();
-                    }
-                $("#checkboxes2").html(old_boxs);
-            }
-
-
-        });
-
-        //On Change of Sub Category Select
-        $('#subcats_select').on('change', function() {
-
-            if (this.value != null) {
-                //1- Get Exe Of This Sub Category
-                $.ajax({
-                    method: 'GET',
-                    url: "weeks/getExeByCategory/" + this.value,
-                    success: function(result) {
-
-
-                        if (result.success == true) //Has exe
-                        {
-                            $("#checkboxes2").empty(); //Clear Old Data Before Add New EXES
-                            for (var i = 0; i < result["data"].length; i++) {
-                                s1 =
-                                '<div class="search-col col-md-6 col-xs-12 mb-1"> <input type="checkbox" id="';
-                                s2 = '" value="  '+result['data'][i]['id']+' " name="exercises[]';
-                                $("#checkboxes2").
-                                append(s1 + result['data'][i]['name'] + s2 + result['data'][
-                                        i
-                                    ]['id'] + '"> ' + result['data'][i]['name'] +
-                                    '<hr> </div>');
-                            }
-
-                            if ($('#checkboxes2').css('display') == 'none') {
-                                $('#checkboxes2').show('slow');
-                            }
-
-                            //ADD NEW LIST OF EXES
-                            var search = document.getElementById("search");
-                            var labels = document.querySelectorAll(
-                                "#checkboxes2 > div.search-col");
-                            search.addEventListener("input", () => Array.from(labels)
-                                .forEach((element) => element.style.display = element
-                                    .childNodes[1].id.toLowerCase().includes(search
-                                        .value.toLowerCase()) ? "inline" : "none"))
-
-                        } else //Has Not Any Exe
-                        {
-
-                            if ($('#checkboxes2').css('display') != 'none') {
-                                $("#checkboxes2").empty();
-                                // $('#checkboxes2').hide('fast');
-                            }
-                            console.log('no exe for this cat');
-                        }
-
-                    },
-                });
-            }
-        });
-
-
-        //On Change of Customer
-        $('#customer_select').on('change', function() {
-
-            if (this.value != "") {
-
-                //1- Assign him to the form inputs
-                $('#customer_input').val(this.value);
-
-                //2- Get Customer Info
-                $.ajax({
-                    method: 'GET',
-                    url: "weeks/getCustomerInfo/" + this.value,
-                    success: function(result) {
-
-                        if (result.success == true) //Has exe
-                        {
-                            //Show The weeks Column and minimize the exe col
-                            $('#exe_col').addClass('col-lg-5');
-                            $('#weeks_col').show('slow');
-                            var customer_name = result.data['name'];
-                            var exercise_days = result.data['exercise_days'];
-                            var customer_subscription_type = result.data['subscription_type'];
-                            var customer_subscription_started_at = result.data['subscription_started_at'];
-                            var customer_subscription_finished_at = result.data['subscription_finished_at'];
-                            var weeks_data = JSON.parse(result.data['subscribe_weeks']['data']);
-                            var number_of_weeks = objectLength = Object.keys(weeks_data).length;
-
-
-                            //Change user info
-                            $('h4#c_name').text(customer_name);
-                            $('span#c_exe_days').text(exercise_days);
-                            $('span#c_sub_weeks').text(number_of_weeks);
-                            //Change user info
-
-
-                            //Fetch Weeks
-
-
-
-                            $("#weeks_div").empty(); //Clear Old Data Before Add New EXES
-                            for (var i = 1; i <= number_of_weeks ; i++) {
-                                if(i == 1)
-                                {
-                                    str1 = '<div class="col-lg-4 col-xs-6"><label class=\"btn btn-primary form-check-label active\">            ';
-                                    str2=  '<input class="form-check-input" checked type="radio" name="week" value=\"' + i +'\"  > Week ' + i + '</label></div>';
-
-                                }
-                                else
-                                {
-                                    str1 = '<div class="col-lg-4 col-xs-6"><label class=\"btn btn-primary form-check-label\">            ';
-                                    str2=  '<input class="form-check-input" type="radio" name="week" value=\"' + i +'\"  > Week ' + i + '</label></div>';
-                                }
-
-                                $("#weeks_div").
-                                append(str1+str2);
-                            }
-
-
-
-
-
-                        } else //Has Not Any Exe
-                        {
-                            //decode josn data of weeks
-                            console.log(JSON.parse(result.data['subscribe_weeks']['data']));
-                        }
-
-                    },
-                });
-            }
-            else
-            {
-                $('#exe_col').removeClass('col-lg-5');
-                $('#weeks_col').hide('slow');
-                $('#customer_input').val('');
-
-
-            }
-        });
-
-
-        // On click Submit Buttons
-        $("#panel_form").submit(function(e){
+       // On click Submit Buttons
+       $("#panel_form").submit(function(e){
             //1- Get The Input Data (Week , Day , Customer_id , exe[])
             e.preventDefault();
 
             $.ajax({
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 type : 'POST',
-                url : 'weeks-save/',
+                url : 'weeks-save',
                 data : $('#panel_form').serialize(),
                 success: function(result) {
                     if (result.success == true)
@@ -857,18 +631,11 @@
         });
 
 
-    });
+
+});
 </script>
 
 
 
-{{-- Exe Check Boxs Search --}}
-<script>
-    const search = document.getElementById("search");
-    // console.log(search);
-    const labels = document.querySelectorAll("#checkboxes2 > div.search-col");
-    // console.log(labels[0].getAttribute('cat_id'));
-    search.addEventListener("input", () => Array.from(labels).forEach((element) => element.style.display = element
-        .childNodes[1].id.toLowerCase().includes(search.value.toLowerCase()) ? "inline" : "none"))
-</script>
+<script src="{{asset('dashboard/js/custom/sub-weeks.js')}}"></script>
 @endsection
