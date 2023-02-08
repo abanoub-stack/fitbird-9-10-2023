@@ -19,6 +19,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SubscribeWeeksController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TestTimeSlotController;
+use App\Http\Controllers\TrainingSectionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -257,15 +258,25 @@ Route::middleware('auth')->group(function () {
     //Banner Images
     //Index page
     Route::get('banner', [BannerImageController::class, 'index'])->name('banner.index');
-
-
     //Create
     Route::get('banner/create', [BannerImageController::class, 'create'])->name('banner.create');
     Route::post('banner/store', [BannerImageController::class, 'store'])->name('banner.store');
-
-
     // Delete
     Route::get('banner/delete/{bannerId}', [BannerImageController::class, 'delete'])->name('banner.delete');
+
+
+
+    //Training Sections
+    //Index page
+    Route::get('tsection', [TrainingSectionController::class, 'index'])->name('tsection.index');
+    //Create
+    Route::get('tsection/create', [TrainingSectionController::class, 'create'])->name('tsection.create');
+    Route::post('tsection/store', [TrainingSectionController::class, 'store'])->name('tsection.store');
+    Route::get('tsection/edit/{sectionID}', [TrainingSectionController::class, 'edit'])->name('tsection.edit');
+    Route::post('tsection/update', [TrainingSectionController::class, 'update'])->name('tsection.update');
+
+    // Delete
+    Route::get('tsection/delete/{sectionID}', [TrainingSectionController::class, 'delete'])->name('tsection.delete');
 
 
 
