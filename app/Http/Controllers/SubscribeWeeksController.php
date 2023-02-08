@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ExerciseResourse;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Exercise;
+use App\Models\TrainingSection;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -15,26 +17,32 @@ class SubscribeWeeksController extends Controller
 {
     public function index()
     {
-        $cats = Category::where('parent_id' , null)->orderBy('name' , 'asc')->get();
+        $cats = Category::orderBy('name' , 'asc')->get();
         $customers = Customer::select('id' , 'name' , 'subscription_type')->where('is_subscribed' , 1)->orderBy('name' , 'asc')->get();
         $exes = Exercise::orderBy('name' , 'asc')->with('Category')->get();
-        return view('subscribe_week.index' , compact('cats' , 'customers' , 'exes'));
+        $sections = TrainingSection::orderBy('name' , 'asc')->get();
+        return view('subscribe_week.index' , compact('cats' , 'customers' , 'exes' , 'sections'));
     }
 
     public function save(Request $request)
     {
         if($request->ajax())
         {
+            // dd($request->all());
             $validator = Validator::make($request->all(),
             [
                 'customer_id' => 'required|numeric|exists:customers,id',
+                'category_id' => 'required|numeric|exists:categories,id',
+                'section_id' => 'required|numeric|exists:training_sections,id',
                 'week' => 'required|numeric|min:1|max:48',
                 'day' => 'required|numeric|min:1|max:7',
                 "exercises"    => "required|array",
                 "exercises.*"  => "required|exists:exercises,id",
             ] ,
             [
-                'customer_id' => "Please Select Customer First",
+                'customer_id' => "Please Select Customer ",
+                'category_id' => "Please Select Category ",
+                'section_id' => "Please Select Traing Section ",
                 'week' => "Please Select Week",
                 'day' => "Please Select Day",
                 "exercises"    => "Please Select Some exercises",
@@ -54,16 +62,25 @@ class SubscribeWeeksController extends Controller
             $day = $request->day;
             $exercises = $request->exercises;
             $customer = Customer::find($request->customer_id);
+            $category = Category::find($request->category_id);
+            $section = TrainingSection::find($request->section_id);
+
             $data = $customer->subscribeWeeks()->first();
-
-
 
             if($data != null)
             {
-                $weeks = json_decode($data->data , true);
+                $weeks = json_decode($data->data , true); //Total Old Data
 
-                $old_exe = array_keys($weeks[$week][$day]['exe_array']);
-                $exercises = array_merge($exercises , $old_exe);
+
+                // Update Category_id
+                $weeks[$week][$day]['category_id'] = $category->id;
+
+
+                if(isset($weeks[$week][$day]['exe_array'][$section->id]))
+                {
+                    $old_exe = array_keys($weeks[$week][$day]['exe_array'][$section->id]); //Old Exe IDS
+                    $exercises = array_merge($exercises , $old_exe);
+                }
 
 
                 $new_array = [];
@@ -71,8 +88,17 @@ class SubscribeWeeksController extends Controller
                 {
                     $new_array[$exercises[$i]] = false;
                 }
-                $weeks[$week][$day]['exe_array'] = $new_array;
+
+
+                //Updates
+                $weeks[$week][$day]['exe_array'][$section->id] = $new_array;
+
+                // dd($weeks);
+
+
+
                 $customer->subscribeWeeks()->update(['data' => json_encode($weeks)]);
+
 
 
                 return response()->json(
@@ -202,8 +228,10 @@ class SubscribeWeeksController extends Controller
                     'message' => $validator->errors()->first(),
                 ]);
         }
+
         $week = $request->week;
         $day = $request->day;
+
         $user = Customer::where('access_token', '=', $request->header('access_token'))->first();
 
         $data = $user->subscribeWeeks()->first();
@@ -211,13 +239,28 @@ class SubscribeWeeksController extends Controller
         if($data != null)
         {
             $weeks = json_decode($data->data , true);
+            // dd($weeks);
             $requested_day = $weeks[$week][$day];
-            $exes = Exercise::whereIn('id' , array_keys($requested_day['exe_array']))->get();
-            $exe = new ExerciseResourse($exes);
+            $category = Category::find($requested_day['category_id']);
+            $category = new CategoryResource($category);
+            // $exes = array_keys($requested_day['exe_array']) ;
+
+            $array = [];
+            foreach($requested_day['exe_array'] as $key => $value )
+            {
+                    $section = TrainingSection::find($key);
+                    $exersices = Exercise::whereIn('id' , array_keys($value) )->get();
+                    $array[$section->name] = $exersices;
+            }
+
+            // $exes = Exercise::whereIn('id' , array_keys($requested_day['exe_array']))->get();
+            // $exe = new ExerciseResourse($exes);
+
             return response()->json(
                 [
                     'success' => true,
-                    'exes' =>$exes,
+                    'category'=> $category,
+                    'exersices' =>$array,
                     'is_completed' => $requested_day['is_completed'],
                 ]);
             }

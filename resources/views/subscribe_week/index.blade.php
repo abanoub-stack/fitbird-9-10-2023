@@ -24,7 +24,7 @@
 
         .dropdown-select,
         #cat_select,
-        #subcats_select {
+        #subcats_select,.select-box {
             background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
             background-repeat: repeat-x;
             filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#40FFFFFF', endColorstr='#00FFFFFF', GradientType=0);
@@ -57,13 +57,13 @@
 
         .dropdown-select:focus,
         #cat_select:focus,
-        #subcats_select:focus {
+        #subcats_select:focus,.select-box:focus {
             background-color: #fff;
         }
 
         .dropdown-select:hover,
         #cat_select:hover,
-        #subcats_select:hover {
+        #subcats_select:hover,.select-box:hover {
             background-color: #fff;
         }
 
@@ -76,7 +76,7 @@
 
         .dropdown-select:after,
         #cat_select:after,
-        #subcats_select:after {
+        #subcats_select:after,.select-box:after {
             height: 0;
             width: 0;
             border-left: 4px solid transparent;
@@ -112,7 +112,8 @@
 
         .dropdown-select.wide,
         #cat_select,
-        #subcats_select {
+        #subcats_select ,
+        .select-box {
             width: 100%;
         }
 
@@ -264,10 +265,23 @@
             <div class="form-group">
                 <label>Category </label>
                 <br>
-                <select name="parent_id" id="cat_select" class="form-control">
+                <select name="parent_id" id="cat_select" class="form-control select-box">
                     <option value="">Please Select Category</option>
                     @foreach ($cats as $cat)
                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12 " id="training-section">
+            <div class="form-group">
+                <label>Training Sections </label>
+                <br>
+                <select name="parent_id" id="section_select" class="form-control select-box">
+                    <option value="">Please Select Section</option>
+                    @foreach ($sections as $section)
+                        <option value="{{ $section->id }}">{{ $section->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -321,6 +335,8 @@
         <form  id="panel_form"  method="POST">
             @csrf
             <input type="hidden" name="customer_id" id="customer_input">
+            <input type="hidden" name="category_id" id="category_input">
+            <input type="hidden" name="section_id" id="section_input">
             <div class="col-lg-12">
                 <div class="row">
                     {{-- Weeks Start --}}

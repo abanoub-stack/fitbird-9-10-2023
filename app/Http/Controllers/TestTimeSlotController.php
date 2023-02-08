@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SubscribeWeeks;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
@@ -55,12 +56,18 @@ class TestTimeSlotController extends Controller
             {
                 $weeks_array [$i][$j] =
                     [
+
+                        "category_id" => 5,
+
                         //exe array associative array with exe_id => completed or not
                         'exe_array' =>
                             [
-
-                                // 12 => true,
-                                // 14 => false,
+                                //section_id => [list of exes]
+                                5 =>
+                                    [
+                                        12 => true,
+                                        14 => false,
+                                    ]
 
                             ],
                             'is_completed' => false,
@@ -69,6 +76,10 @@ class TestTimeSlotController extends Controller
             }
         }
 
-        return json_encode($weeks_array);
+        $w = SubscribeWeeks::first();
+        return (json_decode($w->data));
+
+
     }
+
 }
