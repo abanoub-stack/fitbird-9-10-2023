@@ -64,9 +64,9 @@ All Free Exercises
                             <th scope="col">Name</th>
                             <th scope="col">Category</th>
                             <th scope="col">Time</th>
-                            <th scope="col">Calories</th>
+                            {{-- <th scope="col">Calories</th> --}}
                             <th scope="col">Image</th>
-                            <th scope="col">Repeat Count</th>
+                            <th scope="col">Rips</th>
                             <th scope="col">Url</th>
                             <th scope="col">Steps</th>
                             <th scope="col">Created At</th>
@@ -89,7 +89,7 @@ All Free Exercises
                             <td> "NA"</td>
                             @endif
                             <td>{{ $exercise->timee }}</td>
-                            <td>{{ $exercise->calories }}</td>
+                            {{-- <td>{{ $exercise->calories }}</td> --}}
                             <td><a href="{{ asset('/uploads/' . $exercise->image) }}" target="_blank"><img
                                         src="{{ asset('/uploads/' . $exercise->image) }}" style="height: 90px ; object-fit: contain">
                                 </a></td>

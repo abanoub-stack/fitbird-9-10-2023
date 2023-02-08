@@ -46,14 +46,14 @@ Add Exercise
                                         <input  value="{{old('exercise_time')}}" type="number" name="exercise_time" class="form-control">
                                     </div>
 
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label>Calories</label>
                                         <input  value="{{old('exercise_calories')}}" type="number" name="exercise_calories" class="form-control">
-                                    </div>
+                                    </div> --}}
 
                                     <div class="form-group">
                                         <label>Rips</label>
-                                        <input  value="{{old('exercise_repeat_count')}}" type="number" name="exercise_repeat_count" class="form-control">
+                                        <input  value="{{old('rips')}}" type="text" name="rips" class="form-control">
                                     </div>
 
                                     <div class="form-group">

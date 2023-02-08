@@ -47,8 +47,8 @@ Free Exercises
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Repeat Count</label>
-                                        <input type="number" value="{{ $exercise->repeat_count }}" name="exercise_repeat_count"
+                                        <label>Rips</label>
+                                        <input type="text" value="{{ $exercise->repeat_count }}" name="rips"
                                             class="form-control">
                                     </div>
 
@@ -58,11 +58,11 @@ Free Exercises
                                             class="form-control">
                                     </div>
 
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label>Calories</label>
                                         <input type="number" value="{{ $exercise->calories }}" name="exercise_calories"
                                             class="form-control">
-                                    </div>
+                                    </div> --}}
 
                                     <div class="form-group">
                                         <label>Url</label>

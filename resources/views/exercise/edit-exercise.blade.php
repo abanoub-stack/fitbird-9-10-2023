@@ -48,7 +48,7 @@ Edit Exercise
 
                                     <div class="form-group">
                                         <label>Rips</label>
-                                        <input type="number" value="{{ $exercise->repeat_count }}" name="exercise_repeat_count"
+                                        <input type="text" value="{{ $exercise->repeat_count }}" name="rips"
                                             class="form-control">
                                     </div>
 
@@ -58,11 +58,6 @@ Edit Exercise
                                             class="form-control">
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Calories</label>
-                                        <input type="number" value="{{ $exercise->calories }}" name="exercise_calories"
-                                            class="form-control">
-                                    </div>
 
                                     <div class="form-group">
                                         <label>Url</label>

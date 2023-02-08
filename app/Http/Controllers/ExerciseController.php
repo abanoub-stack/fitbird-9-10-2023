@@ -31,27 +31,18 @@ class ExerciseController extends Controller
 
         $validator = Validator::make($request->all(),
         [
-                'exercise_name' => 'required|string|max:50',
-                'exercise_category' => 'required|numeric|exists:categories,id',
-                'exercise_time' => 'required|numeric',
-                'exercise_calories' => 'required|numeric',
-                'exercise_repeat_count' => 'required|numeric|max:1000',
-                'exercise_url' => 'nullable|string|max:255',
-                'exercise_image' => 'required|image|mimes:jpg,jpeg,png,gif'
+            'exercise_name' => 'required|string|max:50',
+            'exercise_category' => 'required|numeric|exists:categories,id',
+            'exercise_time' => 'required|numeric',
+            // 'exercise_calories' => 'required|numeric',
+            'rips' => 'required',
+            'exercise_url' => 'nullable|string|max:255',
+            'exercise_image' => 'required|image|mimes:jpg,jpeg,png,gif'
         ]);
 
         if($validator->fails())
         return back()->withErrors($validator->errors())->withInput();
 
-        // $request->validate([
-        //     'exercise_name' => 'required|string|max:50',
-        //     'exercise_category' => 'required|numeric|exists:categories,id',
-        //     'exercise_time' => 'required|numeric',
-        //     'exercise_calories' => 'required|numeric',
-        //     'exercise_repeat_count' => 'required|numeric|max:1000',
-        //     'exercise_url' => 'nullable|string|max:255',
-        //     'exercise_image' => 'required|image|mimes:jpg,jpeg,png,gif',
-        // ]);
 
         // image
         $exerciseImagePath = Storage::putFile('exercises', $request->exercise_image);
@@ -59,7 +50,7 @@ class ExerciseController extends Controller
 
         $exercise = Exercise::create([
             'name' => $request->exercise_name,
-            'repeat_count' => $request->exercise_repeat_count,
+            'repeat_count' => $request->rips,
             'url' => $request->exercise_url ?? null,
             'timee' => $request->exercise_time,
             'calories' => $request->exercise_calories,
@@ -104,24 +95,16 @@ class ExerciseController extends Controller
         [
             'exercise_name' => 'required|string|max:50',
             'exercise_category' => 'required|numeric|exists:categories,id',
-            'exercise_repeat_count' => 'required|numeric|max:100',
+            'rips' => 'required',
             'exercise_time' => 'required|numeric|max:1000',
-            'exercise_calories' => 'required|numeric',
+            // 'exercise_calories' => 'required|numeric',
             'exercise_url' => 'required|string|max:255',
             'exercise_image' => 'nullable|image|mimes:jpg,jpeg,png,gif',
         ]);
 
         if($validator->fails())
         return back()->withErrors($validator->errors())->withInput();
-        // $request->validate([
-        //     'exercise_name' => 'required|string|max:50',
-        //     'exercise_category' => 'required|numeric|exists:categories,id',
-        //     'exercise_repeat_count' => 'required|numeric|max:100',
-        //     'exercise_time' => 'required|numeric|max:1000',
-        //     'exercise_calories' => 'required|numeric',
-        //     'exercise_url' => 'required|string|max:255',
-        //     'exercise_image' => 'nullable|image|mimes:jpg,jpeg,png,gif',
-        // ]);
+
 
         // image
         if ($request->hasFile('exercise_image')) {
@@ -134,9 +117,9 @@ class ExerciseController extends Controller
         $exercise->update([
             'name' => $request->exercise_name,
             'category_id' => $request->exercise_category,
-            'repeat_count' => $request->exercise_repeat_count,
+            'repeat_count' => $request->rips,
             'timee' => $request->exercise_time,
-            'calories' => $request->exercise_calories,
+            // 'calories' => $request->exercise_calories,
             'url' => $request->exercise_url,
             'image' => $exerciseImagePath,
         ]);
