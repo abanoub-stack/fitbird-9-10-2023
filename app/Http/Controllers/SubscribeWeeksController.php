@@ -307,25 +307,40 @@ class SubscribeWeeksController extends Controller
         {
             $weeks = json_decode($data->data , true);
             $requested_week = $weeks[$week];
-
             $cat_array = [];
+
             foreach($requested_week as $key => $value)
             {
+
+
                 if($value['category_id'] != null)
                     {
-                        $cat_array [] = $value['category_id'];
+
+
+                        foreach ($value['exe_array'] as $section_id => $exes) {
+                            $exe_ids = array_keys($exes);
+                            $total_time = Exercise::whereIn('id', $exe_ids )->sum('timee');
+                        }
+
+
+                        $cat_array [] =
+                                [
+                                        'day' => $key,
+                                        'category' => Category::select('id' , 'name' , 'icon')
+                                            ->where('id',$value['category_id'])->first(),
+                                        'time_seconds' =>  $total_time ,
+
+                                ];
                     }
+
             }
 
-
-
-            $categories = Category::select('id' , 'name')->whereIn('id' , $cat_array)->get();
 
 
             return response()->json(
                 [
                     'success' => true,
-                    'categories'=> $categories,
+                    'categories'=> $cat_array,
                 ]);
             }
         else
@@ -417,6 +432,61 @@ class SubscribeWeeksController extends Controller
     }
 
 
+
+    public function getCustomerWorkoutsDetails(Request $request)
+    {
+        $customer = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        $weeks_number = 0;
+        if ($customer->subscription_type =="month") {
+            $weeks_number = 4;
+        }
+
+
+        elseif ($customer->subscription_type == "three_months") {
+            $weeks_number = 12;
+        }
+
+
+        elseif ($customer->subscription_type == "six_months") {
+            $weeks_number = 24;
+        }
+
+        elseif ($customer->subscription_type == "year") {
+            $weeks_number = 48;
+        }
+        $total_workouts = $customer->exercise_days * $weeks_number;
+
+
+
+
+        $customer_weeks = json_decode($customer->subscribeWeeks()->first()->data , true);
+
+        $complete_counter = 0;
+        foreach ($customer_weeks as $weeks => $week) {
+            foreach ($week as $day => $data) {
+                //If The Day is Completed then increment the complete counter
+                if($data['is_completed']) $complete_counter++  ;
+                // $c_array [] = $data['is_completed'];
+            }
+        }
+
+
+        return response()->json(
+            [
+                'success' => true,
+                'sub_type' => $customer->subscription_type,
+                'sub_weeks' => $weeks_number,
+                'exercise_days' => $customer->exercise_days,
+                'total_workouts' => $total_workouts,
+                'completed_workouts' =>$complete_counter ,
+            ]
+        );
+
+
+
+
+    }
 
 
 }

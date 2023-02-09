@@ -72,6 +72,7 @@ Route::middleware(['api-auth'])->group(function () {
     Route::post('sub-weeks-by-week-day', [SubscribeWeeksController::class, 'getByWeekDay']);
     Route::post('get-sub-week-data', [SubscribeWeeksController::class, 'getWeekData']);
     Route::post('complete-day', [SubscribeWeeksController::class, 'CompleteDay']);
+    Route::get('get-customer-workouts-details', [SubscribeWeeksController::class, 'getCustomerWorkoutsDetails']);
     //  Sub Week Routes End
 
 

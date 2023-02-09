@@ -76,6 +76,7 @@ class AuthController extends Controller
             'exercise_days' => $request->exercise_days,
             'password' => bcrypt($request->password),
             'access_token' => $access_token,
+            'is_subscribed' => '0',
         ]);
 
         //Image
@@ -333,6 +334,10 @@ class AuthController extends Controller
             );
         }
     }
+
+
+
+    
 
 
 
