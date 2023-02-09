@@ -48,6 +48,7 @@ Route::middleware(['api-guest'])->group(function () {
 
 # AUTH #
 Route::middleware(['api-auth'])->group(function () {
+    Route::middleware(['check-sub'])->group(function () {
 
 
     //Questions Routes Start
@@ -111,6 +112,7 @@ Route::middleware(['api-auth'])->group(function () {
     // Route::get('remove-credit', [RemoveCreditCardController::class, 'removeCreditCard']);
     #Cancel Registration
     Route::get('cancel-registration', [CancelRegistrationController::class, 'cancelSubcription']);
+    });
 });
 
 
@@ -130,9 +132,7 @@ Route::get('getexercisebycategory.php', [V1ExerciseController::class, 'getexerci
 Route::get('get-free-exercisebycategory.php', [V1ExerciseController::class, 'getFreeexercisebycategory']);
 
 Route::get('subscription-prices', [PackageController::class, 'subscriptionPrices']);
-Route::get('all-users', function () {
-    return Customer::all(['id', 'name', 'email', 'phone']);
-});
+Route::get('all-users', function () {return Customer::all(['id', 'name', 'email', 'phone']);});
 
 
 Route::get('user_register.php', [V1RegisterController::class, 'user_register']);

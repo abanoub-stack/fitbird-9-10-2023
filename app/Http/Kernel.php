@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
+        'check-sub' => \App\Http\Middleware\Check_Subscription::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'api-auth' => \App\Http\Middleware\API_AUTH::class,
         'api-guest' => \App\Http\Middleware\API_GUEST::class,
