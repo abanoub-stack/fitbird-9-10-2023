@@ -117,12 +117,26 @@ class StripePaymentController extends Controller
             }
 
 
-            $weeks_subscribe = SubscribeWeeks::create(
-                [
-                    'customer_id' => $user->id,
-                    'data' => json_encode($weeks_array),
-                ]
-            );
+
+        $old_sub = SubscribeWeeks::where('customer_id' , $user->id)->first();
+
+        if($old_sub)
+            {
+                $user->subscribeWeeks()->update(
+                    [
+                        'data' => json_encode($weeks_array),
+                    ]
+                );
+            }
+        else
+            {
+                $weeks_subscribe = SubscribeWeeks::create(
+                    [
+                        'customer_id' => $user->id,
+                        'data' => json_encode($weeks_array),
+                    ]
+                );
+            }
 
             //Create Weeks of subscribe END
 
@@ -369,12 +383,26 @@ class StripePaymentController extends Controller
                 }
             }
 
-            $weeks_subscribe = SubscribeWeeks::create(
-                [
-                    'customer_id' => $user->id,
-                    'data' => json_encode($weeks_array),
-                ]
-            );
+
+        $old_sub = SubscribeWeeks::where('customer_id' , $user->id)->first();
+
+        if($old_sub)
+            {
+                $user->subscribeWeeks()->update(
+                    [
+                        'data' => json_encode($weeks_array),
+                    ]
+                );
+            }
+        else
+            {
+                $weeks_subscribe = SubscribeWeeks::create(
+                    [
+                        'customer_id' => $user->id,
+                        'data' => json_encode($weeks_array),
+                    ]
+                );
+            }
             //Create Weeks of subscribe END
 
             return response()->json([
@@ -490,12 +518,26 @@ class StripePaymentController extends Controller
                 }
             }
 
-            $weeks_subscribe = SubscribeWeeks::create(
-                [
-                    'customer_id' => $user->id,
-                    'data' => json_encode($weeks_array),
-                ]
-            );
+
+        $old_sub = SubscribeWeeks::where('customer_id' , $user->id)->first();
+
+        if($old_sub)
+            {
+                $user->subscribeWeeks()->update(
+                    [
+                        'data' => json_encode($weeks_array),
+                    ]
+                );
+            }
+        else
+            {
+                $weeks_subscribe = SubscribeWeeks::create(
+                    [
+                        'customer_id' => $user->id,
+                        'data' => json_encode($weeks_array),
+                    ]
+                );
+            }
             //Create Weeks of subscribe END
 
             return response()->json([

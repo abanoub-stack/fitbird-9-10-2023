@@ -290,6 +290,13 @@ Route::middleware('auth')->group(function () {
     Route::get('categories/getSubCats/{id}', [CategoryController::class, 'getSubCategories'])->name('category.getSubs');
     Route::get('weeks/getExeByCategory/{id}', [SubscribeWeeksController::class, 'getExeByCategory']);
     Route::get('weeks/getCustomerInfo/{id}', [SubscribeWeeksController::class, 'getCustomerInfo']);
+    Route::get('weeks/getEXEInfo/{id}', [SubscribeWeeksController::class, 'getEXEInfo']);
+    Route::get('weeks/deleteEXE-fromDay/', [SubscribeWeeksController::class, 'deleteEXEbyDay']);
+
+
+    Route::post('weeks/by-week-day', [SubscribeWeeksController::class, 'Dashboard_getByWeekDay']);
+    Route::post('weeks/get-sub-week-data', [SubscribeWeeksController::class, 'Dashboard_getWeekData']);
+    Route::get('weeks/get-customer-workouts-details', [SubscribeWeeksController::class, 'Dashboard_getCustomerWorkoutsDetails']);
 
 
 

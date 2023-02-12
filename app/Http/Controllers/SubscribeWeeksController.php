@@ -10,6 +10,7 @@ use App\Models\Exercise;
 use App\Models\TrainingSection;
 use Carbon\Carbon;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -184,6 +185,348 @@ class SubscribeWeeksController extends Controller
     }
 
 
+    public function getEXEInfo($id , Request $request)
+    {
+        if($request->ajax())
+        {
+
+            $exe= Exercise::find($id);
+            if($exe != null)
+            {
+                return
+                [
+                    'success' =>true,
+                    'data' =>$exe
+                ];
+            }
+            else
+            {
+                return
+                [
+                    'success' =>false,
+                    'data' =>null
+                ];
+            }
+
+        }
+    }
+
+    public function deleteEXEbyDay(Request $request)
+    {
+
+        $validator = Validator::make($request->all(),
+            [
+
+                'customer_id' => 'required|numeric|exists:customers,id',
+                'section_id' => 'required|numeric|exists:training_sections,id',
+                'week' => 'required|numeric|min:1|max:48',
+                'day' => 'required|numeric|min:1|max:7',
+                "exercise_id"    => "required",
+
+            ] ,
+            [
+                'customer_id' => "Please Select Customer ",
+                'section_id' => "Please Select Traing Section ",
+                'week' => "Please Select Week",
+                'day' => "Please Select Day",
+                "exercise_id"    => "Please Select exercise",
+            ]
+
+        );
+
+
+         if($validator->fails())
+         {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ]);
+         }
+
+
+         $week = $request->week;
+         $day = $request->day;
+         $section_id = $request->section_id;
+         $exercise_id = $request->exercise_id;
+         $customer = Customer::find($request->customer_id);
+         $weeks = $customer->subscribeWeeks()->first();
+         $data = json_decode($weeks->data , true);
+
+         //Start The Functionality
+         try
+         {
+            $exe_arr = $data[$week][$day]['exe_array'][$section_id];
+            foreach ($exe_arr as $exe_id => $is_completed) {
+                   if($exe_id == $exercise_id)
+                   {
+                       unset($exe_arr[$exe_id]);
+                   }
+            }
+
+
+            $new_data = $data; //intailize with old data
+
+
+            //If the exe array has been empty, then delete the exe_section from the array
+            if(count($exe_arr) == 0)
+                {
+                    $sections = $data[$week][$day]['exe_array'];
+                    // dd($sections);
+                    foreach ($sections as $sec_id => $exe_arrays) {
+                           if($sec_id == $section_id)
+                           {
+                               unset($sections[$section_id]);
+                           }
+                    }
+
+                    $new_data[$week][$day]['exe_array'] = $sections;
+
+                }
+            else
+                {
+
+                    $new_data[$week][$day]['exe_array'][$section_id] = $exe_arr;
+                }
+
+
+
+            //Do Update on DB
+            $update = $customer->subscribeWeeks()->update(['data' =>json_encode($new_data)]);
+                if($update)
+                    {
+                        return response()->json([
+                            'success' =>true,
+                            'message' =>"Delete Done",
+                        ] , 200);
+                    }
+                else
+                    {
+                        return response()->json([
+                            'success' =>false,
+                            'message' =>"Delete Failed",
+                        ] , 500);
+                    }
+         }
+         catch(Exception $e)
+         {
+            return response()->json([
+                'success' =>false,
+                'message' =>"Delete fails " . $e->getMessage(),
+            ] , 500);
+         }
+
+
+
+
+    }
+
+
+
+    public function Dashboard_getByWeekDay(Request $request)
+    {
+        $validator = Validator::make($request->all() ,
+        [
+            'week' => 'required|numeric|min:1|max:48',
+            'day' => 'required|numeric|min:1|max:7',
+            'customer_id' => 'required|exists:customers,id',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
+
+        $week = $request->week;
+        $day = $request->day;
+
+        $user = Customer::where('id', '=', $request->customer_id)->first();
+
+        $data = $user->subscribeWeeks()->first();
+
+        if($data != null)
+        {
+            $weeks = json_decode($data->data , true);
+            // dd($weeks);
+            $requested_day = $weeks[$week][$day];
+            $category = Category::find($requested_day['category_id']);
+            $category = new CategoryResource($category);
+            // $exes = array_keys($requested_day['exe_array']) ;
+
+            $array = [];
+            foreach($requested_day['exe_array'] as $key => $value )
+            {
+                    $section = TrainingSection::find($key);
+                    $exersices = Exercise::whereIn('id' , array_keys($value) )->get();
+                    $array []=   [
+                            'section_name' => $section->name,
+                            'section_id' => $section->id,
+                            'exe_list' => $exersices,
+                            ] ;
+            }
+
+            // $exes = Exercise::whereIn('id' , array_keys($requested_day['exe_array']))->get();
+            // $exe = new ExerciseResourse($exes);
+
+            return response()->json(
+                [
+                    'success' => true,
+                    // 'category'=> $category,
+                    'exersices' =>$array,
+                    'is_completed' => $requested_day['is_completed'],
+                ]);
+            }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => true,
+                    'data' => "No Data for this user",
+                ]);
+        }
+
+
+    }
+
+
+    public function Dashboard_getWeekData(Request $request)
+    {
+        $validator = Validator::make($request->all() ,
+        [
+            'week' => 'required|numeric|min:1|max:48',
+
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
+
+        $week = $request->week;
+
+        $user = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        $data = $user->subscribeWeeks()->first();
+
+        if($data != null)
+        {
+            $weeks = json_decode($data->data , true);
+            $requested_week = $weeks[$week];
+            $cat_array = [];
+
+            foreach($requested_week as $key => $value)
+            {
+
+
+                if($value['category_id'] != null)
+                    {
+
+
+                        foreach ($value['exe_array'] as $section_id => $exes) {
+                            $exe_ids = array_keys($exes);
+                            $total_time = Exercise::whereIn('id', $exe_ids )->sum('timee');
+                        }
+
+
+                        $cat_array [] =
+                                [
+                                        'day' => $key,
+                                        'category' => Category::select('id' , 'name' , 'icon')
+                                            ->where('id',$value['category_id'])->first(),
+                                        'time_seconds' =>  $total_time ,
+
+                                ];
+                    }
+
+            }
+
+
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'categories'=> $cat_array,
+                ]);
+            }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => true,
+                    'data' => "No Data for this user",
+                ]);
+        }
+
+
+    }
+
+    public function Dashboard_getCustomerWorkoutsDetails(Request $request)
+    {
+        $customer = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        $weeks_number = 0;
+        if ($customer->subscription_type =="month") {
+            $weeks_number = 4;
+        }
+
+
+        elseif ($customer->subscription_type == "three_months") {
+            $weeks_number = 12;
+        }
+
+
+        elseif ($customer->subscription_type == "six_months") {
+            $weeks_number = 24;
+        }
+
+        elseif ($customer->subscription_type == "year") {
+            $weeks_number = 48;
+        }
+        try
+        {
+        $total_workouts = (int)$customer->exercise_days * $weeks_number;
+        }
+        catch(Exception $e)
+        {
+            return response()->json([
+                'error' => 'error '. $e->getMessage(),
+            ] , 400);
+        }
+
+
+        $customer_weeks = json_decode($customer->subscribeWeeks()->first()->data , true);
+
+        $complete_counter = 0;
+        foreach ($customer_weeks as $weeks => $week) {
+            foreach ($week as $day => $data) {
+                //If The Day is Completed then increment the complete counter
+                if($data['is_completed']) $complete_counter++  ;
+                // $c_array [] = $data['is_completed'];
+            }
+        }
+
+
+        return response()->json(
+            [
+                'success' => true,
+                'sub_type' => $customer->subscription_type,
+                'sub_weeks' => $weeks_number,
+                'exercise_days' => $customer->exercise_days,
+                'total_workouts' => $total_workouts,
+                'completed_workouts' =>$complete_counter ,
+            ]
+        );
+
+    }
+
+
 
     //API functions
     public function getByToken(Request $request)
@@ -355,6 +698,70 @@ class SubscribeWeeksController extends Controller
 
     }
 
+    public function getCustomerWorkoutsDetails(Request $request)
+    {
+        $customer = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        $weeks_number = 0;
+        if ($customer->subscription_type =="month") {
+            $weeks_number = 4;
+        }
+
+
+        elseif ($customer->subscription_type == "three_months") {
+            $weeks_number = 12;
+        }
+
+
+        elseif ($customer->subscription_type == "six_months") {
+            $weeks_number = 24;
+        }
+
+        elseif ($customer->subscription_type == "year") {
+            $weeks_number = 48;
+        }
+        try
+        {
+        $total_workouts = (int)$customer->exercise_days * $weeks_number;
+        }
+        catch(Exception $e)
+        {
+            return response()->json([
+                'error' => 'error '. $e->getMessage(),
+            ] , 400);
+        }
+
+
+        $customer_weeks = json_decode($customer->subscribeWeeks()->first()->data , true);
+
+        $complete_counter = 0;
+        foreach ($customer_weeks as $weeks => $week) {
+            foreach ($week as $day => $data) {
+                //If The Day is Completed then increment the complete counter
+                if($data['is_completed']) $complete_counter++  ;
+                // $c_array [] = $data['is_completed'];
+            }
+        }
+
+
+        return response()->json(
+            [
+                'success' => true,
+                'sub_type' => $customer->subscription_type,
+                'sub_weeks' => $weeks_number,
+                'sub_weeks_started_at' => $customer->subscription_started_at,
+                'sub_weeks_finished_at' => $customer->subscription_finished_at,
+                'exercise_days' => $customer->exercise_days,
+                'total_workouts' => $total_workouts,
+                'completed_workouts' =>$complete_counter ,
+            ]
+        );
+
+
+
+
+    }
+
 
     public function getNumberOfSubWeeks(Request $request)
     {
@@ -433,60 +840,7 @@ class SubscribeWeeksController extends Controller
 
 
 
-    public function getCustomerWorkoutsDetails(Request $request)
-    {
-        $customer = Customer::where('access_token', '=', $request->header('access_token'))->first();
 
-        $weeks_number = 0;
-        if ($customer->subscription_type =="month") {
-            $weeks_number = 4;
-        }
-
-
-        elseif ($customer->subscription_type == "three_months") {
-            $weeks_number = 12;
-        }
-
-
-        elseif ($customer->subscription_type == "six_months") {
-            $weeks_number = 24;
-        }
-
-        elseif ($customer->subscription_type == "year") {
-            $weeks_number = 48;
-        }
-        $total_workouts = $customer->exercise_days * $weeks_number;
-
-
-
-
-        $customer_weeks = json_decode($customer->subscribeWeeks()->first()->data , true);
-
-        $complete_counter = 0;
-        foreach ($customer_weeks as $weeks => $week) {
-            foreach ($week as $day => $data) {
-                //If The Day is Completed then increment the complete counter
-                if($data['is_completed']) $complete_counter++  ;
-                // $c_array [] = $data['is_completed'];
-            }
-        }
-
-
-        return response()->json(
-            [
-                'success' => true,
-                'sub_type' => $customer->subscription_type,
-                'sub_weeks' => $weeks_number,
-                'exercise_days' => $customer->exercise_days,
-                'total_workouts' => $total_workouts,
-                'completed_workouts' =>$complete_counter ,
-            ]
-        );
-
-
-
-
-    }
 
 
 }

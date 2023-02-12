@@ -342,6 +342,7 @@
                     {{-- Weeks Start --}}
                     <div class="col-lg-7  col-md-12" style="display: none;" id="weeks_col">
                         <div class="weeks" >
+
                             {{-- User Info --}}
                             <div class="row">
                                 <div class="col-lg-12">
@@ -374,19 +375,19 @@
 
                                 </div>
                             </div>
-                            {{-- Weeks --}}
 
+                            {{-- Weeks --}}
                             <div class="container mt-2 pt-5" >
                                 <div class="btn-group-container d-inline-flex p-3" >
                                     <div class="m-auto row" data-toggle="buttons" id="weeks_div">
 
-                                        {{-- <div class="col-lg-3 col-xs-6">
+                                        <div class="col-lg-3 col-xs-6">
                                             <label class="btn btn-primary form-check-label active">
-                                                <input class="form-check-input" type="radio" name="week" id="week"
+                                                <input class="form-check-input week-ele" type="radio" name="week" id="week-1"
                                                     autocomplete="off" checked>
                                                 Week 1
                                             </label>
-                                        </div> --}}
+                                        </div>
 
 
 
@@ -395,7 +396,6 @@
                             </div>
 
                             {{-- Days --}}
-
                             <div class="container mt-2 pt-5">
                                 <div class="btn-group-container d-inline-flex p-3">
                                     <div class="m-auto row" data-toggle="buttons">
@@ -446,6 +446,34 @@
                                 </div>
 
                             </div>
+
+
+                            <section class="container old_day_data mt-5" id="old_exe_section">
+                                <div class="row section-row ">
+                                    <div class="col-12">
+                                        <h5 class="d-block">Section name</h5>
+                                    </div>
+                                    <div class="col-lg-3 col-xs-6 ">
+                                        <div class="card text-center">
+                                          <img class="card-img-top m-auto" src="https://fitbird.stackdeans.xyz/public/uploads/Menuitem_1554382653.png" style="width: 150px; object-fit: contain" alt="">
+                                          <div class="card-body">
+                                            <h6 class="card-title">Exe Name</h6>
+                                            <p class="card-text ">
+
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#deleteExeModal">
+                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                </button>
+
+                                            </p>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- Button trigger modal -->
+
+
+
 
 
 
@@ -502,6 +530,34 @@
         </form>
     </div>
 </section>
+
+
+
+{{-- Modal --}}
+
+<!-- Modal -->
+<div class="modal fade" id="deleteExeModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalTitle">Confirm Delete</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+                Are You Sure You Want To Delete <span id="delete_exe_name"></span> ?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="delete-modal-btn" section-id="" exe-id="">Delete</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- Modal --}}
 
 @endsection
 
@@ -633,66 +689,6 @@
     // console.log(labels[0].getAttribute('cat_id'));
     search.addEventListener("input", () => Array.from(labels).forEach((element) => element.style.display = element
         .childNodes[1].id.toLowerCase().includes(search.value.toLowerCase()) ? "inline" : "none"))
-</script>
-
-
-<script>
-
-$(document).ready(function() {
-
-
-       // On click Submit Buttons
-       $("#panel_form").submit(function(e){
-            //1- Get The Input Data (Week , Day , Customer_id , exe[])
-            e.preventDefault();
-
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type : 'POST',
-                url : 'weeks-save',
-                data : $('#panel_form').serialize(),
-                success: function(result) {
-                    if (result.success == true)
-                    {
-                        alert(result.message);
-                        location.reload();
-                    }
-                    else
-                    alert(result.message);
-                }
-                });
-        });
-
-
-        $('input[type=radio][name=day]').change(function() {
-        if (this.value == 1) {
-            alert('1')
-        }
-        else if (this.value == 2) {
-            alert('2')
-        }
-
-        else if (this.value == 3) {
-            alert('3')
-        }
-        else if (this.value == 4) {
-            alert('4')
-        }
-
-        else if (this.value == 5) {
-            alert('5')
-        }
-        else if (this.value == 6) {
-            alert('6')
-        }
-        else if (this.value == 7) {
-            alert('7')
-        }
-});
-
-
-
-});
 </script>
 
 

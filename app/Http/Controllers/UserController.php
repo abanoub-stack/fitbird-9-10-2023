@@ -185,12 +185,27 @@ class UserController extends Controller
         }
 
 
-        $weeks_subscribe = SubscribeWeeks::create(
-            [
-                'customer_id' => $customer->id,
-                'data' => json_encode($weeks_array),
-            ]
-        );
+        $old_sub = SubscribeWeeks::where('customer_id' , $customer->id)->first();
+
+        if($old_sub)
+            {
+                $customer->subscribeWeeks()->update(
+                    [
+                        'data' => json_encode($weeks_array),
+                    ]
+                );
+            }
+        else
+            {
+                $weeks_subscribe = SubscribeWeeks::create(
+                    [
+                        'customer_id' => $customer->id,
+                        'data' => json_encode($weeks_array),
+                    ]
+                );
+            }
+
+
 
         //Create Weeks of subscribe END
 
