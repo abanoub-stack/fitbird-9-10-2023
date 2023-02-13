@@ -38,8 +38,10 @@ Free Exercises
                                         <label>Exercise Category</label>
                                         <select class="form-control" name="exercise_category">
                                             @foreach (DB::table('categories')->get() as $cat)
-                                                @if ($exercise->Category->id == $cat->id)
-                                                    <option value="{{ $cat->id }}" selected>{{ $cat->name }}</option>
+                                                @if (isset($exercise->Category))
+                                                    @if ($exercise->Category->id == $cat->id)
+                                                        <option value="{{ $cat->id }}" selected>{{ $cat->name }}</option>
+                                                    @endif
                                                 @endif
                                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                             @endforeach
@@ -66,6 +68,8 @@ Free Exercises
 
                                     <div class="form-group">
                                         <label>Url</label>
+                                        <br>
+                                        <a target="_blank" href="{{ $exercise->url }}">Show Current Video</a>
                                         <input type="text" value="{{ $exercise->url }}" name="exercise_url"
                                             class="form-control">
                                     </div>

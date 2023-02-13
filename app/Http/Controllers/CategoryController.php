@@ -6,6 +6,7 @@ use App\Models\AdminNotification;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -26,13 +27,27 @@ class CategoryController extends Controller
 
     public function addCategoryPost(Request $request)
     {
-        $request->validate([
+
+
+        $validator = Validator::make($request->all(), [
             'parent_id' => 'nullable|exists:categories,id',
             'category_name' => 'required|string|max:50',
             'category_description' => 'required|string',
             'category_level' => 'required|string|max:50',
             'category_icon' => 'required|image|mimes:jpg,jpeg,png,gif',
+
         ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors())->withInput();
+        }
+
+        // $request->validate([
+        //     'parent_id' => 'nullable|exists:categories,id',
+        //     'category_name' => 'required|string|max:50',
+        //     'category_description' => 'required|string',
+        //     'category_level' => 'required|string|max:50',
+        //     'category_icon' => 'required|image|mimes:jpg,jpeg,png,gif',
+        // ]);
 
         $iconPath = Storage::putFile('categories', $request->category_icon);
         //$iconPath = Storage::putFile('', $request->category_icon);

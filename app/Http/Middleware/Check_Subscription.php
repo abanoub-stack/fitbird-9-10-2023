@@ -35,7 +35,9 @@ class Check_Subscription
                         $user->save();
                         return response()->json([
                             'error' => "Subscription ended!",
-                        ],403);
+                            'success' => false,
+                            'code' => 666,
+                        ],200);
                     }
 
                 }

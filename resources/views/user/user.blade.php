@@ -42,14 +42,17 @@ Show <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                                 <th scope="row">Gender</th>
                                 <td>{{ $user->gender }}</td>
                             </tr>
+
                             <tr>
                                 <th scope="row">Workout Intensity</th>
                                 <td>{{ $user->workout_intensity }}</td>
                             </tr>
+
                             <tr>
                                 <th scope="row">Age</th>
                                 <td>{{ $user->age }}</td>
                             </tr>
+
                             <tr>
                                 <th scope="row">Height</th>
                                 <td>{{ $user->height }}</td>
@@ -67,7 +70,16 @@ Show <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                             <tr>
                                 <th scope="row">Goals</th>
                                 <td>
-                                     {{ $user->goals }}
+                                    {{-- {{dd(json_decode($user->goals , true))}} --}}
+                                    @if ($user->goals != null)
+                                    <ul>
+                                            @foreach (json_decode($user->goals , true) as $value)
+                                                <li>{{$value}}</li>
+                                            @endforeach
+                                    </ul>
+                                    @else
+                                        <p class="text-danger">Has No Goals</p>
+                                    @endif
                                 </td>
                             </tr>
 
@@ -75,7 +87,17 @@ Show <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                             <tr>
                                 <th scope="row">Activity</th>
                                 <td>
-                                     {{ $user->activity }}
+                                     {{-- {{ $user->activity }} --}}
+                                     @if ($user->activity != null)
+                                        <ul>
+                                                @foreach (json_decode($user->activity , true) as $value)
+                                                    <li>{{$value}}</li>
+                                                @endforeach
+                                        </ul>
+                                    @else
+                                        <p class="text-danger">Has No Activity</p>
+                                    @endif
+
                                 </td>
                             </tr>
 
@@ -95,7 +117,7 @@ Show <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
 
 
 {{-- Chart  --}}
-    <div class="row my-5">
+    {{-- <div class="row my-5">
         <div class="col-md-10 col-xs-12 m-auto">
             <span class="text-capitalize font-weight-bolder" style="font-size: 20px"> {{$user->name}}'s </span> Statistics
         </div>
@@ -111,12 +133,11 @@ Show <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                     </div>
                     <hr>
                     {{$user->name}}'s Activity This Week.
-                    {{-- <code>/js/demo/chart-area-demo.js</code> file. --}}
                 </div>
             </div>
         </div>
 
-    </div>
+    </div> --}}
 {{-- Chart  --}}
 
 

@@ -82,7 +82,9 @@ All Users
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="11"><div class="d-flex justify-content-center">{{ $users->links() }}</div></th>
+                            @if (Route::current()->uri=="users")
+                                <th colspan="11"><div class="d-flex justify-content-center">{{ $users->links() }}</div></th>
+                            @endif
                         </tr>
                     </tfoot>
 

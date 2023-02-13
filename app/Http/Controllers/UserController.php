@@ -272,15 +272,21 @@ class UserController extends Controller
 
     public function searchUsers(Request $request)
     {
-        $key = $request->keyword;
-        $users = Customer::where('name', 'LIKE', "%$key%")
-            ->orWhere('email', 'LIKE', "%$key%")
-            ->orWhere('phone', 'LIKE', "%$key%")
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-        return view('user.index', [
-            'users' => $users,
-        ]);
+        if ($request->keyword != null) {
+            $key = $request->keyword;
+            $users = Customer::where('name', 'LIKE', "%$key%")
+                ->orWhere('email', 'LIKE', "%$key%")
+                ->orWhere('phone', 'LIKE', "%$key%")
+                ->orderBy('id', 'desc')
+                ->get();
+            return view('user.index', [
+                'users' => $users,
+            ]);
+        } else {
+            return redirect('/users');
+        }
+
+
     }
 
 

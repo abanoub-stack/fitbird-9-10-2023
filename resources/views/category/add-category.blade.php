@@ -40,24 +40,24 @@ Category
 
                                     <div class="form-group">
                                         <label>Category Name</label>
-                                        <input type="text" name="category_name" class="form-control form-control-user">
+                                        <input type="text" value="{{old('category_name')}}" name="category_name" class="form-control form-control-user">
                                     </div>
 
 
 
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <input type="text" name="category_description" class="form-control form-control-user">
+                                        <input type="text" value="{{old('category_description')}}" name="category_description" class="form-control form-control-user">
                                     </div>
 
 
                                     <div class="form-group">
                                         <label>Level</label>
-                                        <input type="text" name="category_level" class="form-control form-control-user">
+                                        <input type="text" value="{{old('category_level')}}" name="category_level" class="form-control form-control-user">
                                     </div>
                                     <div class="form-group ">
                                         <label >Category Icon</label >
-                                        <input type="file" name="category_icon" class="form-control">
+                                        <input type="file" value="{{old('category_icon')}}" name="category_icon" class="form-control">
                                     </div>
                                     <div class="text-center mt-5">
                                         <button type="submit" class="btn btn-primary btn-user">Add</button>

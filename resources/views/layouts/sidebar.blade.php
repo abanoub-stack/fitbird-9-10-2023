@@ -67,11 +67,11 @@
 
 
             <!-- Nav Item - Packages -->
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link"  href="{{ url('/packages', []) }}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Packages</span></a>
-            </li>
+            </li> --}}
 
 
 
