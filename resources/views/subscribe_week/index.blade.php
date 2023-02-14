@@ -247,6 +247,10 @@
         }
 
     </style>
+
+    <style>
+
+    </style>
     <!-- Custom styles for this page -->
     <link href="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endsection
@@ -366,7 +370,7 @@
                                                 </div>
 
                                                 <div class="col-lg-6">
-                                                    <h6> Total Days of Workouts  : <span class="font-weight-bold text-info" id="c_sub_weeks_workouts">4</span> days</h6>
+                                                    <h6> Total Workouts  : <span class="font-weight-bold text-info" id="c_sub_weeks_workouts">4</span> days</h6>
                                                 </div>
                                             </div>
                                         </p>
@@ -383,7 +387,7 @@
 
                                         <div class="col-lg-3 col-xs-6">
                                             <label class="btn btn-primary form-check-label active">
-                                                <input class="form-check-input week-ele" type="radio" name="week" id="week-1"
+                                                <input class="form-check-input week-ele " type="radio" name="week" id="week-1"
                                                     autocomplete="off" checked>
                                                 Week 1
                                             </label>
@@ -533,31 +537,27 @@
 
 
 
-{{-- Modal --}}
-
-<!-- Modal -->
-<div class="modal fade" id="deleteExeModal" tabindex="-1" role="dialog"  aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalTitle">Confirm Delete</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-                Are You Sure You Want To Delete <span id="delete_exe_name"></span> ?
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger" id="delete-modal-btn" section-id="" exe-id="">Delete</button>
-        </div>
+{{-- Delete Modal --}}
+    <div class="modal fade" id="deleteExeModal" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalTitle">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    Are You Sure You Want To Delete <span id="delete_exe_name"></span> ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="delete-modal-btn" section-id="" exe-id="">Delete</button>
+            </div>
+            </div>
         </div>
     </div>
-</div>
-
-
-{{-- Modal --}}
+{{-- Delete Modal --}}
 
 @endsection
 

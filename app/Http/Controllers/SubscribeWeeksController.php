@@ -13,6 +13,7 @@ use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Expr;
 
 class SubscribeWeeksController extends Controller
 {
@@ -31,23 +32,23 @@ class SubscribeWeeksController extends Controller
         {
             // dd($request->all());
             $validator = Validator::make($request->all(),
-            [
-                'customer_id' => 'required|numeric|exists:customers,id',
-                'category_id' => 'required|numeric|exists:categories,id',
-                'section_id' => 'required|numeric|exists:training_sections,id',
-                'week' => 'required|numeric|min:1|max:48',
-                'day' => 'required|numeric|min:1|max:7',
-                "exercises"    => "required|array",
-                "exercises.*"  => "required|exists:exercises,id",
-            ] ,
-            [
-                'customer_id' => "Please Select Customer ",
-                'category_id' => "Please Select Category ",
-                'section_id' => "Please Select Traing Section ",
-                'week' => "Please Select Week",
-                'day' => "Please Select Day",
-                "exercises"    => "Please Select Some exercises",
-            ]
+                [
+                    'customer_id' => 'required|numeric|exists:customers,id',
+                    'category_id' => 'required|numeric|exists:categories,id',
+                    'section_id' => 'required|numeric|exists:training_sections,id',
+                    'week' => 'required|numeric|min:1|max:48',
+                    'day' => 'required|numeric|min:1|max:7',
+                    "exercises"    => "required|array",
+                    "exercises.*"  => "required|exists:exercises,id",
+                ] ,
+                [
+                    'customer_id' => "Please Select Customer ",
+                    'category_id' => "Please Select Category ",
+                    'section_id' => "Please Select Traing Section ",
+                    'week' => "Please Select Week",
+                    'day' => "Please Select Day",
+                    "exercises"    => "Please Select Some exercises",
+                ]
         );
 
             if ($validator->fails())
@@ -77,25 +78,40 @@ class SubscribeWeeksController extends Controller
                 $weeks[$week][$day]['category_id'] = $category->id;
 
 
-                if(isset($weeks[$week][$day]['exe_array'][$section->id]))
+
+            //Section Exist before
+            if(isset($weeks[$week][$day]['exe_array'][$section->id]))
                 {
                     $old_exe = array_keys($weeks[$week][$day]['exe_array'][$section->id]); //Old Exe IDS
-                    $exercises = array_merge($exercises , $old_exe);
+                    //Check Identical
+
+                    for($i=0 ; $i< count($exercises) ; $i++)
+                    {
+                        if(!in_array($exercises[$i], $old_exe))
+                        {
+                            // $ex = Exercise::find($exercises[$i]);
+                            $weeks[$week][$day]['exe_array'][$section->id][$exercises[$i]] =  false;
+                        }
+                    }
+
+
                 }
-
-
-                $new_array = [];
-                for($i=0 ; $i< count($exercises) ; $i++)
+            //New Section
+            else
                 {
-                    $new_array[$exercises[$i]] = false;
+                    //Set Complete False
+                    $weeks[$week][$day]['is_completed']=false;
+                    //Create array of new exe
+                    $new_array = [];
+                    for($i=0 ; $i< count($exercises) ; $i++)
+                    {
+                        $new_array[$exercises[$i]] = false;
+                    }
+
+                    //Update
+                    $weeks[$week][$day]['exe_array'][$section->id] = $new_array;
+
                 }
-
-
-                //Updates
-                $weeks[$week][$day]['exe_array'][$section->id] = $new_array;
-
-                // dd($weeks);
-
 
 
                 $customer->subscribeWeeks()->update(['data' => json_encode($weeks)]);
@@ -156,8 +172,8 @@ class SubscribeWeeksController extends Controller
             $f_date = explode( '-' ,$customer->subscription_finished_at);
             $f_date[2] = explode( " " ,$s_date[2])[0];
 
-            $subscription_started_at = Carbon::createFromFormat('Y/m/d', $s_date[0]."/".$s_date[1]."/".$s_date[2])->format('Y M:d');
-            $subscription_finished_at = Carbon::createFromFormat('Y/m/d', $f_date[0]."/".$f_date[1]."/".$f_date[2])->format('Y M:d');
+            $subscription_started_at = Carbon::createFromFormat('Y/m/d', $s_date[0]."/".$s_date[1]."/".$s_date[2])->format('Y d M');
+            $subscription_finished_at = Carbon::createFromFormat('Y/m/d', $f_date[0]."/".$f_date[1]."/".$f_date[2])->format('Y d M');
             $customer->subscription_started_at = $subscription_started_at;
             $customer->subscription_finished_at = $subscription_finished_at;
             //Handle Dates
@@ -582,19 +598,23 @@ class SubscribeWeeksController extends Controller
         if($data != null)
         {
             $weeks = json_decode($data->data , true);
-            // dd($weeks);
             $requested_day = $weeks[$week][$day];
             $category = Category::find($requested_day['category_id']);
             $category = new CategoryResource($category);
-            // $exes = array_keys($requested_day['exe_array']) ;
 
             $array = [];
             foreach($requested_day['exe_array'] as $key => $value )
             {
+                // dd($value);
                     $section = TrainingSection::find($key);
                     $exersices = Exercise::whereIn('id' , array_keys($value) )->get();
+                    foreach($exersices as $ex)
+                    {
+                        $ex->is_completed = $value[$ex->id];
+                    }
                     $array []=   [
                             'section_name' => $section->name,
+                            'section_id' => $section->id,
                             'exe_list' => $exersices,
                             ] ;
             }
@@ -817,6 +837,109 @@ class SubscribeWeeksController extends Controller
         {
             $weeks = json_decode($data->data , true);
             $weeks[$week][$day]['is_completed'] = true;
+            $user->subscribeWeeks()->update(['data' => json_encode($weeks)]);
+            // dd(json_decode($user->subscribeWeeks()->first()->data));
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Day Updated Successfully",
+                    'data' => $weeks[$week][$day],
+                ]);
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => true,
+                    'data' => "No Data for this user",
+                ]);
+        }
+
+
+    }
+
+
+    public function CompleteEXE(Request $request)
+    {
+        $validator = Validator::make($request->all() ,
+        [
+            'week' => 'required|numeric|min:1|max:48',
+            'day' => 'required|numeric|min:1|max:7',
+            'section_id' => 'required|exists:training_sections,id',
+            'exe_id' => 'required|exists:exercises,id',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
+
+        $week = $request->week;
+        $day = $request->day;
+        $section_id = $request->section_id;
+        $exe_id = $request->exe_id;
+
+
+        $user = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        $data = $user->subscribeWeeks()->first();
+
+        if($data != null)
+        {
+            $weeks = json_decode($data->data , true);
+            $exe_of_the_day = $weeks[$week][$day]['exe_array'];
+            $sections_ids = array_keys($exe_of_the_day);
+
+            if(!in_array($section_id , $sections_ids))
+            {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => "This Section ID dosen't exist in this day",
+                    ] , 400
+                );
+            }
+
+            $exe_ids = array_keys($exe_of_the_day[$section_id]);
+
+
+            if(!in_array($exe_id , $exe_ids))
+            {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => "This Excersice ID dosen't exist in this section of this day",
+                    ] , 400
+                );
+            }
+
+            //Complete The Exe
+            $exe_of_the_day[$section_id][$exe_id] = true;
+            $weeks[$week][$day]['exe_array'] = $exe_of_the_day;
+
+            //Check if all the day completed
+            $flag = 0;
+            foreach ($exe_of_the_day as $sec_id => $exe_arr) {
+                if($flag == 1) break;
+                foreach ($exe_arr as $excer_id => $status) {
+                    if(!$status)
+                    {
+                        $weeks[$week][$day]['is_completed']=false;
+                        $flag = 1;
+                        break;
+                    }
+                    else
+                    {
+                        $weeks[$week][$day]['is_completed']=true;
+                    }
+                }
+            }
+
+
             $user->subscribeWeeks()->update(['data' => json_encode($weeks)]);
             // dd(json_decode($user->subscribeWeeks()->first()->data));
             return response()->json(

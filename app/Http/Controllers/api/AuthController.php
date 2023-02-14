@@ -10,10 +10,13 @@ use App\Models\CustomerNotification;
 use Exception;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Mail;
+
 
 
 class AuthController extends Controller
@@ -187,67 +190,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function facebookLogin(Request $request)
-    {
 
-        $validator = Validator::make($request->all(), [
-            'token' => 'required'
-        ]);
-
-        if($validator->fails())
-        {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors()->first()
-            ] , 400);
-        }
-
-        $facebook_token = $request->token;
-
-        try{
-            $providerUser = Socialite::driver('facebook')->userFromToken($facebook_token);
-        }
-        catch(Exception $e ){
-            return response()->json([
-                'success' => false,
-                'message' => 'wrong facebook token',
-                'error' => $e->getMessage(),
-            ] , 500);
-        }
-
-        $providerUserId  = $providerUser->id;
-        $user  = Customer:: where('provider_name', 'facebook' )
-                            ->where('provider_id' , $providerUserId)
-                            ->first();
-
-        if(!$user)
-        {
-            $access_token = Str::random(128);
-            $customer = Customer::create([
-                'name' => $providerUser->name,
-                'provider_name' => 'facebook',
-                'provider_id' => $providerUserId,
-                'avatar' => "https://graph.facebook.com/v3.3/$providerUserId/picture?type=large&access_token=$facebook_token",
-                'access_token' => $access_token,
-
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'access_token' => $customer->access_token,
-                'user' => new CustomerResource($customer),
-            ]);
-        }
-        else
-        {
-            return response()->json([
-                'success' => true,
-                'message' => 'user exist',
-                'access_token' => $user->access_token,
-                'user' => new CustomerResource($user),
-            ]);
-        }
-    }
 
     public function schedule(Schedule $schedule, Request $request)
     {
@@ -402,33 +345,308 @@ class AuthController extends Controller
 
 
 
-    public function checkExistEmail(Request $request)
+
+
+    //Socialite
+    public function facebookLogin(Request $request)
     {
-        $validator = Validator::make($request->all()
-        ,
-        [
-            'email'  => 'email|required|exists:customers,email'
+
+        $validator = Validator::make($request->all(), [
+            'token' => 'required'
         ]);
 
         if($validator->fails())
         {
-            return response()->json(
-                [
-                    'success' => false,
-                    'message' => $validator->errors()->first(),
-                ] , 400
-            );
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ] , 400);
+        }
+
+        $facebook_token = $request->token;
+
+        try{
+            $providerUser = Socialite::driver('facebook')->userFromToken($facebook_token);
+        }
+        catch(Exception $e ){
+            return response()->json([
+                'success' => false,
+                'message' => 'wrong facebook token',
+                'error' => $e->getMessage(),
+            ] , 500);
+        }
+
+        $providerUserId  = $providerUser->id;
+        $user  = Customer:: where('provider_name', 'facebook' )
+                            ->where('provider_id' , $providerUserId)
+                            ->first();
+
+        if(!$user)
+        {
+            $access_token = Str::random(128);
+            $customer = Customer::create([
+                'name' => $providerUser->name,
+                'provider_name' => 'facebook',
+                'provider_id' => $providerUserId,
+                'avatar' => "https://graph.facebook.com/v3.3/$providerUserId/picture?type=large&access_token=$facebook_token",
+                'access_token' => $access_token,
+
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'access_token' => $customer->access_token,
+                'user' => new CustomerResource($customer),
+            ]);
         }
         else
         {
+            return response()->json([
+                'success' => true,
+                'message' => 'user exist',
+                'access_token' => $user->access_token,
+                'user' => new CustomerResource($user),
+            ]);
+        }
+    }
+
+
+    //Foreget password functions
+
+        // Function to generate OTP
+        function generateNumericOTP($n)
+        {
+
+            // Take a generator string which consist of
+            // all numeric digits
+            $generator = "1357902468";
+
+            // Iterate for n-times and pick a single character
+            // from generator and append it to $result
+
+            // Login for generating a random character from generator
+            //     ---generate a random number
+            //     ---take modulus of same with length of generator (say i)
+            //     ---append the character at place (i) from generator to result
+
+            $result = "";
+
+            for ($i = 1; $i <= $n; $i++) {
+                $result .= substr($generator, (rand()%(strlen($generator))), 1);
+            }
+
+            // Return result
+            return $result;
+        }
+
+
+        // Function to Send Mail If Exist
+        public function checkExistEmail(Request $request)
+        {
+            $validator = Validator::make($request->all()
+            ,[
+                'email'  => 'email|required|exists:customers,email'
+            ]);
+
+            if($validator->fails())
+            {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => $validator->errors()->first(),
+                    ] , 400
+                );
+            }
+
+
+            try
+                {
+
+                $subject = 'FitBird | Reset Password';
+                $email = $request->email;
+                $rest_token =  $this->generateNumericOTP(6);
+
+                //Check Old Tokens first
+                $old_recored = DB::table('password_resets')->where('email' ,$email)->first();
+                if($old_recored)
+                {
+                    //update
+                    DB::table('password_resets')->where('email' ,$email)->update(
+                        [
+                            'token' => $rest_token,
+                            'email' => $request->email,
+                            'created_at' => now(),
+                        ]
+                    );
+                }
+                else
+                {
+                    $savedToken = DB::table('password_resets')->insert([
+                        'token' => $rest_token,
+                        'email' => $request->email,
+                        'created_at' => now(),
+                    ]);
+                }
+
+
+                $mailTo = Mail::send('mails/reset',
+                            [
+                                'app_name' => "FitBird",
+                                'otp' => $rest_token,
+                            ],
+                            function ($message) use ($email, $subject) {
+                                $message->to($email, $email)
+                                    ->subject($subject);
+                                $message->from('abanoub.stackdeans@gmail.com', 'FITBIRD');
+                            });
+
+
+                }
+            catch (Exception $e)
+                {
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => "Mail doesnt send." . $e->getMessage(),
+                    ] , 400);
+                }
             return response()->json(
                 [
                     'success' => true,
-                    'message' => 'user email exists and the rest password mail has been sent.'
-                ]
-            );
+                    'message' => 'user email exists and the rest password mail has been sent.',
+                    'next_request' => url('api/check-reset-otp'),
+                    'method' => "POST",
+
+                ]);
+
         }
-    }
+
+
+
+        public function CheckResetOTP(Request $request)
+        {
+            $validator = Validator::make($request->all(),
+            [
+                'email'  => 'email|required|exists:customers,email',
+                'otp'  => 'required|min:6|max:6'
+            ]);
+
+            if($validator->fails())
+            {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => $validator->errors()->first(),
+                    ] , 400
+                );
+            }
+
+            $email = $request->email;
+            $old_recored = DB::table('password_resets')->where('email' ,$email)
+                ->where('token' , $request->otp)
+                ->first();
+            if(!$old_recored)
+            {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => "Token Is Invalid",
+                    ] , 404
+                );
+            }
+            else
+            {
+                //Delete Row in the reset db
+                DB::table('password_resets')->where('email' ,$email)
+                ->where('token' , $request->otp)
+                ->delete();
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "OTP Confirmed",
+                        'next_request' => url('api/rest-password'),
+                        'method' => "POST",
+                    ] , 200
+                );
+            }
+
+
+
+        }
+
+
+        public function resetPassword(Request $request)
+        {
+            $validator = Validator::make($request->all(),
+            [
+                'email'  => 'email|required|exists:customers,email',
+                'new_password' => 'required|string|min:5|max:64',
+                // 'otp' => 'required|min:6|max:6',
+            ]);
+
+            if($validator->fails())
+            {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => $validator->errors()->first(),
+                    ] , 400
+                );
+            }
+
+            $email = $request->email;
+
+            // $old_recored = DB::table('password_resets')->where('email' ,$email)
+            //     ->where('token' , $request->otp)
+            //     ->first();
+            // if(!$old_recored)
+            // {
+            //     return response()->json(
+            //         [
+            //             'success' => false,
+            //             'message' => "Token Is Invalid",
+            //         ] , 404
+            //     );
+            // }
+            // else
+            // {
+
+                $customer = Customer::where('email',$email)->first();
+                if(!$customer)
+                {
+                    return response()->json(
+                        [
+                            'success' => false,
+                            'message' => "Customer Not Found",
+                        ] , 404);
+                }
+
+                $customer->password = bcrypt($request->new_password);
+                $customer->save();
+
+
+                //Delete Row in the reset db
+                // DB::table('password_resets')->where('email' ,$email)
+                // ->where('token' , $request->otp)
+                // ->delete();
+
+
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "Password Changed , Redirect him to the login page",
+                        'next_request' => url('api/login'),
+                    ] , 200);
+            // }
+
+
+
+        }
+
+    //Forget password functions
+
+
+
 
 
 }

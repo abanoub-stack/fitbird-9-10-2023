@@ -41,7 +41,7 @@ Route::middleware(['api-guest'])->group(function () {
     // Register
     Route::post('register', [AuthController::class, 'register']);
 
-# Guest #
+    # Guest #
 
     Route::get('get-banner', [BannerImageController::class, 'getAll']);
 
@@ -53,6 +53,11 @@ Route::middleware(['api-guest'])->group(function () {
 
     //Forget Password
     Route::post('forget-password-check-email', [AuthController::class, 'checkExistEmail']);
+    Route::post('check-reset-otp', [AuthController::class, 'CheckResetOTP']);
+    Route::post('rest-password', [AuthController::class, 'resetPassword']);
+
+
+
 
 });
 
@@ -83,16 +88,15 @@ Route::middleware(['api-auth'])->group(function () {
     Route::post('sub-weeks-by-week-day', [SubscribeWeeksController::class, 'getByWeekDay']);
     Route::post('get-sub-week-data', [SubscribeWeeksController::class, 'getWeekData']);
     Route::post('complete-day', [SubscribeWeeksController::class, 'CompleteDay']);
+    Route::post('complete-exe', [SubscribeWeeksController::class, 'CompleteEXE']);
     Route::get('get-customer-workouts-details', [SubscribeWeeksController::class, 'getCustomerWorkoutsDetails']);
     //  Sub Week Routes End
 
 
     // Profile Routes
     Route::get('user-getInfo/{id}', [AuthController::class, 'getUserInfo']);
-
     Route::post('edit-user-profile',[AuthController::class, 'editProfileApi']);
     Route::get('getSubData', [AuthController::class, 'getSubData']);
-
     // Profile Routes
 
 
