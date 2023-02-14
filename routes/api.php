@@ -28,21 +28,31 @@ use Illuminate\Support\Facades\Route;
 
 # Guest #
 Route::middleware(['api-guest'])->group(function () {
-    //Check Email Exits
+
+    //Check Email Exist
     Route::post('check-email-exist',[AuthController::class, 'CheckEmail']);
 
     //Get Profile Info
     Route::post('profile-getInfo',[AuthController::class, 'getProfileInfo']);
 
-
     // Login
     Route::post('login', [AuthController::class, 'login']);
+
     // Register
     Route::post('register', [AuthController::class, 'register']);
-    # Guest #
+
+# Guest #
 
     Route::get('get-banner', [BannerImageController::class, 'getAll']);
 
+
+    //Soical Logins
+       // Facebook Login
+       Route::post('facebook-login', [AuthController::class, 'facebookLogin']);
+
+
+    //Forget Password
+    Route::post('forget-password-check-email', [AuthController::class, 'checkExistEmail']);
 
 });
 

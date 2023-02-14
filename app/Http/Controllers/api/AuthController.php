@@ -7,11 +7,14 @@ use App\Http\Resources\CustomerResource;
 use App\Models\Address;
 use App\Models\Customer;
 use App\Models\CustomerNotification;
+use Exception;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
+
 
 class AuthController extends Controller
 {
@@ -184,6 +187,68 @@ class AuthController extends Controller
         ]);
     }
 
+    public function facebookLogin(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'token' => 'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ] , 400);
+        }
+
+        $facebook_token = $request->token;
+
+        try{
+            $providerUser = Socialite::driver('facebook')->userFromToken($facebook_token);
+        }
+        catch(Exception $e ){
+            return response()->json([
+                'success' => false,
+                'message' => 'wrong facebook token',
+                'error' => $e->getMessage(),
+            ] , 500);
+        }
+
+        $providerUserId  = $providerUser->id;
+        $user  = Customer:: where('provider_name', 'facebook' )
+                            ->where('provider_id' , $providerUserId)
+                            ->first();
+
+        if(!$user)
+        {
+            $access_token = Str::random(128);
+            $customer = Customer::create([
+                'name' => $providerUser->name,
+                'provider_name' => 'facebook',
+                'provider_id' => $providerUserId,
+                'avatar' => "https://graph.facebook.com/v3.3/$providerUserId/picture?type=large&access_token=$facebook_token",
+                'access_token' => $access_token,
+
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'access_token' => $customer->access_token,
+                'user' => new CustomerResource($customer),
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'success' => true,
+                'message' => 'user exist',
+                'access_token' => $user->access_token,
+                'user' => new CustomerResource($user),
+            ]);
+        }
+    }
+
     public function schedule(Schedule $schedule, Request $request)
     {
         if ($request->header('access_token')) {
@@ -337,8 +402,33 @@ class AuthController extends Controller
 
 
 
-    
+    public function checkExistEmail(Request $request)
+    {
+        $validator = Validator::make($request->all()
+        ,
+        [
+            'email'  => 'email|required|exists:customers,email'
+        ]);
 
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ] , 400
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'user email exists and the rest password mail has been sent.'
+                ]
+            );
+        }
+    }
 
 
 }

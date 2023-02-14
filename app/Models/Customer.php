@@ -29,6 +29,9 @@ class Customer extends Model
         'goals',
         'weight',
         'activity',
+        'provider_id',
+        'provider_name',
+        'avatar',
     ];
 
     public function Packages()
