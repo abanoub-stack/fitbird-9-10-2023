@@ -6,6 +6,7 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ExerciseResourse;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\DayLayout;
 use App\Models\Exercise;
 use App\Models\TrainingSection;
 use Carbon\Carbon;
@@ -23,7 +24,8 @@ class SubscribeWeeksController extends Controller
         $customers = Customer::select('id' , 'name' , 'subscription_type')->where('is_subscribed' , 1)->orderBy('name' , 'asc')->get();
         $exes = Exercise::orderBy('name' , 'asc')->with('Category')->get();
         $sections = TrainingSection::orderBy('name' , 'asc')->get();
-        return view('subscribe_week.index' , compact('cats' , 'customers' , 'exes' , 'sections'));
+        $layouts = DayLayout::orderBy('name' , 'asc')->get();
+        return view('subscribe_week.index' , compact('cats' , 'customers' , 'exes' , 'sections' , 'layouts'));
     }
 
     public function save(Request $request)
@@ -337,6 +339,187 @@ class SubscribeWeeksController extends Controller
     }
 
 
+    public function saveLayout(Request $request)
+    {
+
+        $validator = Validator::make($request->all(),
+            [
+
+                'customer_id' => 'required|numeric|exists:customers,id',
+                'week' => 'required|numeric|min:1|max:48',
+                'day' => 'required|numeric|min:1|max:7',
+                'name' => 'required|string',
+            ] ,
+            [
+                'customer_id' => "Please Select Customer ",
+                'week' => "Please Select Week",
+                'day' => "Please Select Day",
+            ]
+
+        );
+
+
+         if($validator->fails())
+         {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ]);
+         }
+
+
+         $week = $request->week;
+         $day = $request->day;
+         $customer = Customer::find($request->customer_id);
+         $weeks = $customer->subscribeWeeks()->first();
+         $data = json_decode($weeks->data , true);
+
+         //Start The Functionality
+         try
+         {
+            $layout_data = $data[$week][$day];
+
+            //Return Completed Data to Fasle Before Save The Layout
+                $layout_data['is_completed'] = false;
+                $exe_array = $layout_data['exe_array'];
+                foreach($exe_array as $section_id => $section_data_array)
+                {
+                    foreach($section_data_array as $exe_id => $value)
+                    {
+                        $exe_array[$section_id][$exe_id] = false;
+                    }
+                }
+                $layout_data['is_completed'] = false;
+                $layout_data['exe_array'] = $exe_array;
+            //Return Completed Data to Fasle Before Save The Layout
+
+            //Create Layout
+            $layout = DayLayout::create([
+                'name' => $request->name . ' - '. now()->format('Y-m-d'),
+                'data' => json_encode($layout_data),
+            ]);
+
+            if($layout)
+            {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "Layout Created Successfully",
+                        'layout' =>
+                            [
+                                'name' => $layout->name,
+                                'data' => json_decode($layout->data),
+                            ]
+                    ]);
+            }
+
+         }
+         catch(Exception $e)
+         {
+            return response()->json([
+                'success' =>false,
+                'message' =>"Save fails " . $e->getMessage(),
+            ] , 500);
+         }
+
+
+
+
+    }
+
+
+    public function saveLayoutForCustomer(Request $request)
+    {
+        if($request->ajax())
+        {
+            $validator = Validator::make($request->all(),
+                [
+                    'customer_id' => 'required|numeric|exists:customers,id',
+                    'layout_id' => 'required|numeric|exists:day_layouts,id',
+                    'week' => 'required|numeric|min:1|max:48',
+                    'day' => 'required|numeric|min:1|max:7',
+                ] ,
+                [
+                    'customer_id' => "Please Select Customer ",
+                    'layout_id' => "Please Select Traing Layout ",
+                    'week' => "Please Select Week",
+                    'day' => "Please Select Day",
+                ]
+        );
+
+            if ($validator->fails())
+            {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => $validator->errors()->first(),
+                    ]);
+            }
+
+            $week = $request->week;
+            $day = $request->day;
+            $customer = Customer::find($request->customer_id);
+            $layout   = DayLayout::find($request->layout_id);
+            $layout_data = json_decode($layout->data , true);
+            $data = $customer->subscribeWeeks()->first();
+
+
+            if($data != null)
+            {
+                $weeks = json_decode($data->data , true); //Total Old Data
+
+                // dd($weeks[$week][$day] , $layout_data);
+                // Update Category_id
+                $weeks[$week][$day]['category_id'] = $layout_data['category_id'];
+
+
+                //Assign Each Section with its exes
+                foreach($layout_data['exe_array'] as $section_id => $section_data)
+                {
+                    $exercises = array_keys($section_data); //exe IDS
+
+                    //Section Exist before
+                    if(isset($weeks[$week][$day]['exe_array'][$section_id]))
+                    {
+                            $old_exe = array_keys($weeks[$week][$day]['exe_array'][$section_id]); //Old Exe IDS
+                            //Check Identical
+                            for($i=0 ; $i< count($exercises) ; $i++)
+                            {
+                                if(!in_array($exercises[$i], $old_exe))
+                                {
+                                    $weeks[$week][$day]['exe_array'][$section_id][$exercises[$i]] =  false;
+                                }
+                            }
+
+
+                    }
+                    //New Section
+                    else
+                    {
+                        //Set Complete False
+                        $weeks[$week][$day]['is_completed']=false;
+                        //Create array of new exe
+                        $new_array = [];
+                        for($i=0 ; $i< count($exercises) ; $i++)
+                        {
+                            $new_array[$exercises[$i]] = false;
+                        }
+
+                        //Update
+                        $weeks[$week][$day]['exe_array'][$section_id] = $new_array;
+                    }
+                }
+
+                $customer->subscribeWeeks()->update(['data' => json_encode($weeks)]);
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Exercises Assigned Successfully."
+                ]);
+            }
+        }
+    }
+
 
     public function Dashboard_getByWeekDay(Request $request)
     {
@@ -366,18 +549,15 @@ class SubscribeWeeksController extends Controller
         if($data != null)
         {
             $weeks = json_decode($data->data , true);
-            // dd($weeks);
             $requested_day = $weeks[$week][$day];
             $category = Category::find($requested_day['category_id']);
-            $category = new CategoryResource($category);
-            // $exes = array_keys($requested_day['exe_array']) ;
-
             $array = [];
             foreach($requested_day['exe_array'] as $key => $value )
             {
                     $section = TrainingSection::find($key);
                     $exersices = Exercise::whereIn('id' , array_keys($value) )->get();
-                    $array []=   [
+                    $array []=
+                            [
                             'section_name' => $section->name,
                             'section_id' => $section->id,
                             'exe_list' => $exersices,
@@ -390,7 +570,7 @@ class SubscribeWeeksController extends Controller
             return response()->json(
                 [
                     'success' => true,
-                    // 'category'=> $category,
+                    'category'=> isset($category)? $category : null,
                     'exersices' =>$array,
                     'is_completed' => $requested_day['is_completed'],
                 ]);

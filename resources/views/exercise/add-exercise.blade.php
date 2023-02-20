@@ -52,8 +52,18 @@ Add Exercise
                                     </div> --}}
 
                                     <div class="form-group">
-                                        <label>Rips</label>
-                                        <input  value="{{old('rips')}}" type="text" name="rips" class="form-control">
+                                        <label>Reps</label>
+                                        <div class="row">
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <input  value="{{old('reps')}}" placeholder="Reps" type="number" min="1" name="reps" class="form-control d-inline">
+                                            </div>
+                                            X
+                                            <div class="col-lg-2 col-md-4">
+                                                <input  value="{{old('sets')}}" placeholder="Sets" type="number" min="1" name="sets" class="form-control d-inline">
+                                            </div>
+
+                                        </div>
                                     </div>
 
                                     <div class="form-group">

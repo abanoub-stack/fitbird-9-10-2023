@@ -334,6 +334,7 @@
 </section>
 
 
+
 <section class="data">
     <div class="row">
         <form  id="panel_form"  method="POST">
@@ -344,7 +345,7 @@
             <div class="col-lg-12">
                 <div class="row">
                     {{-- Weeks Start --}}
-                    <div class="col-lg-7  col-md-12" style="display: none;" id="weeks_col">
+                    <div class="col-lg-7  col-md-12 " style="display: none;" id="weeks_col">
                         <div class="weeks" >
 
                             {{-- User Info --}}
@@ -451,9 +452,9 @@
 
                             </div>
 
-
+                            {{-- OlD DATA --}}
                             <section class="container old_day_data mt-5" id="old_exe_section">
-                                <div class="row section-row ">
+                                {{-- <div class="row section-row ">
                                     <div class="col-12">
                                         <h5 class="d-block">Section name</h5>
                                     </div>
@@ -472,13 +473,9 @@
                                           </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </section>
-                            <!-- Button trigger modal -->
-
-
-
-
+                            {{-- OlD DATA --}}
 
 
                         </div>
@@ -488,15 +485,16 @@
                     {{-- Exe Start --}}
                     <div class=" col-md-12 m-auto" id="exe_col">
                         <div class="exercies">
-                            <div class="form-group text-left">
+                            <div class="form-group text-left ">
                                 <label>Exercises</label>
 
                                 {{-- Serach --}}
-                                <div class="row">
+                                <div class="row mb-2 ">
 
                                     <div class="col-12">
                                         <div class="row">
-                                            <div class="col-lg-10 col-md-10">
+
+                                            <div class="col-lg-6 col-md-12">
                                                 <div class="input-group mb-5">
                                                     <input type="text" class="input form-control" placeholder="Search" id="search">
                                                     <div class="input-group-append">
@@ -506,15 +504,30 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 d-flex justify-content-start" style="height: 100%;">
-                                                <input type="submit" id="sub-form" class="btn btn-dark" value="Submit">
+
+
+
+                                            <div class="col-lg-4 my-1 col-md-6 d-flex justify-content-center" style="height: 100%;">
+                                                <button
+                                                    type="button" id="load-layout-btn"
+                                                    type="button"
+                                                    data-toggle="modal"
+                                                    data-target="#loadLayoutModal"
+                                                    class="btn btn-info btn-sm col-12 float-lg-right load-layout">
+                                                    Load Layout
+                                               </button>
                                             </div>
+
+                                            <div class="col-lg-2 my-1 col-md-6 d-flex justify-content-center" style="height: 100%;">
+                                                <input type="submit" id="sub-form" class="btn btn-dark btn-sm col-12" value="Submit">
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
 
                                 {{-- Checkboxs List --}}
-                                <div class="row" id="checkboxes2">
+                                <div class="row" id="checkboxes2" >
                                     @foreach ($exes as $ex)
                                         <div class="search-col col-md-6 col-xs-12 mb-1" cat_id={{$ex->category_id}}>
                                             <input type="checkbox"  id="{{ $ex->name }}" value="{{$ex->id}}" name="exercises[]">
@@ -528,6 +541,7 @@
                         </div>
                     </div>
                     {{-- Exe End --}}
+
                 </div>
             </div>
 
@@ -535,6 +549,10 @@
     </div>
 </section>
 
+
+{{-- <section class="">
+    <button class="btn btn-success btn-sm">Save This Day As Layout</button>
+</section> --}}
 
 
 {{-- Delete Modal --}}
@@ -559,10 +577,73 @@
     </div>
 {{-- Delete Modal --}}
 
+
+{{-- Save Layout Modal --}}
+<div class="modal fade" id="layoutModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalTitle">Save This Day As Layout</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <label for="">Layout Name</label>
+            <input type="text" class="form-control" id="layout-name">
+
+            <input type="hidden" class="form-control" id="layout_day">
+            <input type="hidden" class="form-control" id="layout_week">
+            <input type="hidden" class="form-control" id="layout_customer_id">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" id="layout-modal-btn" >Save</button>
+        </div>
+        </div>
+    </div>
+</div>
+{{-- Save Layout Modal --}}
+
+
+{{-- Load Layout Modal --}}
+<div class="modal fade" id="loadLayoutModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalTitle">Load Layout</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <label for="">Please Select Layout</label>
+            <select name="layout" id="load-layout-select" class="form-control">
+                <option value="" disabled selected>Please Select Layout</option>
+                @foreach ($layouts as $layout)
+                    <option value="{{$layout->id}}">{{$layout->name}}</option>
+                @endforeach
+            </select>
+            <input type="hidden" id="day">
+            <input type="hidden" id="week">
+            <input type="hidden" id="customer_id">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-info" id="load-layout-modal-btn" >Load</button>
+        </div>
+        </div>
+    </div>
+</div>
+{{-- Load Layout Modal --}}
+
+
+
 @endsection
 
 
 @section('js')
+
 {{-- Premium Users Select Box --}}
 <script>
     function create_custom_dropdowns() {

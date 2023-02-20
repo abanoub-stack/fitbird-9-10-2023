@@ -137,6 +137,7 @@ Route::middleware(['api-auth'])->group(function () {
 #============================================================================================#
 
 Route::get('get_all_excercise.php', [V1ExerciseController::class, 'get_all_excercise']);
+Route::get('get_all_free_excercise.php', [V1ExerciseController::class, 'get_all_free_excercise']);
 Route::get('get_category.php', [V1CategoryController::class, 'get_category']);
 Route::get('get_exercise_step_list.php', [V1ExerciseStepController::class, 'get_exercise_step_list']);
 Route::get('get_exercise.php', [V1ExerciseSetController::class, 'get_exercise']);

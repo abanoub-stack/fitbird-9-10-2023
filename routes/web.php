@@ -5,6 +5,7 @@ use App\Http\Controllers\AppNotificationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerImageController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DayLayoutController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ExerciseSetsController;
 use App\Http\Controllers\FreeExerciseController;
@@ -267,16 +268,35 @@ Route::middleware('auth')->group(function () {
 
 
     //Training Sections
-    //Index page
-    Route::get('tsection', [TrainingSectionController::class, 'index'])->name('tsection.index');
-    //Create
-    Route::get('tsection/create', [TrainingSectionController::class, 'create'])->name('tsection.create');
-    Route::post('tsection/store', [TrainingSectionController::class, 'store'])->name('tsection.store');
-    Route::get('tsection/edit/{sectionID}', [TrainingSectionController::class, 'edit'])->name('tsection.edit');
-    Route::post('tsection/update', [TrainingSectionController::class, 'update'])->name('tsection.update');
+        //Index page
+        Route::get('tsection', [TrainingSectionController::class, 'index'])->name('tsection.index');
+        //Create
+        Route::get('tsection/create', [TrainingSectionController::class, 'create'])->name('tsection.create');
+        Route::post('tsection/store', [TrainingSectionController::class, 'store'])->name('tsection.store');
+        Route::get('tsection/edit/{sectionID}', [TrainingSectionController::class, 'edit'])->name('tsection.edit');
+        Route::post('tsection/update', [TrainingSectionController::class, 'update'])->name('tsection.update');
 
-    // Delete
-    Route::get('tsection/delete/{sectionID}', [TrainingSectionController::class, 'delete'])->name('tsection.delete');
+        // Delete
+        Route::get('tsection/delete/{sectionID}', [TrainingSectionController::class, 'delete'])->name('tsection.delete');
+
+    //Training Layouts
+        //Index page
+        Route::get('day-layouts', [DayLayoutController::class, 'index'])->name('day-layouts.index');
+        //Create
+        Route::get('day-layouts/create', [DayLayoutController::class, 'create'])->name('day-layouts.create');
+        Route::post('day-layouts/store', [DayLayoutController::class, 'store'])->name('day-layouts.store');
+
+        //Edit
+        Route::get('day-layouts/edit/{layoutID}', [DayLayoutController::class, 'edit'])->name('day-layouts.edit');
+        Route::post('day-layouts/update', [DayLayoutController::class, 'update'])->name('day-layouts.update');
+
+        //Show
+        Route::get('day-layouts/show/{layoutID}', [DayLayoutController::class, 'show'])->name('day-layouts.show');
+
+        // Delete
+        Route::get('day-layouts/delete/{layoutID}', [DayLayoutController::class, 'delete'])->name('day-layouts.delete');
+        Route::get('day-layouts/deleteEXE-fromDay/', [DayLayoutController::class, 'deleteEXEbyDay'])->name('day-layouts.delete_exe');
+
 
 
 
@@ -292,6 +312,11 @@ Route::middleware('auth')->group(function () {
     Route::get('weeks/getCustomerInfo/{id}', [SubscribeWeeksController::class, 'getCustomerInfo']);
     Route::get('weeks/getEXEInfo/{id}', [SubscribeWeeksController::class, 'getEXEInfo']);
     Route::get('weeks/deleteEXE-fromDay/', [SubscribeWeeksController::class, 'deleteEXEbyDay']);
+    Route::get('weeks/save-layout/', [SubscribeWeeksController::class, 'saveLayout']);
+    Route::get('weeks/save-layout-for-customer/', [SubscribeWeeksController::class, 'saveLayoutForCustomer']);
+
+
+
 
 
     Route::post('weeks/by-week-day', [SubscribeWeeksController::class, 'Dashboard_getByWeekDay']);

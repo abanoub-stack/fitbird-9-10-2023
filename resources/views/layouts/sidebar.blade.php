@@ -74,6 +74,14 @@
             </li> --}}
 
 
+            <!-- Nav Item - Packages -->
+            <li class="nav-item">
+                <a class="nav-link"  href="{{ url('/day-layouts', []) }}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Trianing Layouts</span></a>
+            </li>
+
+
 
 
             <!-- Nav Item - Users -->

@@ -33,9 +33,9 @@ class ExerciseController extends Controller
         [
             'exercise_name' => 'required|string|max:50',
             'exercise_category' => 'required|numeric|exists:categories,id',
-            'exercise_time' => 'required|numeric',
-            // 'exercise_calories' => 'required|numeric',
-            'rips' => 'required',
+            'reps' => 'nullable|required_without:exercise_time|required_with:sets',
+            'sets' => 'nullable|required_without:exercise_time|required_with:reps',
+            'exercise_time' => 'nullable|numeric|required_without:reps',
             'exercise_url' => 'nullable|string|max:255',
             'exercise_image' => 'required|image|mimes:jpg,jpeg,png,gif'
         ]);
@@ -48,17 +48,34 @@ class ExerciseController extends Controller
         $exerciseImagePath = Storage::putFile('exercises', $request->exercise_image);
         //$exerciseImagePath = Storage::disk('local2')->put('', $request->exercise_image);
 
-        $exercise = Exercise::create([
-            'name' => $request->exercise_name,
-            'repeat_count' => $request->rips,
-            'url' => $request->exercise_url ?? null,
-            'timee' => $request->exercise_time,
-            'calories' => $request->exercise_calories,
-            'category_id' => $request->exercise_category,
-            'cat_name' => $category->name,
-            'image' => $exerciseImagePath,
-            'is_deleted' => 0,
-        ]);
+        if ($request->reps != null)
+        {
+            $exercise = Exercise::create([
+                'name' => $request->exercise_name,
+                'repeat_count' => $request->reps  . " x " . $request->sets,
+                'url' => $request->exercise_url ?? null,
+                'timee' => $request->exercise_time,
+                'calories' => $request->exercise_calories,
+                'category_id' => $request->exercise_category,
+                'cat_name' => $category->name,
+                'image' => $exerciseImagePath,
+                'is_deleted' => 0,
+            ]);
+        }
+        else
+        {
+            $exercise = Exercise::create([
+                'name' => $request->exercise_name,
+                'url' => $request->exercise_url ?? null,
+                'timee' => $request->exercise_time,
+                'calories' => $request->exercise_calories,
+                'category_id' => $request->exercise_category,
+                'cat_name' => $category->name,
+                'image' => $exerciseImagePath,
+                'is_deleted' => 0,
+            ]);
+        }
+
         AdminNotification::create([
             'admin' => auth()->user()->name,
             'message' => __("Added Exercise $exercise->name"),
@@ -95,10 +112,10 @@ class ExerciseController extends Controller
         [
             'exercise_name' => 'required|string|max:50',
             'exercise_category' => 'required|numeric|exists:categories,id',
-            'rips' => 'required',
-            'exercise_time' => 'required|numeric|max:1000',
-            // 'exercise_calories' => 'required|numeric',
-            'exercise_url' => 'required|string|max:255',
+            'reps' => 'nullable|required_without:exercise_time|required_with:sets',
+            'sets' => 'nullable|required_without:exercise_time|required_with:reps',
+            'exercise_time' => 'nullable|numeric|required_without:reps',
+            'exercise_url' => 'required|string|max:255|url',
             'exercise_image' => 'nullable|image|mimes:jpg,jpeg,png,gif',
         ]);
 
@@ -114,15 +131,32 @@ class ExerciseController extends Controller
             $exerciseImagePath = $exercise->image;
         }
 
-        $exercise->update([
-            'name' => $request->exercise_name,
-            'category_id' => $request->exercise_category,
-            'repeat_count' => $request->rips,
-            'timee' => $request->exercise_time,
-            // 'calories' => $request->exercise_calories,
-            'url' => $request->exercise_url,
-            'image' => $exerciseImagePath,
-        ]);
+        if ($request->reps != null)
+        {
+            $exercise->update([
+                'name' => $request->exercise_name,
+                'category_id' => $request->exercise_category,
+                'repeat_count' => $request->reps  . " x " . $request->sets,
+                'timee' => $request->exercise_time,
+                // 'calories' => $request->exercise_calories,
+                'url' => $request->exercise_url,
+                'image' => $exerciseImagePath,
+            ]);
+        }
+        else
+        {
+            $exercise->update([
+                'name' => $request->exercise_name,
+                'category_id' => $request->exercise_category,
+                'timee' => $request->exercise_time,
+                // 'calories' => $request->exercise_calories,
+                'url' => $request->exercise_url,
+                'image' => $exerciseImagePath,
+            ]);
+        }
+
+
+
         AdminNotification::create([
             'admin' => auth()->user()->name,
             'message' => __("Edited Exercise $exercise->name"),

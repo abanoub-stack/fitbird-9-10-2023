@@ -38,18 +38,36 @@ Edit Exercise
                                         <label>Exercise Category</label>
                                         <select class="form-control" name="exercise_category">
                                             @foreach (DB::table('categories')->get() as $cat)
-                                                @if ($exercise->Category->id == $cat->id)
-                                                    <option value="{{ $cat->id }}" selected>{{ $cat->name }}</option>
-                                                @endif
-                                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                                <option value="{{ $cat->id }}"
+                                                    @if (isset($exercise->Category))
+                                                        @if ($exercise->Category->id == $cat->id)
+                                                            selected
+                                                        @endif
+                                                    @endif
+                                                    >{{ $cat->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Rips</label>
-                                        <input type="text" value="{{ $exercise->repeat_count }}" name="rips"
-                                            class="form-control">
+                                        <label>Reps</label>
+                                        <div class="row m-auto">
+                                            <div class="col-12 m-auto">
+                                                <p class="text-muted" style="font-size: 12px">Current Reps : <span class="font-weight-bold text-primary">{{$exercise->repeat_count}}</span></p>
+                                            </div>
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <input  value="{{old('reps')}}" placeholder="Reps" type="number" min="1" name="reps" class="form-control d-inline">
+                                            </div>
+
+                                            X
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <input  value="{{old('sets')}}" placeholder="Sets" type="number" min="1" name="sets" class="form-control d-inline">
+                                            </div>
+
+                                        </div>
                                     </div>
 
                                     <div class="form-group">

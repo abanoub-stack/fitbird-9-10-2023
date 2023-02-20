@@ -29,6 +29,22 @@ class ExerciseController extends Controller
         ]);
     }
 
+    public function get_all_free_excercise()
+    {
+        $data = FreeExercise::orderBy('id', 'desc')->get();
+
+        return response()->json([
+            'data' => [
+                'success' => '1',
+                'exercise' => [
+                    'create' => ExerciseResourse::collection($data),
+                    'update' => [],
+                    'delete' => [],
+                ],
+            ],
+        ]);
+    }
+
     public function getexercisebycategory(Request $request)
     {
         if ($request->has('cat_id')) {
