@@ -333,13 +333,6 @@
 
 </section>
 
-
-<style>
-    .s{
-        object-fit: fill;
-        height: ;
-    }
-</style>
 <section class="data">
     <div class="row">
         <form  id="panel_form"  method="POST">

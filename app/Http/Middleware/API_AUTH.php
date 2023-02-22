@@ -26,11 +26,15 @@ class API_AUTH
             } else {
                 return response()->json([
                     'error' => "wrong access token",
+                    "success"=>  false,
+                    "code"=>  666
                 ]);
             }
         } else {
             return response()->json([
                 'error' => 'must login to continue',
+                "success"=>  false,
+                "code"=>  666
             ]);
         }
     }

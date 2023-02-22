@@ -80,4 +80,46 @@ class Customer extends Model
         return $this->hasOne(SubscribeWeeks::class , 'customer_id');
     }
 
+    public function getSubType()
+    {
+        $type = $this->subscription_type;
+        if($type == 'month')
+        return 'Month';
+
+        if($type == 'three_months')
+        return '3 Months';
+
+        if($type == 'six_months')
+        return '6 Months';
+
+        if($type == 'year')
+        return '12 Month';
+    }
+
+    public function is_subscribed()
+    {
+        if($this->is_subscribed == 0)
+            return false;
+        else
+            return true ;
+    }
+
+    public function get_sub_weeks()
+    {
+        if($this->is_subscribed == 1)
+        {
+            $data = json_decode($this->subscribeWeeks->data , true);
+
+            return count($data);
+
+        }
+        else
+        {
+            return 0;
+        }
+
+    }
+
+
+
 }
