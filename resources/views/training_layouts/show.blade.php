@@ -10,11 +10,11 @@
 <div class="container">
     <div class="row m-auto">
         {{-- category --}}
-        <div class="col-lg-6 col-md-12 m-auto mb-5 text-center">
+        <div class="col-lg-4 col-md-12 m-auto mb-5 text-center">
             <div class=" animated--fade-in card text-center border-bottom-info m-auto ">
+                <img  class="animated--fade-in card-img-top m-auto" style="width: 100%; object-fit:contain"
+                    src="{{ url('/', []) }}/uploads/{{ $category->icon }}" alt="category icon">
                 <div class="animated--fade-in card-body">
-                    <img style="height: 100px; object-fit:contain" class="animated--fade-in card-img-top m-auto"
-                        src="{{ url('/', []) }}/uploads/{{ $category->icon }}" alt="category icon">
                     <h5 class=" animated--fade-in card-title ">{{ $category->name }}</h5>
                 </div>
             </div>
