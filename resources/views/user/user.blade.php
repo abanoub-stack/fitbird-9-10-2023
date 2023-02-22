@@ -281,28 +281,31 @@ Show <span class="font-weight-bolder text-capitalize
         </div>
 
          {{-- OlD DATA --}}
-         <section class="container old_day_data mt-5" id="old_exe_section">
-            {{-- <div class="row section-row ">
-                <div class="col-12">
-                    <h5 class="d-block">Section name</h5>
-                </div>
-                <div class="col-lg-3 col-xs-6 ">
-                    <div class="card text-center">
-                      <img class="card-img-top m-auto" src="https://fitbird.stackdeans.xyz/public/uploads/Menuitem_1554382653.png" style="width: 150px; object-fit: contain" alt="">
-                      <div class="card-body">
-                        <h6 class="card-title">Exe Name</h6>
-                        <p class="card-text ">
-
-                            <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#deleteExeModal">
-                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                            </button>
-
-                        </p>
-                      </div>
+        <div class="col-md-8 col-xs-12 m-auto">
+            <section class="container old_day_data mt-2 bg-dark" id="old_exe_section">
+                {{-- <div class="row section-row ">
+                    <div class="col-12">
+                        <h5 class="d-block">Section name</h5>
                     </div>
-                </div>
-            </div> --}}
-        </section>
+                    <div class="col-lg-3 col-xs-6 ">
+                        <div class="card text-center">
+                        <img class="card-img-top m-auto" src="https://fitbird.stackdeans.xyz/public/uploads/Menuitem_1554382653.png" style="width: 150px; object-fit: contain" alt="">
+                        <div class="card-body">
+                            <h6 class="card-title">Exe Name</h6>
+                            <p class="card-text ">
+
+                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#deleteExeModal">
+                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                </button>
+
+                            </p>
+                        </div>
+                        </div>
+                    </div>
+                </div> --}}
+            </section>
+        </div>
+
         {{-- OlD DATA --}}
     </div>
     {{-- User Exercies --}}
