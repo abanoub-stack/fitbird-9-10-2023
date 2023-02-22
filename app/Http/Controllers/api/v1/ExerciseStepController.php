@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ExerciseStepResource;
 use App\Models\Exercise;
 use App\Models\ExerciseStep;
+use App\Models\FreeExercise;
 use App\Models\FreeExerciseStep;
 use Illuminate\Http\Request;
 
@@ -40,12 +41,10 @@ class ExerciseStepController extends Controller
         }
     }
 
-
-
     public function get_free_exercise_step_list(Request $request)
     {
         if ($request->has('ex_id')) {
-            $exercise = Exercise::find($request->ex_id);
+            $exercise = FreeExercise::find($request->ex_id);
             if (!$exercise) {
                 return response()->json([
                     'success' => '0',
