@@ -137,6 +137,7 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [UserController::class, 'index']);
     // show User
     Route::get('user/{uId}', [UserController::class, 'user']);
+    Route::get('user-progress/{uId}', [UserController::class, 'userProgress']);
     // delete user
     Route::get('delete-user/{uId}', [UserController::class, 'delete']);
     // edit user

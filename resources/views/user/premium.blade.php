@@ -75,11 +75,18 @@ Premium Users
                                 <td>{{ $user->subscription_started_at }}</td>
                                 <td>{{ $user->subscription_finished_at }}</td>
                                 @php
-                                    $remaining = strtotime($user->subscription_finished_at) - strtotime($user->subscription_started_at);
+                                    // $remaining = \Carbon\Carbon::parse($user->subscription_finished_at) - \Carbon\Carbon::parse($user->subscription_started_at) ;
                                 @endphp
-                                <td>{{ $remaining / 86400 }}</td>
+                                    {{-- {{$left = \Carbon\Carbon::parse($user->subscription_finished_at)->subDays(\Carbon\Carbon::now()->dayOfWeek())}} --}}
+                                {{-- <td>{{ $remaining / 86400 }}</td> --}}
+                                <td>
+                                    {{\Carbon\Carbon::parse($user->subscription_finished_at)->setTimezone('GMT+2')->diffInDays(now())}} days
+                                </td>
+                                {{-- <td>{{ floor($remaining / 2.628e6) }}</td> --}}
+                                <td>
+                                    {{\Carbon\Carbon::parse($user->subscription_finished_at)->setTimezone('GMT+2')->diffInMonths(now())}} months
 
-                                <td>{{ floor($remaining / 2.628e6) }}</td>
+                                </td>
                                 <td >
                                     <a class="btn btn-sm btn-circle  btn-primary" href="{{ url('user', $user->id) }}">
                                         <i class="fas fa-eye"></i>

@@ -170,12 +170,12 @@ Show <span class="font-weight-bolder text-capitalize
                                     </td>
                                 </tr>
 
-                                {{-- <tr>
+                                <tr>
                                     <th scope="row">Customer Progress</th>
                                     <td>
                                        <a href="{{url('user-progress/'.$user->id , [])}}" class="btn btn-success btn-sm">Get Progress</a>
                                     </td>
-                                </tr> --}}
+                                </tr>
                             @endif
 
                         </tbody>

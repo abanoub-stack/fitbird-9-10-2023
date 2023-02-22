@@ -47,10 +47,9 @@ class UserController extends Controller
 
 
 
-        $keys = $formattedDates;
-        $values = $cals;
-
-        $description =$user->name . "'s Losted Calories in This Current Week " ;
+            $keys = $formattedDates;
+            $values = $cals;
+            $description =$user->name . "'s Losted Calories in This Current Week " ;
         //    End Report Section
 
 
@@ -60,6 +59,12 @@ class UserController extends Controller
             'values' => $values,
             'description' => $description,
         ]);
+    }
+
+
+    public function userProgress($uId)
+    {
+        return view('user.user-progress', []);
     }
 
     public function premiumUsers()

@@ -121,5 +121,20 @@ class Customer extends Model
     }
 
 
+    public function getSubInDays()
+    {
+        $type = $this->subscription_type;
+        if($type == 'month')
+        return 30;
+
+        if($type == 'three_months')
+        return 90;
+
+        if($type == 'six_months')
+        return 180;
+
+        if($type == 'year')
+        return 360;
+    }
 
 }
