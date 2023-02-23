@@ -321,6 +321,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('weeks/by-week-day', [SubscribeWeeksController::class, 'Dashboard_getByWeekDay']);
+    Route::post('weeks/by-week-day-reports', [SubscribeWeeksController::class, 'dayReport']);
+    Route::post('weeks/by-week-day-charts', [SubscribeWeeksController::class, 'dayCharts']);
     Route::post('weeks/get-sub-week-data', [SubscribeWeeksController::class, 'Dashboard_getWeekData']);
     Route::get('weeks/get-customer-workouts-details', [SubscribeWeeksController::class, 'Dashboard_getCustomerWorkoutsDetails']);
 

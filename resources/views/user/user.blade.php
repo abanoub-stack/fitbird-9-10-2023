@@ -147,35 +147,33 @@ Show <span class="font-weight-bolder text-capitalize
                                         @php
                                             $percent = floor((\Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now())/$user->getSubInDays()) * 100)
                                         @endphp
+                                        {!! '<span class="font-weight-bold">' . \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now()) . '</span> days from <span class="font-weight-bold">' . $user->getSubInDays() .'</span> days' !!}
                                         <div class="progress">
-                                            <div class="progress-bar bg-
-
-                                            @if($percent > 90)
-                                                success
-                                            @elseif($percent < 90 && $percent > 40)
-                                                warning
+                                            <div class="progress-bar  px-5
+                                            @if($percent > 80)
+                                            bg-success
+                                            @elseif($percent < 80 && $percent > 40)
+                                            bg-warning
                                             @elseif($percent < 14)
-                                                danger
+                                            bg-danger
                                             @endif
-
-
                                                 " role="progressbar"
                                                 style="width:{{$percent}}%"
                                                 aria-valuenow="{{ \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now() ) }}"
                                                 aria-valuemin="0"
-                                                aria-valuemax="{{$user->getSubInDays()}}"
-                                                >{{ \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now()) . " days from " . $user->getSubInDays() }}
+                                                aria-valuemax="{{$user->getSubInDays()}}">
+                                                {!! '<span class="font-weight-bold ">' . \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now()) . ' days </span>  ' !!}
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
 
-                                {{-- <tr>
+                                <tr>
                                     <th scope="row">Customer Progress</th>
-                                    <td>
+                                    <td class="m-auto text-center">
                                        <a href="{{url('user-progress/'.$user->id , [])}}" class="btn btn-success btn-sm">Get Progress</a>
                                     </td>
-                                </tr> --}}
+                                </tr>
                             @endif
 
                         </tbody>
@@ -320,7 +318,7 @@ Show <span class="font-weight-bolder text-capitalize
 
          {{-- OlD DATA --}}
         <div class="col-md-8 col-xs-12 m-auto">
-            <section class="container old_day_data mt-2 bg-dark" id="old_exe_section">
+            <section class="container old_day_data mt-2 " id="old_exe_section">
                 {{-- <div class="row section-row ">
                     <div class="col-12">
                         <h5 class="d-block">Section name</h5>

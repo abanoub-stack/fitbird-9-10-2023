@@ -64,7 +64,9 @@ class UserController extends Controller
 
     public function userProgress($uId)
     {
-        return view('user.user-progress', []);
+        $user = Customer::findOrFail($uId);
+
+        return view('user.user-progress', compact('user'));
     }
 
     public function premiumUsers()

@@ -133,12 +133,8 @@ Route::middleware(['api-auth'])->group(function () {
 
 
 
-
-
-
     // Added Recently to remove guest mode
     Route::get('get-banner', [BannerImageController::class, 'getAll']);
-
     Route::get('get_all_excercise.php', [V1ExerciseController::class, 'get_all_excercise']);
     Route::get('get_all_free_excercise.php', [V1ExerciseController::class, 'get_all_free_excercise']);
     Route::get('get_category.php', [V1CategoryController::class, 'get_category']);
@@ -149,9 +145,11 @@ Route::middleware(['api-auth'])->group(function () {
     Route::get('get_free_set_by_category.php', [V1ExerciseSetController::class, 'get_free_set_by_category']);
     Route::get('getexercisebycategory.php', [V1ExerciseController::class, 'getexercisebycategory']);
     Route::get('get-free-exercisebycategory.php', [V1ExerciseController::class, 'getFreeexercisebycategory']);
-
     Route::get('subscription-prices', [PackageController::class, 'subscriptionPrices']);
     Route::get('all-users', function () {return Customer::all(['id', 'name', 'email', 'phone']);});
+
+
+
     });
 });
 
@@ -169,3 +167,9 @@ Route::get('user_register.php', [V1RegisterController::class, 'user_register']);
 Route::get('register_new.php', [V1RegisterController::class, 'user_register']);
 
 Route::get('tokan_data.php', [V1TokanDataController::class, 'tokan_data']);
+
+
+
+
+
+

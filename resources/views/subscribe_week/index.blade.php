@@ -763,8 +763,8 @@
 {{-- Exe Check Boxs Search --}}
 <script>
     const search = document.getElementById("search");
-    // console.log(search);
     const labels = document.querySelectorAll("#checkboxes2 > div.search-col");
+    console.log(labels);
     // console.log(labels[0].getAttribute('cat_id'));
     search.addEventListener("input", () => Array.from(labels).forEach((element) => element.style.display = element
         .childNodes[1].id.toLowerCase().includes(search.value.toLowerCase()) ? "inline" : "none"))

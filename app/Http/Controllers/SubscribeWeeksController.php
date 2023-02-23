@@ -588,6 +588,161 @@ class SubscribeWeeksController extends Controller
     }
 
 
+    public function dayCharts(Request $request)
+    {
+        $validator = Validator::make($request->all() ,
+        [
+            'week' => 'required|numeric|min:1|max:48',
+            'day' => 'required|numeric|min:1|max:7',
+            'customer_id' => 'required|exists:customers,id',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
+
+        $week = $request->week;
+        $day = $request->day;
+
+        $user = Customer::where('id', '=', $request->customer_id)->first();
+
+        $data = $user->subscribeWeeks()->first();
+
+        if($data != null)
+        {
+            $weeks = json_decode($data->data , true);
+            $requested_day = $weeks[$week][$day];
+            $requested_week = $weeks[$week];
+
+            //PIE CHART FUNCTIONALITY
+            $pie_completed_counter = 0;
+            $pie_not_completed_counter = 0;
+            foreach($requested_day['exe_array'] as $key => $value )
+            {
+                foreach($value as  $exe_id => $exe_status)
+                {
+                    $exe_status? $pie_completed_counter++ : $pie_not_completed_counter++ ;
+                }
+            }
+
+
+            //Area Chart Func
+            $area_data = [];
+            foreach($requested_week as $day => $day_array )
+            {
+                $area_completed_counter = 0;
+                $area_not_completed_counter = 0;
+                foreach($day_array['exe_array'] as $section_id => $exe_array )
+                {
+                    foreach($exe_array as  $exe_id => $exe_status)
+                    {
+                        $exe_status? $area_completed_counter++ : $area_not_completed_counter++ ;
+                    }
+                }
+                $area_data['day ' . $day ] = $area_completed_counter;
+            }
+            return response()->json(
+                [
+                    'success' => true,
+                    'pie_lables' => ['Completed' , 'Not Completed',],
+                    'pie_values' => [$pie_completed_counter , $pie_not_completed_counter],
+                    'area_lables' => array_keys($area_data),
+                    'area_values' => array_values($area_data),
+
+                ]);
+            }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'pie_lables' => [],
+                    'pie_values' => [],
+                    'area_lables' => [],
+                    'area_values' => [],
+                ]);
+        }
+
+
+    }
+
+    public function dayReport(Request $request)
+    {
+        $validator = Validator::make($request->all() ,
+        [
+            'week' => 'required|numeric|min:1|max:48',
+            'day' => 'required|numeric|min:1|max:7',
+            'customer_id' => 'required|exists:customers,id',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
+
+        $week = $request->week;
+        $day = $request->day;
+        $user = Customer::where('id', '=', $request->customer_id)->first();
+        $data = $user->subscribeWeeks()->first();
+
+        if($data != null)
+        {
+            $weeks = json_decode($data->data , true);
+            $requested_day = $weeks[$week][$day];
+            $category = Category::find($requested_day['category_id']);
+            $array = [];
+            foreach($requested_day['exe_array'] as $key => $value )
+            {
+                    $section = TrainingSection::find($key);
+
+                    $exersices = Exercise::whereIn('id' , array_keys($value) )->get();
+                    foreach($exersices as $exe)
+                    {
+                        $exe->is_completed = $value[$exe->id];
+                    }
+                    $array []=
+                            [
+                            'section_name' => $section->name,
+                            'section_id' => $section->id,
+                            'exe_list' => $exersices,
+                            ] ;
+            }
+
+            // $exes = Exercise::whereIn('id' , array_keys($requested_day['exe_array']))->get();
+            // $exe = new ExerciseResourse($exes);
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'category'=> isset($category)? $category : null,
+                    'exersices' =>$array,
+                    'is_completed' => $requested_day['is_completed'],
+                ]);
+            }
+        else
+        {
+            return response()->json(
+                [
+                    'success' => true,
+                    'data' => "No Data for this user",
+                ]);
+        }
+
+
+    }
+
+
+
+
     public function Dashboard_getWeekData(Request $request)
     {
         $validator = Validator::make($request->all() ,
