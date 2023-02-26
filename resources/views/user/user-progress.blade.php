@@ -598,6 +598,7 @@ Show <span class="font-weight-bolder text-capitalize
                         success: function(result) {
                             if (result.success == true)
                                 {
+                                    console.log(result);
                                     pie_lables = result.pie_lables;
                                     pie_values = result.pie_values;
                                     area_lables = result.area_lables;

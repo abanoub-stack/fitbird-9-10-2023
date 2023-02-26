@@ -94,11 +94,11 @@
 
 
             <!-- Nav Item - Progress Reports -->
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link"  href="{{ url('/progress-reports', []) }}">
                     <i class="fas fa-chart-bar    "></i>
                     <span>Progress Reports</span></a>
-            </li>
+            </li> --}}
 
 
 
@@ -169,26 +169,26 @@
                 <div id="NotificationsCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Notifications Actions:</h6>
-                        <a class="collapse-item" href="{{ url('/send-notifications', []) }}">
+                        {{-- <a class="collapse-item" href="{{ url('/send-notifications', []) }}">
                             <i class="far my-1 fa-arrow-alt-circle-right"></i>
                                     Send Notifications
-                        </a>
-                        <a class="collapse-item" href="{{ url('/android-notification', []) }}">
+                        </a> --}}
+                        {{-- <a class="collapse-item" href="{{ url('/android-notification', []) }}">
                             <i class="fab fa-android my-1"></i>
                                     Android Notifications
                         </a>
                         <a class="collapse-item" href="{{ url('/ios-notification', []) }}">
                             <i class="fab fa-apple my-1"></i>
                                     IOS Notifications
-                        </a>
+                        </a> --}}
                     @if (auth()->user()->role == 'SUPER_ADMIN')
                         <a class="collapse-item" href="{{ url('/notifications', []) }}">
-                            <i class="fa my-1 fa-lock"></i>
+                            <i class="mr-1 fa my-1 fa-lock"></i>
                                     Admins Notifications
                         </a>
                         <a class="collapse-item" href="{{ url('/app-notifications', []) }}">
-                            <i class="fa my-1 fa-mobile"></i>
-                                    Mobile App Notifications
+                            <i class="mr-1 fa my-1 fa-mobile"></i>
+                                    App Notifications
                         </a>
                     @endif
                     </div>

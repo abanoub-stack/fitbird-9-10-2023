@@ -622,6 +622,9 @@ class SubscribeWeeksController extends Controller
             //PIE CHART FUNCTIONALITY
             $pie_completed_counter = 0;
             $pie_not_completed_counter = 0;
+
+
+
             foreach($requested_day['exe_array'] as $key => $value )
             {
                 foreach($value as  $exe_id => $exe_status)
@@ -629,7 +632,6 @@ class SubscribeWeeksController extends Controller
                     $exe_status? $pie_completed_counter++ : $pie_not_completed_counter++ ;
                 }
             }
-
 
             //Area Chart Func
             $area_data = [];
