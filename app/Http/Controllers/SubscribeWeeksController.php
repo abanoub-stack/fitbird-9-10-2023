@@ -21,7 +21,7 @@ class SubscribeWeeksController extends Controller
     public function index()
     {
         $cats = Category::orderBy('name' , 'asc')->get();
-        $customers = Customer::select('id' , 'name' , 'subscription_type')->where('is_subscribed' , 1)->orderBy('name' , 'asc')->get();
+        $customers = Customer::select('id' , 'name'  , 'email', 'subscription_type')->where('is_subscribed' , 1)->orderBy('name' , 'asc')->get();
         $exes = Exercise::orderBy('name' , 'asc')->with('Category')->get();
         $sections = TrainingSection::orderBy('name' , 'asc')->get();
         $layouts = DayLayout::orderBy('name' , 'asc')->get();

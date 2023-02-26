@@ -302,28 +302,15 @@
             </div>
         </div>
 
-
         <div class="col-lg-4 col-md-12" id="customers">
             <div class="form-group">
                 <label>Premium Customers </label>
                 <select name="customer_id" id="customer_select" class="form-control">
                     <option value="">Please Select Customer</option>
                     @foreach ($customers as $customer)
-                        <option value="{{ $customer->id }}">{{ $customer->name }}
-                            |
-                            @if ($customer->subscription_type == 'year')
-                                Year (<span class="font-weight-bold" style="font-weight: bolder !important">48</span>
-                                weeks)
-                            @elseif($customer->subscription_type == 'six_months')
-                                Six Months (<span class="font-weight-bold"
-                                    style="font-weight: bolder !important">24</span> weeks)
-                            @elseif($customer->subscription_type == 'three_months')
-                                Three Months (<span class="font-weight-bold"
-                                    style="font-weight: bolder !important">12</span> weeks)
-                            @elseif($customer->subscription_type == 'month')
-                                Month (<span class="font-weight-bold" style="font-weight: bolder !important">4</span>
-                                weeks)
-                            @endif
+                        <option value="{{ $customer->id }}">
+                            {{ $customer->name }}  | ({{$customer->email}}) | {{$customer->getSubType()}}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -764,7 +751,7 @@
 <script>
     const search = document.getElementById("search");
     const labels = document.querySelectorAll("#checkboxes2 > div.search-col");
-    console.log(labels);
+    console.log(label);
     // console.log(labels[0].getAttribute('cat_id'));
     search.addEventListener("input", () => Array.from(labels).forEach((element) => element.style.display = element
         .childNodes[1].id.toLowerCase().includes(search.value.toLowerCase()) ? "inline" : "none"))
