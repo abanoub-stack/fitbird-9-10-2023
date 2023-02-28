@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     protected $fillable = [
+        'avatar',
         'name',
         'phone',
         'gender',
@@ -31,7 +32,6 @@ class Customer extends Model
         'activity',
         'provider_id',
         'provider_name',
-        'avatar',
     ];
 
     public function Packages()

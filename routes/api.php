@@ -26,8 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::middleware('auth:sanctum')->prefix('v1')->group(function () {});
 
-# Guest #
-Route::middleware(['api-guest'])->group(function () {
+
 
     //Check Email Exist
     Route::post('check-email-exist',[AuthController::class, 'CheckEmail']);
@@ -41,13 +40,16 @@ Route::middleware(['api-guest'])->group(function () {
     // Register
     Route::post('register', [AuthController::class, 'register']);
 
-    # Guest #
-
-
+    Route::get('user_register.php', [V1RegisterController::class, 'user_register']);
+    Route::get('register_new.php', [V1RegisterController::class, 'user_register']);
+    Route::get('tokan_data.php', [V1TokanDataController::class, 'tokan_data']);
 
     //Soical Logins
-       // Facebook Login
-       Route::post('facebook-login', [AuthController::class, 'facebookLogin']);
+        // Facebook Login
+        Route::post('facebook-login', [AuthController::class, 'facebookLogin']);
+
+        // Google Login
+        Route::post('google-login', [AuthController::class, 'googleLogin']);
 
 
     //Forget Password
@@ -57,9 +59,18 @@ Route::middleware(['api-guest'])->group(function () {
 
 
 
+#============================================================================================#
+# Guest #
+Route::middleware(['api-guest'])->group(function () {
+
+
+
 
 });
+# Guest #
+#============================================================================================#
 
+#============================================================================================#
 # AUTH #
 Route::middleware(['api-auth'])->group(function () {
     Route::middleware(['check-sub'])->group(function () {
@@ -152,21 +163,13 @@ Route::middleware(['api-auth'])->group(function () {
 
     });
 });
-
-
 # AUTH #
-
-#============================================================================================#
-#============================================================================================#
 #============================================================================================#
 
 
 
 
-Route::get('user_register.php', [V1RegisterController::class, 'user_register']);
-Route::get('register_new.php', [V1RegisterController::class, 'user_register']);
 
-Route::get('tokan_data.php', [V1TokanDataController::class, 'tokan_data']);
 
 
 

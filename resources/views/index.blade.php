@@ -101,6 +101,77 @@
                 </a>
             </div>
 
+            {{-- Users Progress --}}
+            <div class="col-12 m-auto my-5">
+                <div class="row m-auto">
+                    <div class="col-lg-10 col-md-12 m-auto">
+                        {{-- Table --}}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Days Remaining</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    @foreach ($pre_users as $i => $user)
+                                        <tr>
+                                            <th scope="row">{{ $i + 1 }}</th>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>
+                                                        @php
+                                                            $percent = floor((\Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now())/$user->getSubInDays()) * 100)
+                                                        @endphp
+                                                        <div class="progress">
+                                                            <div class="progress-bar  px-5
+                                                                @if($percent > 80)
+                                                                bg-success
+                                                                @elseif($percent < 80 && $percent > 40)
+                                                                bg-warning
+                                                                @elseif($percent < 14)
+                                                                bg-danger
+                                                                @endif
+                                                                " role="progressbar"
+                                                                style="width:{{$percent}}%"
+                                                                aria-valuenow="{{ \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now() ) }}"
+                                                                aria-valuemin="0"
+                                                                aria-valuemax="{{$user->getSubInDays()}}">
+                                                                {!! '<span class="font-weight-bold ">' . \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now()) . ' days </span>  ' !!}
+                                                            </div>
+                                                        </div>
+                                            </td>
+                                            <td>
+                                                <a class="text-primary mx-1" href="{{ url('user', $user->id) }}">
+                                                   <button class="btn btn-sm btn-outline-dark rounded">
+                                                        More Info <i class="fa fa-eye"> </i>
+                                                   </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        @if (Route::current()->uri=="users")
+                                            <th colspan="11"><div class="d-flex justify-content-center">{{ $users->links() }}</div></th>
+                                        @endif
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        {{-- Table --}}
+                    </div>
+                </div>
+            </div>
+
+
+
+
 </div>
 
 

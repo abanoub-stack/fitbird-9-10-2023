@@ -14,10 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Laravel\Socialite\Facades\Socialite;
+//use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Mail;
-
-
 
 class AuthController extends Controller
 {
@@ -190,8 +188,6 @@ class AuthController extends Controller
         ]);
     }
 
-
-
     public function schedule(Schedule $schedule, Request $request)
     {
         if ($request->header('access_token')) {
@@ -208,8 +204,7 @@ class AuthController extends Controller
     public function editProfileApi(Request $request)
     {
         $user = Customer::where( 'access_token' , $request->header('access-token'))->first();
-        $validator = Validator::make($request->all(),
-        [
+        $validator = Validator::make($request->all(), [
             'email' => 'email|required',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif',
             'name' => 'required|string',
@@ -345,145 +340,9 @@ class AuthController extends Controller
     }
 
 
-    //Socialite
-    public function facebookLogin(Request $request)
-    {
-
-        $validator = Validator::make($request->all(), [
-            'token' => 'required'
-        ]);
-
-        if($validator->fails())
-        {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors()->first()
-            ] , 400);
-        }
-
-        $facebook_token = $request->token;
-
-        try{
-            $providerUser = Socialite::driver('facebook')->userFromToken($facebook_token);
-        }
-        catch(Exception $e ){
-            return response()->json([
-                'success' => false,
-                'message' => 'wrong facebook token',
-                'error' => $e->getMessage(),
-            ] , 500);
-        }
-
-        $providerUserId  = $providerUser->id;
-        $user  = Customer:: where('provider_name', 'facebook')
-                            ->where('provider_id' , $providerUserId)
-                            ->first();
-
-        if(!$user)
-        {
-            $access_token = Str::random(128);
-            $customer = Customer::create([
-                'name' => $providerUser->name,
-                'provider_name' => 'facebook',
-                'provider_id' => $providerUserId,
-                'avatar' => "https://graph.facebook.com/v3.3/$providerUserId/picture?type=large&access_token=$facebook_token",
-                'access_token' => $access_token,
-
-            ]);
 
 
-            $customer = Customer::find($customer->id);
-
-            return response()->json([
-                'success' => true,
-                'request_type' => 'signup',
-                'access_token' => $customer->access_token,
-                'user' => new CustomerResource($customer),
-            ]);
-        }
-        else
-        {
-            return response()->json([
-                'success' => true,
-                'request_type' => 'login',
-                'message' => 'user exist',
-                'access_token' => $user->access_token,
-                'user' => new CustomerResource($user),
-            ]);
-        }
-    }
-
-
-    public function googleLogin(Request $request)
-    {
-
-        $validator = Validator::make($request->all(), [
-            'token' => 'required'
-        ]);
-
-        if($validator->fails())
-        {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors()->first()
-            ] , 400);
-        }
-
-        $facebook_token = $request->token;
-
-        try{
-            $providerUser = Socialite::driver('google')->userFromToken($facebook_token);
-        }
-        catch(Exception $e ){
-            return response()->json([
-                'success' => false,
-                'message' => 'wrong google token',
-                'error' => $e->getMessage(),
-            ] , 500);
-        }
-
-        $providerUserId  = $providerUser->id;
-        dd($providerUserId);
-        $user  = Customer:: where('provider_name', 'google')
-                            ->where('provider_id' , $providerUserId)
-                            ->first();
-
-        if(!$user)
-        {
-            $access_token = Str::random(128);
-            $customer = Customer::create([
-                'name' => $providerUser->name,
-                'provider_name' => 'google',
-                'provider_id' => $providerUserId,
-                'avatar' => "https://graph.facebook.com/v3.3/$providerUserId/picture?type=large&access_token=$facebook_token",
-                'access_token' => $access_token,
-
-            ]);
-
-
-            $customer = Customer::find($customer->id);
-
-            return response()->json([
-                'success' => true,
-                'request_type' => 'signup',
-                'access_token' => $customer->access_token,
-                'user' => new CustomerResource($customer),
-            ]);
-        }
-        else
-        {
-            return response()->json([
-                'success' => true,
-                'request_type' => 'login',
-                'message' => 'user exist',
-                'access_token' => $user->access_token,
-                'user' => new CustomerResource($user),
-            ]);
-        }
-    }
-
-
-    //Foreget password functions
+     //Foreget password functions
 
         // Function to generate OTP
         function generateNumericOTP($n)
@@ -647,7 +506,7 @@ class AuthController extends Controller
         }
 
 
-        public function resetPassword(Request $request)
+           public function resetPassword(Request $request)
         {
             $validator = Validator::make($request->all(),
             [
@@ -715,9 +574,7 @@ class AuthController extends Controller
 
         }
 
-    //Forget password functions
-
-
+    //Foreget password functions
 
 
 

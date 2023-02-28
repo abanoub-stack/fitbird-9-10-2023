@@ -12,7 +12,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('index');
+        $pre_users = Customer::where('is_subscribed' , '1')->get();
+        return view('index' , compact('pre_users'));
     }
 
 
