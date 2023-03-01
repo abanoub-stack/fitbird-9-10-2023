@@ -97,6 +97,7 @@ class UserController extends Controller
         if ($request->has('disable')) {
             $user->update([
                 'is_subscribed' => '0',
+                'subscription_finished_at' => now(),
             ]);
             return redirect(url('/users/premium'));
         }
@@ -246,14 +247,14 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'customer_id' => 'exists:customers,id|required',
-            'email' => 'email|required',
             'name' => 'required|string',
             'phone' => 'required|min:11',
             'gender' => 'required|in:Male,Female,male,female',
             'workout_intensity' => 'required',
             'age' => 'required|min:0|integer',
             'height' => 'required|min:0|numeric',
-            'exercise_days' => 'required|string',
+            'weight' => 'required|min:0|numeric',
+            'exercise_days' => 'required|min:1|max:7|integer',
             'password' => 'nullable|min:6',
             'password_confirmation' => 'nullable|min:6|same:password',
         ]);
@@ -262,8 +263,10 @@ class UserController extends Controller
             return back()->withErrors($validator->errors())->withInput();
         }
 
-        $data = $request->except(['password', 'password_confirmation' , '_token']);
+        $data = $request->except(['activity','goals','email' ,'password', 'password_confirmation' , '_token']);
         $user->update($data);
+
+
 
         if (isset($request->password)) {
             $user->password = Hash::make($request->password);
@@ -295,9 +298,6 @@ class UserController extends Controller
 
 
     }
-
-
-
 
 
 }

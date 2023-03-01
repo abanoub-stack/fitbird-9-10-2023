@@ -137,4 +137,21 @@ class Customer extends Model
         return 360;
     }
 
+    public function getImagePath()
+    {
+        if ($this->avatar != null) {
+            return  $this->avatar;
+        }
+        else
+        {
+            if ($this->image != null) {
+                return  asset($this->image);
+            }
+            else
+            {
+                return asset('dashboard/img/undraw_profile.svg');
+            }
+        }
+    }
+
 }

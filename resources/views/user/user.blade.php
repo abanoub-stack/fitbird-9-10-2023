@@ -14,10 +14,7 @@ Show User
 Show <span class="font-weight-bolder text-capitalize
 @if ($user->is_subscribed == 1) text-warning @endif">
 {{ $user->name }}
-@if ($user->is_subscribed == 1) <i class="fas fa-crown text-warning"></i> @endif
-
-
-</span> informations
+@if ($user->is_subscribed == 1) <i class="fas fa-crown text-warning"></i> @endif </span> informations
 @endsection
 
 
@@ -26,27 +23,50 @@ Show <span class="font-weight-bolder text-capitalize
         <div class="col-md-6 col-xs-12 m-auto">
             <span class="text-capitalize font-weight-bolder" style="font-size: 20px"> {{$user->name}} </span> Profile Details:
         </div>
-        <div class="col-md-2 col-xs-12 m-auto">
+        <div class="col-md-2 col-xs-12 m-auto mb-2">
             <a class="btn btn-dark  my-1 float-lg-right" href="{{ url('users', []) }}">Back</a>
         </div>
         <div class="col-md-10 col-xs-12 m-auto">
-                    <table class="table table-bordered">
+
+
+
+                    <table class="table table-bordered my-3">
                         <tbody>
-                            <tr>
-                                <th scope="row">Email</th>
-                                <td>{{ $user->email }}</td>
+                            <tr   >
+                                <th scope="row" class="text-center py-3" >
+                                        <img class="img-profile rounded-circle"
+                                        style="box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; width: 170px; height: 170px; object-fit: cover"
+                                            src="{{$user->getImagePath()}}">
+                                </th>
+                                <td class="pt-5">
+                                    <div class="form-group ">
+                                      <label for="email"> Email :</label>  <span class="font-weight-bolder">{{ $user->email }}</span>
+                                    </div>
+                                    <hr>
+
+                                    <div class="form-group">
+                                        <label for="name"> Name :</label> <span class="font-weight-bolder">{{ $user->name }}</span>
+                                    </div>
+
+                                </td>
+
                             </tr>
-                            <tr>
-                                <th scope="row">Name</th>
-                                <td>{{ $user->name }}</td>
-                            </tr>
+
                             <tr>
                                 <th scope="row">Phone</th>
                                 <td>{{ $user->phone }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Gender</th>
-                                <td>{{ $user->gender }}</td>
+                                <td>
+                                    @if ($user->gender == 'male' | $user->gender == 'Male' )
+                                        <span>Male</span>
+                                        <i class="fas fa-male fa-2x text-primary ml-2"> </i>
+                                    @else
+                                        <span>Female</span>
+                                        <i class="fas fa-female fa-2x text-danger ml-2"> </i>
+                                    @endif
+                                </td>
                             </tr>
 
                             <tr>
@@ -395,7 +415,7 @@ $(document).ready(function()
                                             <div class=" animated--fade-in card text-center border-bottom-${color}" >
                                                 <img class="animated--fade-in card-img-top m-auto"
                                                     style="style="object-fit:cover; height:100px;"
-                                                    src="${location.origin}/uploads/${result.category['icon'] }"
+                                                    src="${location.origin}/public/uploads/${result.category['icon'] }"
                                                     alt="category icon">
                                                 <div class="animated--fade-in card-body">
                                                     <h5 class=" animated--fade-in card-title my-3 text-capitalize">${result.category['name']}</h5>
@@ -479,7 +499,7 @@ $(document).ready(function()
                                             <div class=" animated--fade-in card text-center border-bottom-${color}" >
                                                 <img class="animated--fade-in card-img-top m-auto"
                                                     style="style="object-fit:cover; height:100px;"
-                                                    src="${location.origin}/uploads/${result.category['icon'] }"
+                                                    src="${location.origin}/public/uploads/${result.category['icon'] }"
                                                     alt="category icon">
                                                 <div class="animated--fade-in card-body">
                                                     <h5 class=" animated--fade-in card-title my-3 text-capitalize">${result.category['name']}</h5>

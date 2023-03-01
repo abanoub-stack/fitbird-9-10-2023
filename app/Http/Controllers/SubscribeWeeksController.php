@@ -23,7 +23,7 @@ class SubscribeWeeksController extends Controller
         $cats = Category::orderBy('name' , 'asc')->get();
         $customers = Customer::select('id' , 'name'  , 'email', 'subscription_type')->where('is_subscribed' , 1)->orderBy('name' , 'asc')->get();
         $exes = Exercise::orderBy('name' , 'asc')->with('Category')->get();
-        $sections = TrainingSection::orderBy('name' , 'asc')->get();
+        $sections = TrainingSection::orderBy('id' , 'asc')->get();
         $layouts = DayLayout::orderBy('name' , 'asc')->get();
         return view('subscribe_week.index' , compact('cats' , 'customers' , 'exes' , 'sections' , 'layouts'));
     }
@@ -564,6 +564,10 @@ class SubscribeWeeksController extends Controller
                             ] ;
             }
 
+            $key_values = array_column($array, 'section_id');
+            array_multisort($key_values, SORT_ASC, $array);
+
+
             // $exes = Exercise::whereIn('id' , array_keys($requested_day['exe_array']))->get();
             // $exe = new ExerciseResourse($exes);
 
@@ -718,6 +722,9 @@ class SubscribeWeeksController extends Controller
                             'exe_list' => $exersices,
                             ] ;
             }
+
+            $key_values = array_column($array, 'section_id');
+            array_multisort($key_values, SORT_ASC, $array);
 
             // $exes = Exercise::whereIn('id' , array_keys($requested_day['exe_array']))->get();
             // $exe = new ExerciseResourse($exes);
@@ -956,8 +963,8 @@ class SubscribeWeeksController extends Controller
                             ] ;
             }
 
-            // $exes = Exercise::whereIn('id' , array_keys($requested_day['exe_array']))->get();
-            // $exe = new ExerciseResourse($exes);
+            $key_values = array_column($array, 'section_id');
+            array_multisort($key_values, SORT_ASC, $array);
 
             return response()->json(
                 [
@@ -1058,6 +1065,13 @@ class SubscribeWeeksController extends Controller
     public function getCustomerWorkoutsDetails(Request $request)
     {
         $customer = Customer::where('access_token', '=', $request->header('access_token'))->first();
+
+        if(!$customer->is_subscribed())
+        {
+            return response()->json([
+                'message' => 'This User Has no Premuim Data',
+            ] , 400);
+        }
 
         $weeks_number = 0;
         if ($customer->subscription_type =="month") {

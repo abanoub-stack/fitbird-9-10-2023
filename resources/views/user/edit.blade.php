@@ -39,7 +39,7 @@ Edit <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                         <tr>
                             <th scope="row">Email</th>
                             <td>
-                                <input type="text" name="email" value="{{ $user->email }}" class="form-control">
+                                <input type="text" disabled name="email" value="{{ $user->email }}" class="form-control">
 
                             </td>
                         </tr>
@@ -62,12 +62,12 @@ Edit <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                             <td>
                                 <select name="gender" class="form-control">
                                     <option
-                                        @if ($user->gender == "male" || $user->gender = "Male")
+                                        @if ($user->gender == "male" || $user->gender == "Male")
                                             selected
                                         @endif
                                         value="Male">Male</option>
                                     <option
-                                        @if ($user->gender == "female" || $user->gender = "Female")
+                                        @if ($user->gender == "female" || $user->gender == "Female")
                                             selected
                                         @endif
                                         value="Female">Female</option>
@@ -92,7 +92,7 @@ Edit <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                         <tr>
                             <th scope="row">Height</th>
                             <td>
-                                <input type="text" name="height" value="{{ $user->height }}" class="form-control">
+                                <input type="number" min="0" name="height" value="{{ $user->height }}" class="form-control">
 
                             </td>
                         </tr>
@@ -101,7 +101,7 @@ Edit <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                         <tr>
                             <th scope="row">Weight</th>
                             <td>
-                                <input type="text" name="height" value="{{ $user->weight }}" class="form-control">
+                                <input type="number" min="0" name="weight" value="{{ $user->weight }}" class="form-control">
 
                             </td>
                         </tr>
@@ -110,7 +110,7 @@ Edit <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                         <tr>
                             <th scope="row">Goals</th>
                             <td>
-                                <input type="text" name="height" value="{{ $user->goals }}" class="form-control">
+                                <input type="text" disabled name="goals" value="{{ $user->goals }}" class="form-control">
                             </td>
                         </tr>
 
@@ -118,7 +118,7 @@ Edit <span class="font-weight-bolder text-capitalize">{{ $user->name }}</span> i
                         <tr>
                             <th scope="row">Activity</th>
                             <td>
-                                <input type="text" name="height" value="{{ $user->activity }}" class="form-control">
+                                <input type="text" disabled name="activity" value="{{ $user->activity }}" class="form-control">
                             </td>
                         </tr>
 

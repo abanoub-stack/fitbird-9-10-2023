@@ -102,9 +102,17 @@
             </div>
 
             {{-- Users Progress --}}
+
             <div class="col-12 m-auto my-5">
                 <div class="row m-auto">
-                    <div class="col-lg-10 col-md-12 m-auto">
+                    <h4 class="mb-3">
+                        <span class="text-warning font-weight-bolder"> Premuim <i class="fa fa-crown"></i> </span>
+                        Users Info
+                    </h4>
+                    <div class="col-lg-10 col-md-12 m-auto my-5">
+                        <div class="col-lg-12 col-md-12 mb-2">
+                            <input class="form-control opacity-50" id="myInput" type="text" placeholder="Search Table">
+                        </div>
                         {{-- Table --}}
                         <div class="table-responsive">
                             <table class="table table-hover">
@@ -117,7 +125,7 @@
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-center">
+                                <tbody class="text-center" id="tableData">
                                     @foreach ($pre_users as $i => $user)
                                         <tr>
                                             <th scope="row">{{ $i + 1 }}</th>
@@ -173,6 +181,21 @@
 
 
 </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function() {
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tableData tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
 
 @endsection

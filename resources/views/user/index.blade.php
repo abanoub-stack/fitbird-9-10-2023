@@ -39,7 +39,7 @@ All Users
                             <th scope="col">Name</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Gender</th>
-                            <th scope="col">Workout Intensity</th>
+                            <th scope="col">Exercise Days</th>
                             {{-- <th scope="col">Age</th> --}}
                             {{-- <th scope="col">Height</th> --}}
                             {{-- <th scope="col">Exercise Days</th> --}}
@@ -55,7 +55,7 @@ All Users
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->phone }}</td>
                                 <td>{{ $user->gender }}</td>
-                                <td>{{ $user->workout_intensity }}</td>
+                                <td>{{ $user->exercise_days }} days</td>
                                 {{-- <td>{{ $user->age }}</td> --}}
                                 {{-- <td>{{ $user->height }}</td> --}}
                                 {{-- <td>{{ $user->exercise_days }}</td> --}}
@@ -73,9 +73,12 @@ All Users
                                         <i class="fa fa-pen"></i>
                                     </a>
 
-                                    <a class="text-danger mx-1" href="{{ url('delete-user', $user->id) }}">
-                                        <i class="fa fa-trash"></i>
+                                    <a class="delete-user" username={{$user->name}} data-route={{ url('delete-user', $user->id) }}  data-toggle="modal" data-target="#deleteModal">
+                                        {{-- <a class="text-danger mx-1" href="{{ url('delete-user', $user->id) }}"> --}}
+                                            <i class="fa fa-trash text-danger"></i>
+                                        {{-- </a> --}}
                                     </a>
+
                                 </td>
                             </tr>
                         @endforeach
@@ -96,14 +99,57 @@ All Users
 </div>
 
 
+<!-- Logout Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Need to Delete <span id="user-name"></span>?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" id="deleteBtn" href="">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @endsection
+
+
+
+
+@section('js')
+
+
+<script>
+
+       //On Click Save Layout Button
+       $(document).on("click" , ".delete-user" , function(){
+        console.log('Delete Pressed');
+
+        var route = this.getAttribute('data-route');
+        var username = this.getAttribute('username');
+
+
+        $("#deleteBtn").attr('href' , route);
+        $("#user-name").text(username);
+
+        });
+
+</script>
+
 
 <!-- Page level plugins -->
 <script src="{{asset('dashboard/vendor/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
-
 <!-- Page level custom scripts -->
 <script src="{{asset('dashboard/js/demo/datatables-demo.js')}}"></script>
+@endsection
 
 
