@@ -154,4 +154,34 @@ class Customer extends Model
         }
     }
 
+    public function getWorkoutsDetails()
+    {
+        $weeks_number = $this->get_sub_weeks();
+        $total_workouts = (int)$this->exercise_days * $weeks_number;
+        $this_weeks = json_decode($this->subscribeWeeks()->first()->data , true);
+        $complete_counter = 0;
+        foreach ($this_weeks as $weeks => $week) {
+            foreach ($week as $day => $data) {
+                //If The Day is Completed then increment the complete counter
+                if($data['is_completed']) $complete_counter++  ;
+            }
+        }
+
+        $percent = ($complete_counter / $total_workouts ) * 100;
+        if($percent > 100) $percent = 100;
+        
+        return
+            [
+                'sub_type' => $this->subscription_type,
+                'sub_weeks' => $weeks_number,
+                'sub_weeks_started_at' => $this->subscription_started_at,
+                'sub_weeks_finished_at' => $this->subscription_finished_at,
+                'exercise_days' => $this->exercise_days,
+                'total_workouts' => $total_workouts,
+                'completed_workouts' =>$complete_counter ,
+                'percent' => $percent,
+            ];
+    }
+
+
 }

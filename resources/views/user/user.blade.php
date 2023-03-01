@@ -5,6 +5,16 @@ Show User
 @section('css')
 <!-- Custom styles for this page -->
 <link href="{{asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+<style>
+.conainer { font-family: 'Arial'}
+.circle_percent {font-size:200px; width:0.50em; height:0.50em; position: relative; background: #eee; border-radius:50%; overflow:hidden; display:inline-block; margin:20px;}
+.circle_inner {position: absolute; left: 0; top: 0; width: 0.50em; height: 0.50em; clip:rect(0 0.50em 0.50em .25em);}
+.round_per {position: absolute; left: 0; top: 0; width: 0.50em; height: 0.50em; background: #a6c3e4; clip:rect(0 0.50em 0.50em .25em); transform:rotate(180deg); transition:1.05s;}
+.percent_more .circle_inner {clip:rect(0 .25em 0.50em 0em);}
+.percent_more:after {position: absolute; left: .25em; top:0em; right: 0; bottom: 0; background: #a6c3e4; content:'';}
+.circle_inbox {position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; background: #fff; z-index:3; border-radius: 50%;}
+.percent_text {position: absolute; font-size: 18px; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 3;}
+</style>
 @endsection
 
 
@@ -32,26 +42,72 @@ Show <span class="font-weight-bolder text-capitalize
 
                     <table class="table table-bordered my-3">
                         <tbody>
-                            <tr   >
-                                <th scope="row" class="text-center py-3" >
-                                        <img class="img-profile rounded-circle"
-                                        style="box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; width: 170px; height: 170px; object-fit: cover"
+                            <tr>
+                                <th scope="row" colspan="2" class="text-center py-3" >
+
+
+                                    @if ($user->is_subscribed())
+                                    <div class="row m-auto">
+                                        <div class="col-lg-6 col-md-12">
+                                            <img class="img-profile rounded-circle"
+                                            style="box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; width: 170px; height: 170px; object-fit: cover"
                                             src="{{$user->getImagePath()}}">
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="conainer text-center">
+                                                <div class="circle_percent" data-percent="{{$user->getWorkoutsDetails()['percent']}}">
+                                                    <div class="circle_inner">
+                                                        <div class="round_per">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span>Completed Workouts: {{$user->getWorkoutsDetails()['completed_workouts']}}</span>
+                                            <br>
+                                            <span>Total Workouts: {{$user->getWorkoutsDetails()['total_workouts']}}</span>
+                                        </div>
+                                    </div>
+                                    @else
+                                    <div class="row m-auto">
+                                        <div class="col-lg-6 m-auto col-md-12">
+                                            <img class="img-profile rounded-circle"
+                                            style="box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; width: 170px; height: 170px; object-fit: cover"
+                                            src="{{$user->getImagePath()}}">
+                                            <p class="card-title mt-3">{{ $user->name}}</p>
+                                        </div>
+                                    </div>
+                                    @endif
+
+
+
                                 </th>
-                                <td class="pt-5">
-                                    <div class="form-group ">
-                                      <label for="email"> Email :</label>  <span class="font-weight-bolder">{{ $user->email }}</span>
+                                {{-- <td >
+                                    <div class="row m-auto">
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group d-inline">
+                                                <label for="email"> Email :</label>  <span class="font-weight-bolder">{{ $user->email }}</span>
+                                            </div>
+                                            <hr>
+
+                                            <div class="form-group">
+                                                <label for="name"> Name :</label> <span class="font-weight-bolder">{{ $user->name }}</span>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <hr>
-
-                                    <div class="form-group">
-                                        <label for="name"> Name :</label> <span class="font-weight-bolder">{{ $user->name }}</span>
-                                    </div>
-
-                                </td>
-
+                                </td> --}}
                             </tr>
 
+                            <tr>
+                                <th scope="row">Email</th>
+                                <td>{{ $user->email }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Name</th>
+                                <td>{{ $user->name }}</td>
+                            </tr>
                             <tr>
                                 <th scope="row">Phone</th>
                                 <td>{{ $user->phone }}</td>
@@ -548,6 +604,35 @@ $(document).ready(function()
 
 });
 </script>
+
+
+<script>
+    $(".circle_percent").each(function() {
+        var $this = $(this),
+            $dataV = $this.data("percent"),
+            $dataDeg = $dataV * 3.6,
+            $round = $this.find(".round_per");
+        $round.css("transform", "rotate(" + parseInt($dataDeg + 180) + "deg)");
+        $this.append('<div class="circle_inbox"><span class="percent_text"></span></div>');
+        $this.prop('Counter', 0).animate({Counter: $dataV},
+        {
+            duration: 2000,
+            easing: 'swing',
+            step: function (now) {
+                $this.find(".percent_text").text(Math.ceil(now)+"%");
+            }
+        });
+        if($dataV >= 51){
+            $round.css("transform", "rotate(" + 360 + "deg)");
+            setTimeout(function(){
+                $this.addClass("percent_more");
+            },1000);
+            setTimeout(function(){
+                $round.css("transform", "rotate(" + parseInt($dataDeg + 180) + "deg)");
+            },1000);
+        }
+    });
+    </script>
 @endsection
 
 
@@ -692,4 +777,6 @@ $(document).ready(function()
     }
     });
 </script>
+
+
 @endsection
