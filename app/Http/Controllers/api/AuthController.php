@@ -213,7 +213,7 @@ class AuthController extends Controller
             'email' => 'email|required',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif',
             'name' => 'required|string',
-            'phone' => 'required|min:11',
+            'phone' => 'nullable|min:11',
             'gender' => 'required|in:Male,Female,male,female',
             'workout_intensity' => 'required',
 
@@ -330,7 +330,7 @@ class AuthController extends Controller
                 [
                     'success' => false,
                     'message' => $validator->errors()->first(),
-                ] , 400
+                ]
             );
         }
         else
@@ -418,7 +418,11 @@ class AuthController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'token' => 'required'
+            'provider_id' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
+            'avatar' => 'nullable|url',
+            'phone' => 'nullable',
         ]);
 
         if($validator->fails())
@@ -429,21 +433,8 @@ class AuthController extends Controller
             ] , 400);
         }
 
-        $facebook_token = $request->token;
-
-        try{
-            $providerUser = Socialite::driver('google')->userFromToken($facebook_token);
-        }
-        catch(Exception $e ){
-            return response()->json([
-                'success' => false,
-                'message' => 'wrong google token',
-                'error' => $e->getMessage(),
-            ] , 500);
-        }
-
-        $providerUserId  = $providerUser->id;
-        dd($providerUserId);
+        //Login Or Signup
+        $providerUserId = $request->provider_id;
         $user  = Customer:: where('provider_name', 'google')
                             ->where('provider_id' , $providerUserId)
                             ->first();
@@ -452,14 +443,14 @@ class AuthController extends Controller
         {
             $access_token = Str::random(128);
             $customer = Customer::create([
-                'name' => $providerUser->name,
+                'name' => $request->name,
+                'email' => $request->email,
                 'provider_name' => 'google',
                 'provider_id' => $providerUserId,
-                'avatar' => "https://graph.facebook.com/v3.3/$providerUserId/picture?type=large&access_token=$facebook_token",
+                'avatar' => $request->avatar,
+                'phone' => $request->phone,
                 'access_token' => $access_token,
-
             ]);
-
 
             $customer = Customer::find($customer->id);
 

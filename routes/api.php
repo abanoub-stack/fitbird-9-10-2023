@@ -16,6 +16,7 @@ use App\Http\Controllers\api\v1\StripePaymentController as V1StripePaymentContro
 use App\Http\Controllers\api\v1\TokanDataController as V1TokanDataController;
 use App\Http\Controllers\BannerImageController;
 use App\Http\Controllers\CancelRegistrationController;
+use App\Http\Controllers\CustomWorkoutsController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SubscribeWeeksController;
@@ -83,6 +84,15 @@ Route::middleware(['api-auth'])->group(function () {
     // Answers Routes Start
     Route::post('answers/save', [AnswerController::class, 'save']);
     // Answers Routes Ends
+
+
+    // Custom Workouts Start
+    Route::post('custom-workout/save', [CustomWorkoutsController::class, 'save']);
+    Route::get('custom-workout/get', [CustomWorkoutsController::class, 'getCustomWorkouts']);
+    Route::post('custom-workout/getbyID', [CustomWorkoutsController::class, 'getCustomWorkoutsDetails']);
+
+    // Custom Workouts Start
+
 
 
     // Progress Routes Start

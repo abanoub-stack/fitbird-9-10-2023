@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
@@ -169,7 +170,7 @@ class Customer extends Model
 
         $percent = ($complete_counter / $total_workouts ) * 100;
         if($percent > 100) $percent = 100;
-        
+
         return
             [
                 'sub_type' => $this->subscription_type,
@@ -183,5 +184,15 @@ class Customer extends Model
             ];
     }
 
+
+    /**
+     * Get all of the customeWorkouts for the Customer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function customeWorkouts(): HasMany
+    {
+        return $this->hasMany(CustomWorkouts::class, 'user_id');
+    }
 
 }

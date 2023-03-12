@@ -93,6 +93,9 @@ class SubscribeWeeksController extends Controller
                         {
                             // $ex = Exercise::find($exercises[$i]);
                             $weeks[$week][$day]['exe_array'][$section->id][$exercises[$i]] =  false;
+
+                            //Set Complete False
+                            $weeks[$week][$day]['is_completed']=false;
                         }
                     }
 
@@ -1141,6 +1144,29 @@ class SubscribeWeeksController extends Controller
         if($data != null)
         {
             $weeks = json_decode($data->data , true);
+            //Check Empty ALL Weeks
+            $empty_flag = 1;
+            foreach ($weeks as $week => $day) {
+                foreach ($day as $day_number => $day_data) {
+                    if(count($day_data['exe_array']) > 0) //DATA INSERTED
+                    {
+                        $empty_flag = 0;
+                        break;
+                    }
+                }
+            }
+
+            if($empty_flag)
+            {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'number_of_weeks' => 0,
+                        'message' => 'Please Wait.. until your data be inserted',
+                    ]);
+            }
+
+
             $weeks_number = count($weeks);
             return response()->json(
                 [
