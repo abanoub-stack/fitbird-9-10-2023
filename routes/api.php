@@ -90,6 +90,7 @@ Route::middleware(['api-auth'])->group(function () {
     Route::post('custom-workout/save', [CustomWorkoutsController::class, 'save']);
     Route::get('custom-workout/get', [CustomWorkoutsController::class, 'getCustomWorkouts']);
     Route::post('custom-workout/getbyID', [CustomWorkoutsController::class, 'getCustomWorkoutsDetails']);
+    Route::post('delete-custom-workout', [CustomWorkoutsController::class, 'deleteCustomWorkoutsDetails']);
 
     // Custom Workouts Start
 

@@ -100,8 +100,41 @@ class CustomWorkoutsController extends Controller
         $custom_workout = new CustomWorkoutsResource($custom_workout);
         return response()->json([
             'success' => true ,
-            'message' => "Workouts Sent Successfully." ,
+            'message' => "Workout Sent Successfully." ,
             'data' => $custom_workout ,
+        ]);
+    }
+
+    public function deleteCustomWorkoutsDetails(Request $request)
+    {
+        $validator = Validator::make($request->all() ,
+        [
+            'id' => 'required|exists:custom_workouts,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ] , 400);
+        }
+
+        $custom_workout =  CustomWorkouts::find($request->id);
+
+        $customer = Customer::where('access_token' , $request->header('access-token'))->first(); //Auth One
+        $workout_owner = Customer::find($custom_workout->user_id);
+        if ($customer->id != $workout_owner->id) {
+            return response()->json([
+                'success' => false ,
+                'message' => "unAuthorized Data Request." ,
+            ] , 401);
+        }
+
+        $custom_workout->delete();
+
+        return response()->json([
+            'success' => true ,
+            'message' => "Workout Deleted Successfully." ,
         ]);
     }
 
