@@ -19,6 +19,7 @@ class CustomWorkoutsResource extends JsonResource
         $exe_array = json_decode($this->exercises , true);
         $exercises = FreeExercise::whereIn('id',$exe_array)->get();
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'interval_time' => $this->interval_time,
             'repeat_count' => $this->repeat_count,
