@@ -17,6 +17,7 @@ use App\Http\Controllers\api\v1\TokanDataController as V1TokanDataController;
 use App\Http\Controllers\BannerImageController;
 use App\Http\Controllers\CancelRegistrationController;
 use App\Http\Controllers\CustomWorkoutsController;
+use App\Http\Controllers\NutritionController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SubscribeWeeksController;
@@ -94,6 +95,10 @@ Route::middleware(['api-auth'])->group(function () {
 
     // Custom Workouts Start
 
+
+
+    //Nutrition
+    Route::get('getNutrition', [NutritionController::class, 'get']);
 
 
     // Progress Routes Start

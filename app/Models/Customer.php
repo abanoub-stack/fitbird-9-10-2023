@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Customer extends Model
 {
@@ -195,4 +197,25 @@ class Customer extends Model
         return $this->hasMany(CustomWorkouts::class, 'user_id');
     }
 
+
+
+    // /**
+    //  * The nutritions that belong to the Customer
+    //  *
+    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    //  */
+    // public function nutritions(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Nutrition::class, 'customer_nutrition', 'customer_id' , 'nutrition_id');
+    // }
+
+    /**
+     * Get the nutrition associated with the Customer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function nutrition(): HasOne
+    {
+        return $this->hasOne(CustomerNutrition::class, 'customer_id');
+    }
 }

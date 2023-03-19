@@ -12,6 +12,7 @@ use App\Http\Controllers\FreeExerciseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IosNotifiactionController;
 use App\Http\Controllers\NotifictaionController;
+use App\Http\Controllers\NutritionController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PaymentHistoryController;
 use App\Http\Controllers\PriceController;
@@ -317,9 +318,6 @@ Route::middleware('auth')->group(function () {
     Route::get('weeks/save-layout-for-customer/', [SubscribeWeeksController::class, 'saveLayoutForCustomer']);
 
 
-
-
-
     Route::post('weeks/by-week-day', [SubscribeWeeksController::class, 'Dashboard_getByWeekDay']);
     Route::post('weeks/by-week-day-reports', [SubscribeWeeksController::class, 'dayReport']);
     Route::post('weeks/by-week-day-charts', [SubscribeWeeksController::class, 'dayCharts']);
@@ -327,6 +325,12 @@ Route::middleware('auth')->group(function () {
     Route::get('weeks/get-customer-workouts-details', [SubscribeWeeksController::class, 'Dashboard_getCustomerWorkoutsDetails']);
 
 
+    //Nutrition
+    Route::get('nutrition', [NutritionController::class, 'index']);
+
 
 
 });
+
+
+
