@@ -193,6 +193,30 @@ Route::middleware('auth')->group(function () {
     Route::get('payment/history', [PaymentHistoryController::class, 'index']);
 
 
+    //Nutrition
+        //Index page
+        Route::get('nutrition', [NutritionController::class, 'index'])->name('nutrition.index');
+
+        //show
+            Route::get('nutrition/show/{nutritionId}', [NutritionController::class, 'show'])->name('nutrition.show');
+
+        //Create
+            Route::get('nutrition/create', [NutritionController::class, 'create'])->name('nutrition.create');
+            Route::post('nutrition/store', [NutritionController::class, 'store'])->name('nutrition.store');
+
+        //Edit
+            Route::get('nutrition/edit/{nutritionId}', [NutritionController::class, 'edit'])->name('nutrition.edit');
+            Route::post('nutrition/update', [NutritionController::class, 'update'])->name('nutrition.update');
+
+
+        // Delete
+            Route::get('nutrition/delete/{nutritionId}', [NutritionController::class, 'delete'])->name('nutrition.delete');
+
+        //Assign
+        Route::get('nutrition/get-assign', [NutritionController::class, 'get_assign'])->name('nutrition.assign.get');
+        Route::post('nutrition/assign', [NutritionController::class, 'assign'])->name('nutrition.assign');
+
+
     //  Questions
         //Index page
             Route::get('questions', [QuestionController::class, 'index'])->name('question.index');
@@ -325,8 +349,7 @@ Route::middleware('auth')->group(function () {
     Route::get('weeks/get-customer-workouts-details', [SubscribeWeeksController::class, 'Dashboard_getCustomerWorkoutsDetails']);
 
 
-    //Nutrition
-    Route::get('nutrition', [NutritionController::class, 'index']);
+
 
 
 

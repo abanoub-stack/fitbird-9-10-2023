@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free-5.0.1/css/fontawesome-all.css') }}">
 
 
+    {{-- Tiny MCE  // WYSWG --}}
+    <script src="https://cdn.tiny.cloud/1/649a0o47mong5x2eyz3fy0fw1ru8poehvw59emmxhr0wxzxh/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 </head>
 
 <body id="page-top">

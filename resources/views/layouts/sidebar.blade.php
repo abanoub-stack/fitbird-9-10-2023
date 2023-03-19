@@ -122,16 +122,34 @@
             </li>
 
 
+            <!-- Nav Item - Nutrtion -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Nutrition"
+                    aria-expanded="true" aria-controls="Nutrition">
+                    <i class="fab fa-fw fa-nutritionix"></i>
+                    <span>Nutrition</span>
+                </a>
+                <div id="Nutrition" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Nutrition Actions:</h6>
+                        <a class="collapse-item" href="{{ url('/nutrition', []) }}">List All of Nutrition</a>
+                        <a class="collapse-item" href="{{ url('/nutrition/get-assign', []) }}">Assign to Premium Users</a>
+                    </div>
+                </div>
+            </li>
 
-             <!-- Nav Item - Questions -->
-             <li class="nav-item">
+
+
+            <!-- Nav Item - Questions -->
+            <li class="nav-item">
                 <a class="nav-link"  href="{{ url('/questions', []) }}">
                     <i class="fas fa-fw fa-question-circle"></i>
                     <span>Questions</span></a>
             </li>
 
 
-            <!-- Nav Item - Questions -->
+
+            <!-- Nav Item - Banner -->
             <li class="nav-item">
                 <a class="nav-link"  href="{{ route('banner.index') }}">
                     <i class="fas fa-fw fa-image"></i>
