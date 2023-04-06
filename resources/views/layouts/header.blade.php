@@ -11,6 +11,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 
+    <link rel="icon" type="image/x-icon" href="{{asset('fav.png')}}">
+
+
+
     <title>FitBird Admin Panel | @yield('title')</title>
 
 
@@ -32,6 +36,12 @@
 
     {{-- Tiny MCE  // WYSWG --}}
     <script src="https://cdn.tiny.cloud/1/649a0o47mong5x2eyz3fy0fw1ru8poehvw59emmxhr0wxzxh/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+
+
+    {{-- Crisp Chat --}}
+    {{-- <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="5ee9e208-2ff0-4a6d-8f98-55e85e173dac";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script> --}}
+    <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="d6d1c0ae-e4f0-494d-bd83-b1c8c62add73";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
 
 </head>
 

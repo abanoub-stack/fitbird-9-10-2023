@@ -121,8 +121,7 @@ class NutritionController extends Controller
 
 
         //Check Old Assign
-        $old = CustomerNutrition::where('nutrition_id' , $request->nutrition_id)
-        ->where('customer_id' , $request->customer_id)->first();
+        $old = CustomerNutrition::where('customer_id' , $request->customer_id)->first();
 
         if ($old != null) //There Are OLD Data
             {

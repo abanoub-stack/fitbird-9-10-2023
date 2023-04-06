@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,6 +37,7 @@ class Customer extends Model
         'provider_id',
         'provider_name',
     ];
+
 
     public function Packages()
     {
@@ -199,15 +201,7 @@ class Customer extends Model
 
 
 
-    // /**
-    //  * The nutritions that belong to the Customer
-    //  *
-    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    //  */
-    // public function nutritions(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Nutrition::class, 'customer_nutrition', 'customer_id' , 'nutrition_id');
-    // }
+
 
     /**
      * Get the nutrition associated with the Customer
@@ -217,5 +211,82 @@ class Customer extends Model
     public function nutrition(): HasOne
     {
         return $this->hasOne(CustomerNutrition::class, 'customer_id');
+    }
+
+    public function getRemainingDays()
+    {
+        //Subscription Finished
+        if ( Carbon::parse($this->subscription_finished_at) < Carbon::now())
+        {
+            $customer = Customer::find($this->id);
+            $customer->update(
+                [
+                    'is_subscribed' => "0",
+                    'is_subscription_finished' => "1",
+                ]
+            );
+            return "FINISHED";
+        }
+
+        $days = $remainingDay = '';
+
+        if($this->is_subscribed == "1")
+        {
+            //Subscription Not Finished
+            if ($this->subscription_finished_at > Carbon::now()) {
+                $days = Carbon::parse($this->subscription_finished_at)->diffInDays();
+                if($days == 1)
+                {
+                    $remainingDay = $days.' Day';
+                }
+                else
+                {
+                    $remainingDay = $days.' Days';
+                }
+            }
+
+            if ($days >= 30 && $days <= 365) {
+                $remainingDay = '';
+                $months = floor($days / 30);
+                $extraDays = $days % 30;
+                if ($extraDays > 0) {
+                    if($months == 1)
+                    {
+                        $remainingDay .= $months.' Month '.$extraDays.' Days';
+                    }
+                    else
+                    {
+                        $remainingDay .= $months.' Months '.$extraDays.' Days';
+                    }
+                } else {
+                    if($months == 1)
+                    {
+                        $remainingDay .= $months.' Month ';
+                    }
+                    else
+                    {
+                        $remainingDay .= $months.' Months ';
+                    }
+                }
+            }
+
+            if ($days >= 365) {
+                $remainingDay = '';
+                $years = floor($days / 365);
+                $extraMonths = floor($days % 365 / 30);
+                $extraDays = floor($days % 365 % 30);
+                if ($extraMonths > 0 && $extraDays < 1) {
+                    $remainingDay .= $years.' Years '.$extraMonths.' Month ';
+                } elseif ($extraDays > 0 && $extraMonths < 1) {
+                    $remainingDay .= $years.' Years '.$extraDays.' Days';
+                } elseif ($years > 0 && $extraDays > 0 && $extraMonths > 0) {
+                    $remainingDay .= $years.' Years '.$extraMonths.' Month '.$extraDays.' Days';
+                } else {
+                    $remainingDay .= $years.' Years ';
+                }
+            }
+        }
+
+        return $remainingDay;
     }
 }

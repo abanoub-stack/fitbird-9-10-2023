@@ -121,7 +121,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Email</th>
-                                        <th scope="col">Days Remaining</th>
+                                        <th scope="col">Remaining Time</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
@@ -149,7 +149,7 @@
                                                                 aria-valuenow="{{ \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now() ) }}"
                                                                 aria-valuemin="0"
                                                                 aria-valuemax="{{$user->getSubInDays()}}">
-                                                                {!! '<span class="font-weight-bold ">' . \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now()) . ' days </span>  ' !!}
+                                                                {!! '<span class="font-weight-bold ">' . $user->getRemainingDays() . ' </span>  ' !!}
                                                             </div>
                                                         </div>
                                             </td>

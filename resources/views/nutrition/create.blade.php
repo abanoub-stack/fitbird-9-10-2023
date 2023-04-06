@@ -30,9 +30,9 @@ Add Nutrition
 
                                   <div class="mb-3">
                                       <label  class="form-label">Nutrition Details</label>
-                                      <textarea  id="nutrition_textarea" class="form-control"  name="details"  cols="30" rows="20" placeholder="Nutrition Details">
+                                          <textarea  id="nutrition_textarea"   class="form-control"  name="details"  placeholder="Nutrition Details">
 
-                                      </textarea>
+                                          </textarea>
                                       @error('details')
                                           <span class="invalid-feedback text-danger" role="alert">
                                               <strong>{{ $message }}</strong>
@@ -54,6 +54,7 @@ Add Nutrition
 
         </div>
 
+
 @endsection
 
 
@@ -61,7 +62,12 @@ Add Nutrition
 
 <script>
     tinymce.init({
+      color_default_background: 'yellow',
+      color_default: 'yellow',
       selector: '#nutrition_textarea',
+      skin: 'oxide-dark',
+    //   content_css: [ '/css/mce.css' , 'dark'],
+      content_css: [ '/css/mce.css'],
       plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
       toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
       tinycomments_mode: 'embedded',
@@ -69,7 +75,16 @@ Add Nutrition
       mergetags_list: [
         { value: 'First.Name', title: 'First Name' },
         { value: 'Email', title: 'Email' },
-      ]
+      ] ,
+
+    //   formats: {
+    //   // Changes the default format for h1 to have a class of heading
+    //         selector: 'p', styles: 'color:green'
+    //         }
+
     });
   </script>
+
 @endsection
+
+

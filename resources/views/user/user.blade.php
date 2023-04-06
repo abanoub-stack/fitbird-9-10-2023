@@ -218,12 +218,12 @@ Show <span class="font-weight-bolder text-capitalize
 
                             @if($user->is_subscribed())
                                 <tr>
-                                    <th scope="row">Days Remaing In Premium</th>
+                                    <th scope="row">Remaing In Premium</th>
                                     <td>
                                         @php
                                             $percent = floor((\Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now())/$user->getSubInDays()) * 100)
                                         @endphp
-                                        {!! '<span class="font-weight-bold">' . \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now()) . '</span> days from <span class="font-weight-bold">' . $user->getSubInDays() .'</span> days' !!}
+                                                {!! '<span class="font-weight-bold">' . $user->getRemainingDays() . '</span>' !!}
                                         <div class="progress">
                                             <div class="progress-bar  px-5
                                             @if($percent > 80)
@@ -238,7 +238,7 @@ Show <span class="font-weight-bolder text-capitalize
                                                 aria-valuenow="{{ \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now() ) }}"
                                                 aria-valuemin="0"
                                                 aria-valuemax="{{$user->getSubInDays()}}">
-                                                {!! '<span class="font-weight-bold ">' . \Carbon\Carbon::parse($user->subscription_finished_at)->diffInDays( now()) . ' days </span>  ' !!}
+                                                {!! '<span class="font-weight-bold ">' . $user->getRemainingDays() . '  </span>  ' !!}
                                             </div>
                                         </div>
                                     </td>
